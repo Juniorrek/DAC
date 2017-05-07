@@ -3,7 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Fornalha/Documents/GitHub/DAC/DAC/web/rhindo/login.jsp</file>
+            <file>file:/C:/Users/Fornalha/Documents/NetBeansProjects/DAC/src/java/rhindo/controller/validaLoginRhindo.java</file>
+            <file>file:/C:/Users/Fornalha/Documents/NetBeansProjects/DAC/src/java/rhindo/DAO/ConnectionFactory.java</file>
+            <file>file:/C:/Users/Fornalha/Documents/NetBeansProjects/DAC/web/view/rhindo/pagina_inicial.jsp</file>
+            <file>file:/C:/Users/Fornalha/Documents/NetBeansProjects/DAC/web/index.html</file>
+            <file>file:/C:/Users/Fornalha/Documents/NetBeansProjects/DAC/web/view/rhindo/meus_dados.jsp</file>
+            <file>file:/C:/Users/Fornalha/Documents/NetBeansProjects/DAC/web/view/rhindo/login.jsp</file>
+            <file>file:/C:/Users/Fornalha/Documents/NetBeansProjects/DAC/src/java/rhindo/DAO/FuncionarioDAO.java</file>
         </group>
     </open-files>
 </project-private>
