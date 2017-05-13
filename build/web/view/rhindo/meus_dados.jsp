@@ -1,6 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="rhindo.model.Funcionario"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="iso-8859-1"%>
 <!DOCTYPE html>
 <head>
 
@@ -39,10 +39,10 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/DAC/CRUD?action=meusDados"><i class="fa fa-user fa-fw"></i> Meus dados</a>
+                        <li><a href="/DAC/LoginRhindo?action=formUpdate"><i class="fa fa-user fa-fw"></i> Meus dados</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/DAC/view/rhindo/login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -55,17 +55,17 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="/DAC/view/rhindo/pagina_inicial.jsp"><i class="fa fa-home fa-fw"></i> PÃ¡gina inicial</a>
+                            <a href="/DAC/view/rhindo/pagina_inicial.jsp"><i class="fa fa-home fa-fw"></i> Página inicial</a>
                         </li>
                         <%
-                            Funcionario funcionario = (Funcionario)session.getAttribute("funcionario");
-                            if("Gerente de RH".equals(funcionario.getPerfil())) {
+                            Funcionario logado = (Funcionario)session.getAttribute("logado");
+                            if("Gerente de RH".equals(logado.getPerfil())) {
                         %>
-                                <li><a href="/DAC/CRUD?tabela=funcionario&action=listar"><i class="fa fa-users fa-fw"></i> FuncionÃ¡rios</a></li>
-                                <li><a href="gerente/departamentos.jsp"><i class="fa fa-building fa-fw"></i> Departamentos</a></li>
-                                <li><a href="gerente/cargos.jsp"><i class="fa fa-briefcase fa-fw"></i> Cargos</a></li>
+                                <li><a href="/DAC/Funcionarios?action=select"><i class="fa fa-users fa-fw"></i> Funcionários</a></li>
+                                <li><a href="/DAC/Departamentos?action=select"><i class="fa fa-building fa-fw"></i> Departamentos</a></li>
+                                <li><a href="/DAC/Cargos?action=select"><i class="fa fa-briefcase fa-fw"></i> Cargos</a></li>
                                 <li><a href="gerente/fechamento_folha.jsp"><i class="fa fa-book fa-fw"></i> Fechamento da folha</a></li>
-                                <li><a href="gerente/relatorios.jsp"><i class="fa fa-file-text fa-fw"></i> RelatÃ³rios</a></li>
+                                <li><a href="gerente/relatorios.jsp"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
                         <%
                             } else { 
                         %>
@@ -93,115 +93,115 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            FormulÃ¡rio de ediÃ§Ã£o
+                            Formulário de edição
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <form>
+                            <form action ="/DAC/LoginRhindo?action=update" method="POST">
                                 <fieldset>
                                     <legend>Dados pessoais</legend>
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Nome:</label>
-                                                <input class="form-control"  value="${funcionario.getNome()}">
+                                                <input class="form-control"  value="${logado.getNome()}" name="nome">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>CPF:</label>
-                                                <input class="form-control" value="${funcionario.getCpf()}">
-                                                <p class="help-block">Somente nÃºmeros.</p>
+                                                <input class="form-control" value="${logado.getCpf()}" name="cpf">
+                                                <p class="help-block">Somente números.</p>
                                             </div>
                                         </div>
                                         <!-- /.col-lg-6 (nested) -->
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>RG:</label>
-                                                <input class="form-control"  value="${funcionario.getRg()}">
-                                                <p class="help-block">Somente nÃºmeros.</p>
+                                                <input class="form-control"  value="${logado.getRg()}" name="rg">
+                                                <p class="help-block">Somente números.</p>
                                             </div>
                                         </div>
                                         <!-- /.col-lg-6 (nested) -->
                                         <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label>Celular:</label>
-                                                <input class="form-control"  value="${funcionario.getCelular()}">
+                                                <input class="form-control"  value="${logado.getCelular()}" name="celular">
                                             </div>
                                         </div>
                                         <div class="col-lg-7">
                                             <div class="form-group">
                                                 <label>Email:</label>
-                                                <input class="form-control"  value="${funcionario.getEmail()}">
+                                                <input class="form-control"  value="${logado.getEmail()}" name="email">
                                             </div>
                                         </div>
                                     </div>
                                     <!-- /.row (nested) -->
                                 </fieldset>
                                 <fieldset>
-                                    <legend>EndereÃ§o</legend>
+                                    <legend>Endereço</legend>
                                     <div class="row">
                                         <div class="col-lg-3">
                                             <div class="form-group">
                                                 <label>CEP:</label>
-                                                <input class="form-control"  value="${funcionario.getCep()}">
+                                                <input class="form-control"  value="${logado.getCep()}" name="cep">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Rua:</label>
-                                                <input class="form-control"  value="${funcionario.getRua()}">
+                                                <input class="form-control"  value="${logado.getRua()}" name="rua">
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="form-group">
-                                                <label>NÃºmero:</label>
-                                                <input class="form-control"  value="${funcionario.getNumero()}">
+                                                <label>Número:</label>
+                                                <input class="form-control"  value="${logado.getNumero()}" name="numero">
                                             </div>
                                         </div>
                                         <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label>Bairro:</label>
-                                                <input class="form-control"  value="${funcionario.getBairro()}">
+                                                <input class="form-control"  value="${logado.getBairro()}" name="bairro">
                                             </div>
                                         </div>
                                         <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label>Cidade:</label>
-                                                <input class="form-control"  value="${funcionario.getCidade()}">
+                                                <input class="form-control"  value="${logado.getCidade()}" name="cidade">
                                             </div>
                                         </div>
                                         <div class="col-lg-2">
                                             <div class="form-group">
                                                 <label>Estado:</label>
-                                                <select class="form-control">
-                                                    <option value="AC" ${funcionario.getEstado() == "AC" ? 'selected' : ''}>AC</option>
-                                                    <option value="AL" ${funcionario.getEstado() == "AL" ? 'selected' : ''}>AL</option>
-                                                    <option value="AP" ${funcionario.getEstado() == "AP" ? 'selected' : ''}>AP</option>
-                                                    <option value="AM" ${funcionario.getEstado() == "AM" ? 'selected' : ''}>AM</option>
-                                                    <option value="BA" ${funcionario.getEstado() == "BA" ? 'selected' : ''}>BA</option>
-                                                    <option value="CE" ${funcionario.getEstado() == "CE" ? 'selected' : ''}>CE</option>
-                                                    <option value="DF" ${funcionario.getEstado() == "DF" ? 'selected' : ''}>DF</option>
-                                                    <option value="ES" ${funcionario.getEstado() == "ES" ? 'selected' : ''}>ES</option>
-                                                    <option value="GO" ${funcionario.getEstado() == "GO" ? 'selected' : ''}>GO</option>
-                                                    <option value="MA" ${funcionario.getEstado() == "MA" ? 'selected' : ''}>MA</option>
-                                                    <option value="MT" ${funcionario.getEstado() == "MT" ? 'selected' : ''}>MT</option>
-                                                    <option value="MS" ${funcionario.getEstado() == "MS" ? 'selected' : ''}>MS</option>
-                                                    <option value="MG" ${funcionario.getEstado() == "MG" ? 'selected' : ''}>MG</option>
-                                                    <option value="PA" ${funcionario.getEstado() == "PA" ? 'selected' : ''}>PA</option>
-                                                    <option value="PB" ${funcionario.getEstado() == "PB" ? 'selected' : ''}>PB</option>
-                                                    <option value="PR" ${funcionario.getEstado() == "PR" ? 'selected' : ''}>PR</option>
-                                                    <option value="PE" ${funcionario.getEstado() == "PE" ? 'selected' : ''}>PE</option>
-                                                    <option value="PI" ${funcionario.getEstado() == "PI" ? 'selected' : ''}>PI</option>
-                                                    <option value="RJ" ${funcionario.getEstado() == "RJ" ? 'selected' : ''}>RJ</option>
-                                                    <option value="RN" ${funcionario.getEstado() == "RN" ? 'selected' : ''}>RN</option>
-                                                    <option value="RS" ${funcionario.getEstado() == "RS" ? 'selected' : ''}>RS</option>
-                                                    <option value="RO" ${funcionario.getEstado() == "RO" ? 'selected' : ''}>RO</option>
-                                                    <option value="RR" ${funcionario.getEstado() == "RR" ? 'selected' : ''}>RR</option>
-                                                    <option value="SC" ${funcionario.getEstado() == "SC" ? 'selected' : ''}>SC</option>
-                                                    <option value="SP" ${funcionario.getEstado() == "SP" ? 'selected' : ''}>SP</option>
-                                                    <option value="SE" ${funcionario.getEstado() == "SE" ? 'selected' : ''}>SE</option>
-                                                    <option value="TO" ${funcionario.getEstado() == "TO" ? 'selected' : ''}>TO</option>
+                                                <select class="form-control" name="estado">
+                                                    <option value="AC" ${logado.getEstado() == "AC" ? 'selected' : ''}>AC</option>
+                                                    <option value="AL" ${logado.getEstado() == "AL" ? 'selected' : ''}>AL</option>
+                                                    <option value="AP" ${logado.getEstado() == "AP" ? 'selected' : ''}>AP</option>
+                                                    <option value="AM" ${logado.getEstado() == "AM" ? 'selected' : ''}>AM</option>
+                                                    <option value="BA" ${logado.getEstado() == "BA" ? 'selected' : ''}>BA</option>
+                                                    <option value="CE" ${logado.getEstado() == "CE" ? 'selected' : ''}>CE</option>
+                                                    <option value="DF" ${logado.getEstado() == "DF" ? 'selected' : ''}>DF</option>
+                                                    <option value="ES" ${logado.getEstado() == "ES" ? 'selected' : ''}>ES</option>
+                                                    <option value="GO" ${logado.getEstado() == "GO" ? 'selected' : ''}>GO</option>
+                                                    <option value="MA" ${logado.getEstado() == "MA" ? 'selected' : ''}>MA</option>
+                                                    <option value="MT" ${logado.getEstado() == "MT" ? 'selected' : ''}>MT</option>
+                                                    <option value="MS" ${logado.getEstado() == "MS" ? 'selected' : ''}>MS</option>
+                                                    <option value="MG" ${logado.getEstado() == "MG" ? 'selected' : ''}>MG</option>
+                                                    <option value="PA" ${logado.getEstado() == "PA" ? 'selected' : ''}>PA</option>
+                                                    <option value="PB" ${logado.getEstado() == "PB" ? 'selected' : ''}>PB</option>
+                                                    <option value="PR" ${logado.getEstado() == "PR" ? 'selected' : ''}>PR</option>
+                                                    <option value="PE" ${logado.getEstado() == "PE" ? 'selected' : ''}>PE</option>
+                                                    <option value="PI" ${logado.getEstado() == "PI" ? 'selected' : ''}>PI</option>
+                                                    <option value="RJ" ${logado.getEstado() == "RJ" ? 'selected' : ''}>RJ</option>
+                                                    <option value="RN" ${logado.getEstado() == "RN" ? 'selected' : ''}>RN</option>
+                                                    <option value="RS" ${logado.getEstado() == "RS" ? 'selected' : ''}>RS</option>
+                                                    <option value="RO" ${logado.getEstado() == "RO" ? 'selected' : ''}>RO</option>
+                                                    <option value="RR" ${logado.getEstado() == "RR" ? 'selected' : ''}>RR</option>
+                                                    <option value="SC" ${logado.getEstado() == "SC" ? 'selected' : ''}>SC</option>
+                                                    <option value="SP" ${logado.getEstado() == "SP" ? 'selected' : ''}>SP</option>
+                                                    <option value="SE" ${logado.getEstado() == "SE" ? 'selected' : ''}>SE</option>
+                                                    <option value="TO" ${logado.getEstado() == "TO" ? 'selected' : ''}>TO</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -214,9 +214,9 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Departamento:</label>
-                                                <select class="form-control">
+                                                <select class="form-control" name="id_departamento">
                                                 <c:forEach items="${departamentos}" var="departamento">
-                                                    <option value="${departamento.nome}"}>${departamento.nome}</option>
+                                                    <option value="${departamento.id}" ${logado.getDepartamento().getNome().equals(departamento.nome) ? 'selected' : ''}>${departamento.nome}</option>
                                                 </c:forEach>
                                                 </select>
                                             </div>
@@ -224,9 +224,9 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Cargo:</label>
-                                                <select class="form-control">
+                                                <select class="form-control" name="id_cargo">
                                                 <c:forEach items="${cargos}" var="cargo">
-                                                    <option value="${cargo.nome}"}>${cargo.nome}</option>
+                                                    <option value="${cargo.id}" ${logado.getCargo().getNome().equals(cargo.nome) ? 'selected' : ''}>${cargo.nome}</option>
                                                 </c:forEach>
                                                 </select>
                                             </div>
@@ -234,9 +234,9 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Perfil:</label>
-                                                <select class="form-control">
-                                                    <option value="Gerente de RH" ${funcionario.getPerfil() == "Gerente de RH" ? 'selected' : ''}>Gerente de RH</option>
-                                                    <option value="FuncionÃ¡rio" ${funcionario.getPerfil() == "FuncionÃ¡rio" ? 'selected' : ''}>FuncionÃ¡rio</option>
+                                                <select class="form-control" name="perfil">
+                                                    <option value="Gerente de RH" ${logado.getPerfil() == "Gerente de RH" ? 'selected' : ''}>Gerente de RH</option>
+                                                    <option value="Funcionário" ${logado.getPerfil() == "Funcionário" ? 'selected' : ''}>Funcionário</option>
                                                 </select>
                                             </div>
                                         </div>

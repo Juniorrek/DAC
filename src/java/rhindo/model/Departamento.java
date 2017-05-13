@@ -10,14 +10,24 @@ package rhindo.model;
  * @author Fornalha
  */
 public class Departamento {
+    private int id;
     private String nome;
     private String localizacao;
 
-    public Departamento(String nome, String localizacao) {
+    public Departamento(int id, String nome, String localizacao) {
+        this.id = id;
         this.nome = nome;
         this.localizacao = localizacao;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getNome() {
         return nome;
     }

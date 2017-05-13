@@ -26,7 +26,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="pagina_inicial.jsp">RH-INDO</a>
+                <a class="navbar-brand" href="/DAC/view/rhindo/pagina_inicial.jsp">RH-INDO</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -38,10 +38,10 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/DAC/CRUD?action=meusDados"><i class="fa fa-user fa-fw"></i> Meus dados</a>
+                        <li><a href="/DAC/LoginRhindo?action=formUpdate"><i class="fa fa-user fa-fw"></i> Meus dados</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/DAC/view/rhindo/login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -55,15 +55,15 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="pagina_inicial.jsp" class="active"><i class="fa fa-home fa-fw"></i> Página inicial</a>
+                            <a href="/DAC/view/rhindo/pagina_inicial.jsp" class="active"><i class="fa fa-home fa-fw"></i> Página inicial</a>
                         </li>
                         <%
-                            Funcionario funcionario = (Funcionario)session.getAttribute("funcionario");
-                            if("Gerente de RH".equals(funcionario.getPerfil())) {
+                            Funcionario logado = (Funcionario)session.getAttribute("logado");
+                            if("Gerente de RH".equals(logado.getPerfil())) {
                         %>
-                                <li><a href="/DAC/CRUD?action=listarFuncionarios"><i class="fa fa-users fa-fw"></i> Funcionários</a></li>
-                                <li><a href="gerente/departamentos.jsp"><i class="fa fa-building fa-fw"></i> Departamentos</a></li>
-                                <li><a href="gerente/cargos.jsp"><i class="fa fa-briefcase fa-fw"></i> Cargos</a></li>
+                                <li><a href="/DAC/Funcionarios?action=select"><i class="fa fa-users fa-fw"></i> Funcionários</a></li>
+                                <li><a href="/DAC/Departamentos?action=select"><i class="fa fa-building fa-fw"></i> Departamentos</a></li>
+                                <li><a href="/DAC/Cargos?action=select"><i class="fa fa-briefcase fa-fw"></i> Cargos</a></li>
                                 <li><a href="gerente/fechamento_folha.jsp"><i class="fa fa-book fa-fw"></i> Fechamento da folha</a></li>
                                 <li><a href="gerente/relatorios.jsp"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
                         <%

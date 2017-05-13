@@ -10,13 +10,15 @@ package rhindo.model;
  * @author Fornalha
  */
 public class Cargo {
+    private int id;
     private String nome;
     private float salario;
     private String requisitos;
     private int imposto_desconto;
     private int carga_trabalho_minima_mes;
 
-    public Cargo(String nome, float salario, String requisitos, int imposto_desconto, int carga_trabalho_minima_mes) {
+    public Cargo(int id, String nome, float salario, String requisitos, int imposto_desconto, int carga_trabalho_minima_mes) {
+        this.id = id;
         this.nome = nome;
         this.salario = salario;
         this.requisitos = requisitos;
@@ -24,6 +26,14 @@ public class Cargo {
         this.carga_trabalho_minima_mes = carga_trabalho_minima_mes;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getNome() {
         return nome;
     }

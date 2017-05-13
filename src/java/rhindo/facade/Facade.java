@@ -40,11 +40,55 @@ public class Facade {
         return departamentos;
     }
     
+    public static Departamento getDepartamento(int id) throws SQLException {     
+        return DepartamentoDAO.getDepartamento(id);
+    }
+    
     public static List<Cargo> getCargos() throws SQLException {
         List<Cargo> cargos = new ArrayList<Cargo>();
         
         cargos = CargoDAO.getCargos();
         
         return cargos;
+    }
+    
+    public static Cargo getCargo(int id) throws SQLException {     
+        return CargoDAO.getCargo(id);
+    }
+    
+    public static void updateFuncionario(Funcionario funcionario) throws SQLException {
+        FuncionarioDAO.updateFuncionario(funcionario);
+    }
+    
+    public static void insertFuncionario(Funcionario funcionario) throws SQLException {
+        FuncionarioDAO.insertFuncionario(funcionario);
+    }
+    
+    public static void deleteFuncionario(Funcionario funcionario) throws SQLException {
+        FuncionarioDAO.deleteFuncionario(funcionario);
+    }
+    
+    public static void insertDepartamento(Departamento departamento) throws SQLException {
+        DepartamentoDAO.insertDepartamento(departamento);
+    }
+    
+    public static void updateDepartamento(Departamento departamento) throws SQLException {
+        DepartamentoDAO.updateDepartamento(departamento);
+    }
+    
+    public static void deleteDepartamento(Departamento departamento) throws SQLException {
+        DepartamentoDAO.deleteDepartamento(departamento);
+    }
+    
+    public static void insertCargo(Cargo cargo) throws SQLException {
+        CargoDAO.insertCargo(cargo);
+    }
+    
+    public static void updateCargo(Cargo cargo) throws SQLException {
+        CargoDAO.updateCargo(cargo);
+    }
+    
+    public static void deleteCargo(Cargo cargo) throws SQLException {
+        CargoDAO.deleteCargo(cargo);
     }
 }

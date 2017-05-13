@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import rhindo.facade.Facade;
 import rhindo.model.Cargo;
 import rhindo.model.Departamento;
@@ -26,8 +27,8 @@ import rhindo.model.Funcionario;
  *
  * @author Fornalha
  */
-@WebServlet(name = "CRUD", urlPatterns = {"/CRUD"})
-public class CRUD extends HttpServlet {
+@WebServlet(name = "LoginRhindo", urlPatterns = {"/LoginRhindo"})
+public class LoginRhindo extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,17 +43,26 @@ public class CRUD extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         
-        if("listarFuncionarios".equals(action)) {
+        if("login".equals(action)) {
             try {
-                List<Funcionario> funcionarios = Facade.getFuncionarios();
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/rhindo/gerente/funcionarios.jsp");
-
-                request.setAttribute("funcionarios", funcionarios);
-                requestDispatcher.forward(request, response);
+                String cpf = request.getParameter("cpf");
+                Funcionario funcionario = null;
+                
+                funcionario = Facade.getFuncionario(cpf);
+                //Funcionário encontrado
+                if(funcionario != null && ("Gerente de RH".equals(funcionario.getPerfil()) || "Funcionário".equals(funcionario.getPerfil()))) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("logado", funcionario);
+                    response.sendRedirect("view/rhindo/pagina_inicial.jsp");
+                } else {
+                    RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/rhindo/login.jsp");
+                    request.setAttribute("erro", "Não encontrado");
+                    requestDispatcher.forward(request, response);
+                }
             } catch (SQLException ex) {
-                Logger.getLogger(CRUD.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LoginRhindo.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if ("meusDados".equals(action)) {
+        } else if("formUpdate".equals(action)) {
             try {
                 List<Departamento> departamentos = Facade.getDepartamentos();
                 List<Cargo> cargos = Facade.getCargos();
@@ -60,9 +70,37 @@ public class CRUD extends HttpServlet {
                 
                 request.setAttribute("departamentos", departamentos);
                 request.setAttribute("cargos", cargos);
+                
                 requestDispatcher.forward(request, response);
             } catch (SQLException ex) {
-                Logger.getLogger(CRUD.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Departamentos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if("update".equals(action)) {
+            try {
+                Funcionario funcionario = new Funcionario(0,
+                        request.getParameter("nome"),
+                        request.getParameter("cpf"),
+                        request.getParameter("rg"),
+                        request.getParameter("celular"),
+                        request.getParameter("email"),
+                        request.getParameter("rua"),
+                        Integer.parseInt(request.getParameter("numero")),
+                        request.getParameter("bairro"),
+                        request.getParameter("cep"),
+                        request.getParameter("cidade"),
+                        request.getParameter("estado"),
+                        request.getParameter("perfil"),
+                        Facade.getDepartamento(Integer.parseInt(request.getParameter("id_departamento"))),
+                        Facade.getCargo(Integer.parseInt(request.getParameter("id_cargo"))));
+                Facade.updateFuncionario(funcionario);
+                
+                HttpSession session = request.getSession();
+                session.setAttribute("logado", funcionario);
+                
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/LoginRhindo?action=formUpdate");
+                requestDispatcher.forward(request, response);
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginRhindo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

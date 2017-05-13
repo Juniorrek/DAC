@@ -10,6 +10,7 @@ package rhindo.model;
  * @author Fornalha
  */
 public class Funcionario {
+    private int id;
     private String nome;
     private String cpf;
     private String rg;
@@ -22,10 +23,11 @@ public class Funcionario {
     private String cidade;
     private String estado;
     private String perfil;
-    private String departamento;
-    private String cargo;
+    private Departamento departamento;
+    private Cargo cargo;
 
-    public Funcionario(String nome, String cpf, String rg, String celular, String email, String rua, int numero, String bairro, String cep, String cidade, String estado, String perfil) {
+    public Funcionario(int id, String nome, String cpf, String rg, String celular, String email, String rua, int numero, String bairro, String cep, String cidade, String estado, String perfil, Departamento departamento, Cargo cargo) {
+        this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.rg = rg;
@@ -38,8 +40,18 @@ public class Funcionario {
         this.cidade = cidade;
         this.estado = estado;
         this.perfil = perfil;
+        this.departamento = departamento;
+        this.cargo = cargo;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getNome() {
         return nome;
     }
@@ -136,19 +148,19 @@ public class Funcionario {
         this.perfil = perfil;
     }
 
-    public String getDepartamento() {
+    public Departamento getDepartamento() {
         return departamento;
     }
 
-    public void setDepartamento(String departamento) {
+    public void setDepartamento(Departamento departamento) {
         this.departamento = departamento;
     }
 
-    public String getCargo() {
+    public Cargo getCargo() {
         return cargo;
     }
 
-    public void setCargo(String cargo) {
+    public void setCargo(Cargo cargo) {
         this.cargo = cargo;
     }
 }

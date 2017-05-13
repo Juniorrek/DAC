@@ -22,7 +22,7 @@
                         <h3 class="panel-title">Digite seu CPF</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" action="/DAC/validaLoginRhindo" method="post">
+                        <form role="form" action="/DAC/LoginRhindo?action=login" method="POST">
                             <fieldset>
                                 <%
                                 String erro = (String) request.getAttribute("erro");
