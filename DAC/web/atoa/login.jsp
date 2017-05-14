@@ -1,10 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<head>
+<html lang="pt-br">
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Ana Paula Santos, Bianca Santos, David Junior">
 
     <title>Login</title>
 
@@ -16,10 +17,14 @@
 
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
-
+    <link href="../vendor/customTeam/systems.css" rel="stylesheet">
+    
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!--B - inserido Favicon.-->
+    <link href="../vendor/bootstrap/img/ico_atoa.ico" rel="icon">
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -27,7 +32,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-</head>
+
 
 <body>
 
@@ -36,13 +41,13 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Digite seu CPF</h3>
+                        <h3 class="panel-title"> <span class="glyphicon glyphicon-log-in"></span> Login - Portal ATOA<img id="login" src="../vendor/bootstrap/img/logo_atoa1.ico"></h3>
                     </div>
                     <div class="panel-body">
                         <form role="form" action="/DAC/validaLoginAtoa" method="post">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="CPF" name="cpf" type="cpf" autofocus>
+                                    <input class="form-control" placeholder="Digite seu CPF" name="cpf" type="cpf" autofocus>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <input type="submit" value="Entrar" class="btn btn-lg btn-success btn-block">

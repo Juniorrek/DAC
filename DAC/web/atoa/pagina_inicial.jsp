@@ -1,12 +1,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<head>
+<html lang="pt-br">
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Ana Paula Santos, Bianca Santos, David Junior">
 
-    <title>Página inicial</title>
+    <title>Página Inicial</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -16,6 +17,7 @@
 
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+     <link href="../vendor/customTeam/systems.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
@@ -23,6 +25,9 @@
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!--B - inserido Favicon.-->
+    <link href="../vendor/bootstrap/img/ico_atoa.ico" rel="icon">
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -45,7 +50,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="pagina_inicial.jsp">AT-OA</a>
+                <div class="logo">
+                    <img src="../vendor/bootstrap/img/login_atoa.ico">
+                </div>
+                    <a class="navbar-brand" href="pagina_inicial.jsp">AT-OA</a>
+                
             </div>
             <!-- /.navbar-header -->
 
@@ -74,7 +83,7 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="pagina_inicial.jsp" class="active"><i class="fa fa-home fa-fw"></i> Página inicial</a>
+                            <a href="pagina_inicial.jsp" class="active"><i class="fa fa-home fa-fw"></i> Página Inicial</a>
                         </li>
                         <%
                             String perfil = (String)session.getAttribute("perfil");
