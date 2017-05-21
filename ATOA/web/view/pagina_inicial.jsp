@@ -1,3 +1,4 @@
+<%@page import="model.Funcionario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -26,10 +27,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <div class="logo">
-                    <img src="../vendor/bootstrap/img/login_atoa.ico">
-                </div>
-                <a class="navbar-brand" href="pagina_inicial.jsp">AT-OA</a>
+                <a class="navbar-brand" href="/ATOA/view/pagina_inicial.jsp">AT-OA</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -41,10 +39,10 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> Meus dados</a>
+                        <li><a href="/ATOA/Login?action=formUpdate"><i class="fa fa-user fa-fw"></i> Meus dados</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/ATOA/view/login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -58,18 +56,22 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="pagina_inicial.jsp" class="active"><i class="fa fa-home fa-fw"></i> Página Inicial</a>
+                            <a href="/ATOA/view/pagina_inicial.jsp" class="active"><i class="fa fa-home fa-fw"></i> Página Inicial</a>
                         </li>
                         <%
-                            //String perfil = (String)session.getAttribute("perfil");
-                            //if(perfil.equals("gerente")) {
-                                out.println("<li><a href=\"gerente/atividades.jsp\"><i class=\"fa fa-users fa-fw\"></i> Atividades</a></li>");
-                                out.println("<li><a href=\"gerente/fechar_atividade.jsp\"><i class=\"fa fa-building fa-fw\"></i> Fechamento de atividades</a></li>");
-                                out.println("<li><a href=\"gerente/relatorios.jsp\"><i class=\"fa fa-file-text fa-fw\"></i> Relatórios</a></li>");
-                            //} else {
-                                out.println("<li><a href=\"funcionario/atividades.jsp\"><i class=\"fa fa-clock-o fa-fw\"></i> Atividades</a></li>");
-                                out.println("<li><a href=\"funcionario/lista_atividades.jsp\"><i class=\"fa fa-list-alt fa-fw\"></i> Lista de atividades</a></li>");
-                            //}
+                            Funcionario logado = (Funcionario)session.getAttribute("logado");
+                            if("Gerente de Departamento".equals(logado.getPerfil())) {
+                        %>
+                                <li><a href="/ATOA/view/gerente/atividades.jsp"><i class="fa fa-users fa-fw"></i> Atividades</a></li>
+                                <li><a href="/ATOA/view/gerente/fechar_atividade.jsp"><i class="fa fa-building fa-fw"></i> Fechamento de atividades</a></li>
+                                <li><a href="/ATOA/view/gerente/relatorios.jsp"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
+                        <%
+                            } else { 
+                        %>
+                                <li><a href="/ATOA/view/funcionario/atividades.jsp"><i class="fa fa-clock-o fa-fw"></i> Atividades</a></li>
+                                <li><a href="/ATOA/view/funcionario/lista_atividades.jsp"><i class="fa fa-list-alt fa-fw"></i> Lista de atividades</a></li>
+                        <%
+                            }
                         %>
                     </ul>
                 </div>

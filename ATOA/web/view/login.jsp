@@ -21,11 +21,26 @@
                         <h3 class="panel-title"> <span class="glyphicon glyphicon-log-in"></span> Login - Portal ATOA<img id="login" src="../vendor/bootstrap/img/logo_atoa1.ico"></h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" action="pagina_inicial.jsp" method="post">
+                        <form role="form" action="/ATOA/Login?action=login" method="post">
                             <fieldset>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Digite seu CPF" name="cpf" type="cpf" autofocus>
-                                </div>
+                                <%
+                                String erro = (String) request.getAttribute("erro");
+
+                                if("Não encontrado".equals(erro)) {
+                                %>
+                                    <div class="form-group has-error">
+                                        <label class="control-label" for="inputError">Funcionário não cadastrado</label>
+                                        <input class="form-control" placeholder="CPF" name="cpf" type="cpf" autofocus>
+                                    </div>
+                                <%
+                                } else {
+                                %>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="CPF" name="cpf" type="cpf" autofocus>
+                                    </div>
+                                <%
+                                    }
+                                %>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <input type="submit" value="Entrar" class="btn btn-lg btn-success btn-block">
                             </fieldset>
