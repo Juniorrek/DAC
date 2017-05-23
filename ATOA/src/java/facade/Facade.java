@@ -5,12 +5,14 @@
  */
 package facade;
 
+import DAO.AtividadeDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import DAO.CargoDAO;
 import DAO.DepartamentoDAO;
 import DAO.FuncionarioDAO;
+import model.Atividade;
 import model.Cargo;
 import model.Departamento;
 import model.Funcionario;
@@ -90,5 +92,25 @@ public class Facade {
     
     public static void deleteCargo(Cargo cargo) throws SQLException {
         CargoDAO.deleteCargo(cargo);
+    }
+    
+    public static List<Atividade> getAtividades(int id_departamento) throws SQLException {
+        return AtividadeDAO.getAtividades(id_departamento);
+    }
+    
+    public static Atividade getAtividade(int id) throws SQLException {
+        return AtividadeDAO.getAtividade(id);
+    }
+    
+    public static void insertAtividade(Atividade atividade) throws SQLException {
+        AtividadeDAO.insertAtividade(atividade);
+    }
+
+    public static void updateAtividade(Atividade atividade) throws SQLException {
+        AtividadeDAO.updateAtividade(atividade);
+    }
+
+    public static void deleteAtividade(Atividade atividade) throws SQLException {
+        AtividadeDAO.deleteAtividade(atividade);
     }
 }

@@ -1,16 +1,14 @@
-<%@page import="model.Funcionario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="pt-br">
+<head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Ana Paula Santos, Bianca Santos, David Junior">
 
-    <title>Página Inicial</title>
+    <title>Relatórios</title>
 
-    <%@ include file="links_css.html" %>
+    <%@ include file="../links_css.html" %>
 
 </head>
 
@@ -52,39 +50,51 @@
             <!-- /.navbar-top-links -->
 
             
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li>
-                            <a href="/ATOA/view/pagina_inicial.jsp" class="active"><i class="fa fa-home fa-fw"></i> Página Inicial</a>
-                        </li>
-                        <%
-                            Funcionario logado = (Funcionario)session.getAttribute("logado");
-                            if("Gerente de Departamento".equals(logado.getPerfil())) {
-                        %>
-                                <li><a href="/ATOA/Atividades?action=select"><i class="fa fa-users fa-fw"></i> Atividades</a></li>
-                                <li><a href="/ATOA/view/gerente/fechamento_atividades.jsp"><i class="fa fa-building fa-fw"></i> Fechamento de atividades</a></li>
-                                <li><a href="/ATOA/view/gerente/relatorios.jsp"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
-                        <%
-                            } else { 
-                        %>
-                                <li><a href="/ATOA/view/funcionario/atividades.jsp"><i class="fa fa-clock-o fa-fw"></i> Atividades</a></li>
-                                <li><a href="/ATOA/view/funcionario/lista_atividades.jsp"><i class="fa fa-list-alt fa-fw"></i> Lista de atividades</a></li>
-                        <%
-                            }
-                        %>
-                    </ul>
-                </div>
-                <!-- /.sidebar-collapse -->
-            </div>
-            <!-- /.navbar-static-side -->
+            <%@ include file="side_bar.jsp" %>
         </nav>
 
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2 class="page-header">Sistema de ATi​ vidades O​rdenadamente A​lcançáveis</h2>
-                    <p class="lead">O Sistema de Atividades obtém a lista de funcionários do departamento através de solicitação ao Sistema de RH.</p>
+                    <h1 class="page-header">Relatórios</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Tipo de relatório:</label>
+                                        <select class="form-control">
+                                            <option>Funcionário</option>
+                                            <option>Departamento/dia</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label style="display:none;">Tipo de relatório:</label><br>
+                                        <button class="btn btn-info">Gerar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.row (nested) -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Relatório
+                                </div>
+                                <div class="panel-body">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -95,7 +105,7 @@
     </div>
     <!-- /#wrapper -->
 
-    <%@ include file="scripts_js.html" %>
+    <%@ include file="../scripts_js.html" %>
 
 </body>
 

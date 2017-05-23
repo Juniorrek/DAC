@@ -27,7 +27,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/ATOA/view/pagina_inicial.jsp">RH-INDO</a>
+                <a class="navbar-brand" href="/ATOA/view/pagina_inicial.jsp">AT-OA</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -61,8 +61,8 @@
                             Funcionario logado = (Funcionario)session.getAttribute("logado");
                             if("Gerente de Departamento".equals(logado.getPerfil())) {
                         %>
-                                <li><a href="/ATOA/view/gerente/atividades.jsp"><i class="fa fa-users fa-fw"></i> Atividades</a></li>
-                                <li><a href="/ATOA/view/gerente/fechar_atividade.jsp"><i class="fa fa-building fa-fw"></i> Fechamento de atividades</a></li>
+                                <li><a href="/ATOA/Atividades?action=select"><i class="fa fa-users fa-fw"></i> Atividades</a></li>
+                                <li><a href="/ATOA/view/gerente/fechamento_atividades.jsp"><i class="fa fa-building fa-fw"></i> Fechamento de atividades</a></li>
                                 <li><a href="/ATOA/view/gerente/relatorios.jsp"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
                         <%
                             } else { 
@@ -233,7 +233,7 @@
                                             <div class="form-group">
                                                 <label>Perfil:</label>
                                                 <select class="form-control" name="perfil">
-                                                    <option value="Gerente de Departamento" ${logado.getPerfil() == "Gerente de Departamento" ? 'selected' : ''}>Gerente de RH</option>
+                                                    <option value="Gerente de Departamento" ${logado.getPerfil() == "Gerente de Departamento" ? 'selected' : ''}>Gerente de Departamento</option>
                                                     <option value="Funcionário" ${logado.getPerfil() == "Funcionário" ? 'selected' : ''}>Funcionário</option>
                                                 </select>
                                             </div>
