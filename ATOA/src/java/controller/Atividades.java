@@ -7,10 +7,7 @@ package controller;
 
 import facade.Facade;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Atividade;
-import model.Departamento;
 import model.Funcionario;
 
 /**
@@ -41,72 +37,17 @@ public class Atividades extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        HttpSession session = request.getSession();
-        Funcionario logado = (Funcionario)session.getAttribute("logado");
-        if ("Gerente de Departamento".equals(logado.getPerfil())) {
-            if ("select".equals(action)) {
-                try { 
-                    List<Atividade> atividades = Facade.getAtividades(logado.getDepartamento().getId());
-                    
-                    RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/atividades.jsp");
+        
+        /*if ("carregar".equals(action)) {
+            HttpSession session = request.getSession();
+            Funcionario funcionario = (Funcionario) session.getAttribute("logado");
+            List<Atividade> atividades = Facade.carregarAtividade(funcionario);
 
-                    request.setAttribute("atividades", atividades);
-                    System.out.println(atividades);
-                    //request.setAttribute("action", "listar");
-                    requestDispatcher.forward(request, response);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Atividades.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else if("formInsert".equals(action)) {
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/atividades.jsp");             
-                request.setAttribute("action", "formCadastro");
-                requestDispatcher.forward(request, response);
-            } else if("insert".equals(action)) {
-                try {
-                    Atividade atividade = new Atividade(0, request.getParameter("nome"), request.getParameter("descricao"), null, null, new Departamento(logado.getDepartamento().getId(), null, null), null);
+            request.setAttribute("atividades", atividades);
 
-                    Facade.insertAtividade(atividade);
-
-                    RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Atividades?action=select");
-                    requestDispatcher.forward(request, response);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Atividades.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else if("formUpdate".equals(action)) {
-                try {
-                    Atividade atividade = Facade.getAtividade(Integer.parseInt(request.getParameter("id")));
-
-                    RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/atividades.jsp");
-                    request.setAttribute("action", "formUpdate");
-                    request.setAttribute("atividade", atividade);
-                    requestDispatcher.forward(request, response);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Atividades.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else if("update".equals(action)) {
-                try {
-                    Atividade atividade = new Atividade(Integer.parseInt(request.getParameter("id")), request.getParameter("nome"), request.getParameter("descricao"), null, null, null, null);
-
-                    Facade.updateAtividade(atividade);
-
-                    RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Atividades?action=select");
-                    requestDispatcher.forward(request, response);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Atividades.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else if("delete".equals(action)) {
-                try {
-                    Atividade atividade = Facade.getAtividade(Integer.parseInt(request.getParameter("id")));
-
-                    Facade.deleteAtividade(atividade);
-
-                    RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Atividades?action=select");
-                    requestDispatcher.forward(request, response);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Atividades.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/funcionario/atividades.jsp");             
+            requestDispatcher.forward(request, response);
+        }*/
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

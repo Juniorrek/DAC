@@ -11,28 +11,52 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Departamento;
+import model.Tipo;
 
 /**
  *
  * @author Fornalha
  */
-public class DepartamentoDAO {
-    public static List<Departamento> getDepartamentos() throws SQLException {
-        List<Departamento> departamentos = new ArrayList<Departamento>();
+public class TipoDAO {
+    public static void criar(Tipo tipo) {
+        Connection connection = new ConnectionFactory().getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = connection.prepareStatement("INSERT INTO Tipo (nome, descricao) "
+                                             + "VALUES (?, ?)");
+            stmt.setString(1, tipo.getNome());
+            stmt.setString(2, tipo.getDescricao());
+            stmt.executeUpdate();
+        } catch (SQLException exception) {
+            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+        } finally {
+            if (stmt != null)
+                try { stmt.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar stmt. Ex="+exception.getMessage()); }
+            if (connection != null)
+                try { connection.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
+        }
+    }
+    
+    public static List<Tipo> carregar() {
+        List<Tipo> tipos = new ArrayList<Tipo>();
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
         
         try {
             stmt = connection.prepareStatement("SELECT * "
-                                             + "FROM Departamento ");
+                                             + "FROM Tipo ");
             ResultSet resultSet = stmt.executeQuery();
             
             while(resultSet.next()){
-                Departamento departamento = new Departamento(resultSet.getInt("id"),
-                                                 resultSet.getString("nome"),
-                                                 resultSet.getString("localizacao"));
-                departamentos.add(departamento);
+                Tipo tipo = new Tipo();
+                tipo.setId(resultSet.getInt("id"));
+                tipo.setNome(resultSet.getString("nome"));
+                tipo.setDescricao(resultSet.getString("descricao"));
+                
+                tipos.add(tipo);
                 
             }
         } catch (SQLException exception) {
@@ -46,24 +70,27 @@ public class DepartamentoDAO {
                 catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
         }
         
-        return departamentos;
+        return tipos;
     }
-    
-    public static Departamento getDepartamento(int id) throws SQLException {
+
+    public static Tipo carregar(int id) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
         
         try {
             stmt = connection.prepareStatement("SELECT * "
-                                             + "FROM Departamento D "
-                                             + "WHERE D.id = ?");
+                                             + "FROM Tipo "
+                                             + "WHERE id = ?");
             stmt.setInt(1, id);
             ResultSet resultSet = stmt.executeQuery();
             
             if(resultSet.next()){
-                return new Departamento(resultSet.getInt("id"),
-                                            resultSet.getString("nome"),
-                                            resultSet.getString("localizacao"));
+                Tipo tipo = new Tipo();
+                tipo.setId(resultSet.getInt("id"));
+                tipo.setNome(resultSet.getString("nome"));
+                tipo.setDescricao(resultSet.getString("descricao"));
+                
+                return tipo;
             } else {
                 return null;
             }
@@ -78,16 +105,18 @@ public class DepartamentoDAO {
                 catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
         }
     }
-    
-    public static void insertDepartamento(Departamento departamento) throws SQLException {
+
+    public static void editar(Tipo tipo) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
-        
+
         try {
-            stmt = connection.prepareStatement("INSERT INTO Departamento (nome, localizacao) "
-                                             + "VALUES (?, ?)");
-            stmt.setString(1, departamento.getNome());
-            stmt.setString(2, departamento.getLocalizacao());
+            stmt = connection.prepareStatement("UPDATE Tipo "
+                                             + "SET nome = ?, descricao = ? "
+                                             + "WHERE id = ? ");
+            stmt.setString(1, tipo.getNome());
+            stmt.setString(2, tipo.getDescricao());
+            stmt.setInt(3, tipo.getId());
             stmt.executeUpdate();
         } catch (SQLException exception) {
             throw new RuntimeException("Erro. Origem="+exception.getMessage());
@@ -100,39 +129,15 @@ public class DepartamentoDAO {
                 catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
         }
     }
-    
-    public static void updateDepartamento(Departamento departamento) throws SQLException {
+
+    public static void deletar(int id) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
-        
+
         try {
-            stmt = connection.prepareStatement("UPDATE Departamento "
-                                             + "SET nome = ?, localizacao = ? "
+            stmt = connection.prepareStatement("DELETE FROM Tipo "
                                              + "WHERE id = ? ");
-            stmt.setString(1, departamento.getNome());
-            stmt.setString(2, departamento.getLocalizacao());
-            stmt.setInt(3, departamento.getId());
-            stmt.executeUpdate();
-        } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
-        } finally {
-            if (stmt != null)
-                try { stmt.close(); }
-                catch (SQLException exception) { System.out.println("Erro ao fechar stmt. Ex="+exception.getMessage()); }
-            if (connection != null)
-                try { connection.close(); }
-                catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
-        }
-    }
-    
-    public static void deleteDepartamento(Departamento departamento) throws SQLException {
-        Connection connection = new ConnectionFactory().getConnection();
-        PreparedStatement stmt = null;
-        
-        try {
-            stmt = connection.prepareStatement("DELETE FROM Departamento "
-                                             + "WHERE id = ? ");
-            stmt.setInt(1, departamento.getId());
+            stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException exception) {
             throw new RuntimeException("Erro. Origem="+exception.getMessage());

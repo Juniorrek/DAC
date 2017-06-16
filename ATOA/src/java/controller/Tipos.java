@@ -1,5 +1,6 @@
 package controller;
 
+import facade.Facade;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -8,11 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import facade.Facade;
-import model.Cargo;
+import model.Tipo;
 
-@WebServlet(name = "Cargos", urlPatterns = {"/Cargos"})
-public class Cargos extends HttpServlet {
+@WebServlet(name = "Tipos", urlPatterns = {"/Tipos"})
+public class Tipos extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,37 +28,33 @@ public class Cargos extends HttpServlet {
         String action = request.getParameter("action");
         
         if ("criar".equals(action)) {
-            Cargo cargo = new Cargo();
-            cargo.setNome(request.getParameter("nome"));
-            cargo.setSalario(Float.parseFloat(request.getParameter("salario")));
-            cargo.setRequisitos(request.getParameter("requisitos"));
-            cargo.setCarga_trabalho_minima_mes(Integer.parseInt(request.getParameter("carga_trabalho_minima_mes")));
-            cargo.setDesconto_impostos_gerais(Integer.parseInt(request.getParameter("desconto_impostos_gerais")));
+            Tipo tipo = new Tipo();
+            tipo.setNome(request.getParameter("nome"));
+            tipo.setDescricao(request.getParameter("descricao"));
 
-            Facade.criarCargo(cargo);
+            Facade.criarTipo(tipo);
 
-            response.sendRedirect("/RHINDO/Cargos?action=carregar");
+            response.sendRedirect("/ATOA/Tipos?action=carregar");
         } else if ("carregar".equals(action)) {
-            List<Cargo> cargos = Facade.carregarCargo();
-            request.setAttribute("cargos", cargos);
-            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/cargos.jsp");             
+            List<Tipo> tipos = Facade.carregarTipo();
+
+            request.setAttribute("tipos", tipos);
+
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/tipos.jsp");             
             requestDispatcher.forward(request, response);
         } else if ("editar".equals(action)) {
-            Cargo cargo = new Cargo();
-            cargo.setId(Integer.parseInt(request.getParameter("id")));
-            cargo.setNome(request.getParameter("nome"));
-            cargo.setSalario(Float.parseFloat(request.getParameter("salario")));
-            cargo.setRequisitos(request.getParameter("requisitos"));
-            cargo.setCarga_trabalho_minima_mes(Integer.parseInt(request.getParameter("carga_trabalho_minima_mes")));
-            cargo.setDesconto_impostos_gerais(Integer.parseInt(request.getParameter("desconto_impostos_gerais")));
+            Tipo tipo = new Tipo();
+            tipo.setId(Integer.parseInt(request.getParameter("id")));
+            tipo.setNome(request.getParameter("nome"));
+            tipo.setDescricao(request.getParameter("descricao"));
             
-            Facade.editarCargo(cargo);
+            Facade.editarTipo(tipo);
             
-            response.sendRedirect("/RHINDO/Cargos?action=carregar");
+            response.sendRedirect("/ATOA/Tipos?action=carregar");
         } else if ("deletar".equals(action)) {
-            Facade.deletarCargo(Integer.parseInt(request.getParameter("id")));
+            Facade.deletarTipo(Integer.parseInt(request.getParameter("id")));
 
-            response.sendRedirect("/RHINDO/Cargos?action=carregar");
+            response.sendRedirect("/ATOA/Tipos?action=carregar");
         }
     }
 

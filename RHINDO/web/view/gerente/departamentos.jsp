@@ -44,7 +44,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/RHINDO/Login?action=formUpdate"><i class="fa fa-user fa-fw"></i> Meus dados</a>
+                        <li><a href="/RHINDO/Login?action=editar"><i class="fa fa-user fa-fw"></i> Meus dados</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="/RHINDO/view/login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -60,9 +60,9 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li><a href="/RHINDO/view/pagina_inicial.jsp"><i class="fa fa-home fa-fw"></i> Página inicial</a></li>
-                        <li><a href="/RHINDO/Funcionarios?action=select"><i class="fa fa-users fa-fw"></i> Funcionários</a></li>
-                        <li><a href="/RHINDO/Departamentos?action=select" class="active"><i class="fa fa-building fa-fw"></i> Departamentos</a></li>
-                        <li><a href="/RHINDO/Cargos?action=select"><i class="fa fa-briefcase fa-fw"></i> Cargos</a></li>
+                        <li><a href="/RHINDO/Funcionarios?action=carregar"><i class="fa fa-users fa-fw"></i> Funcionários</a></li>
+                        <li><a href="/RHINDO/Departamentos?action=carregar" class="active"><i class="fa fa-building fa-fw"></i> Departamentos</a></li>
+                        <li><a href="/RHINDO/Cargos?action=carregar"><i class="fa fa-briefcase fa-fw"></i> Cargos</a></li>
                         <li><a href="/RHINDO/view/gerente/fechamento_folha.jsp"><i class="fa fa-book fa-fw"></i> Fechamento da folha</a></li>
                         <li><a href="/RHINDO/view/gerente/relatorios.jsp"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
                     </ul>
@@ -73,9 +73,7 @@
         </nav>
 
         <div id="page-wrapper">
-        <c:choose>
-            <c:when test = "${param.action == 'select'}">
-                <div class="row">
+            <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">Departamentos</h1>
                     </div>
@@ -90,10 +88,46 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <a href="/RHINDO/Departamentos?action=formInsert" type="button" class="btn btn-success" style="margin-bottom: 10px;">Cadastrar novo</a>
+                                <button type="button" class="btn btn-success" style="margin-bottom: 10px;" data-toggle="modal" data-target="#modalCriar">Cadastrar novo</button>
+                                <div class="modal fade" id="modalCriar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel">Formulário de cadastro</h4>
+                                            </div>
+                                            <form action ="/RHINDO/Departamentos?action=criar" method="POST">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label>Nome:</label>
+                                                                <input class="form-control" name="nome">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label>Localização:</label>
+                                                                <input class="form-control" name="localizacao">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.row (nested) -->
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" class="btn btn-success">Cadastrar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
                                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
+                                            <th style="display: none;">ID</th>
                                             <th>Nome</th>
                                             <th>Localização</th>
                                             <th>Ação</th>
@@ -102,17 +136,55 @@
                                     <tbody>
                                         <c:forEach items="${departamentos}" var="departamento">
                                             <tr>
+                                                <td style="display: none;">${departamento.id}</td>
                                                 <td>${departamento.nome}</td>
                                                 <td>${departamento.localizacao}</td>
-                                                <td><a href="/RHINDO/Departamentos?action=formUpdate&id=${departamento.id}" type="button" class="btn btn-info">Editar</a>
-                                                    <button type="button" class="btn btn-danger"  onclick="excluir(${departamento.id})" style="margin-left: 10px;" data-toggle="modal" data-target="#myModal">Exluir</button>
+                                                <td>
+                                                    <button type="button" class="btn btn-info" id="editar" style="margin-left: 10px;" data-toggle="modal" data-target="#modalEditar">Editar</button>
+                                                    <button type="button" class="btn btn-danger"  onclick="deletar(${departamento.id})" style="margin-left: 10px;" data-toggle="modal" data-target="#modalDeletar">Deletar</button>
                                                 </td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
                                 </table>
                                 <!-- /.table-responsive -->
-                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel">Formulário de edição</h4>
+                                            </div>
+                                            <form action ="/RHINDO/Departamentos?action=editar" method="POST">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <input type="hidden" class="form-control" name="id" >
+                                                            <div class="form-group">
+                                                                <label>Nome:</label>
+                                                                <input class="form-control" name="nome">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label>Localização:</label>
+                                                                <input class="form-control" name="localizacao">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.row (nested) -->
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" class="btn btn-success">Editar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <div class="modal fade" id="modalDeletar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -120,11 +192,11 @@
                                                 <h4 class="modal-title" id="myModalLabel">EXCLUSÃO</h4>
                                             </div>
                                             <div class="modal-body">
-                                                Tem certeza que deseja excluir?
+                                                Tem certeza que deseja deletar?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                <a href="" type="button" class="btn btn-danger" id="excluir">Excluir</a>
+                                                <a href="" type="button" class="btn btn-danger" id="deletar">Deletar</a>
                                             </div>
                                         </div>
                                         <!-- /.modal-content -->
@@ -139,106 +211,6 @@
                     <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->
-            </c:when>
-            <c:when test = "${param.action == 'formInsert'}">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">Cadastrar departamento</h1>
-                    </div>
-                    <!-- /.col-lg-12 -->
-                </div>
-                <!-- /.row -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                Formulário de cadastro
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <form action ="/RHINDO/Departamentos?action=insert" method="POST">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Nome:</label>
-                                                <input class="form-control" name="nome">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Localização:</label>
-                                                <input class="form-control" name="localizacao">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.row (nested) -->
-                                    <div style="text-align: center;">
-                                        <a href="/RHINDO/Departamentos?action=select" type="submit" class="btn btn-danger">Cancelar</a>
-                                        <button type="submit" class="btn btn-success">Cadastrar</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- /.panel-body -->
-                        </div>
-                        <!-- /.panel -->
-                    </div>
-                    <!-- /.col-lg-12 -->
-                </div>
-                <!-- /.row -->
-            </c:when>
-            <c:when test = "${param.action == 'formUpdate'}">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">Editar departamento</h1>
-                    </div>
-                    <!-- /.col-lg-12 -->
-                </div>
-                <!-- /.row -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                Formulário de edição
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <form action="/RHINDO/Departamentos?action=update" method="POST">
-                                    <div class="row">
-                                        <div class="col-lg-6" style="display: none;">
-                                            <div class="form-group">
-                                                <label>Id:</label>
-                                                <input class="form-control" value="${departamento.getId()}" name="id">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Nome:</label>
-                                                <input class="form-control" value="${departamento.getNome()}" name="nome">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Localização:</label>
-                                                <input class="form-control" value="${departamento.getLocalizacao()}" name="localizacao">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.row (nested) -->
-                                    <div style="text-align: center;">
-                                        <a href="/RHINDO/Departamentos?action=select" type="submit" class="btn btn-danger">Cancelar</a>
-                                        <button type="submit" class="btn btn-success">Editar</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- /.panel-body -->
-                        </div>
-                        <!-- /.panel -->
-                    </div>
-                    <!-- /.col-lg-12 -->
-                </div>
-                <!-- /.row -->
-            </c:when>
-        </c:choose>
         </div>
         <!-- /#page-wrapper -->
 
@@ -254,16 +226,28 @@
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
-        function excluir(id) {
-            $("#excluir").attr("href", "/RHINDO/Departamentos?action=delete&id=" + id);
+        function deletar(id) {
+            $("#deletar").attr("href", "/RHINDO/Departamentos?action=deletar&id=" + id);
         }
         
+        var table;
         $(document).ready(function() {
-            $('#dataTables-example').DataTable({
+            table = $('#dataTables-example').DataTable({
                 responsive: true,
                 language: idiomabr
             });
         });
+        $("#dataTables-example tbody").on( 'click', 'button[id="editar"]', function () {
+            //THANKS FOR THE LORD https://stackoverflow.com/a/38515622/8173621
+            var current_row = $(this).parents('tr');
+            if (current_row.hasClass('child')) {//Check if the current row is a child row
+                current_row = current_row.prev();//If it is, then point to the row before it (its 'parent')
+            }
+            var data = table.row(current_row).data();//At this point, current_row refers to a valid row in the table, whether is a child row (collapsed by the DataTable's responsiveness) or a 'normal' row
+            $("#modalEditar input[name='id']").val(data[0]);
+            $("#modalEditar input[name='nome']").val(data[1]);
+            $("#modalEditar input[name='localizacao']").val(data[2]);
+        } );
         var idiomabr = {
             "sEmptyTable": "Nenhum registro encontrado",
             "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",

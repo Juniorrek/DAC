@@ -1,16 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,10 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import facade.Facade;
 import model.Departamento;
 
-/**
- *
- * @author Fornalha
- */
 @WebServlet(name = "Departamentos", urlPatterns = {"/Departamentos"})
 public class Departamentos extends HttpServlet {
 
@@ -40,66 +27,34 @@ public class Departamentos extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         
-        if("select".equals(action)) {
-            try {
-                List<Departamento> departamentos = Facade.getDepartamentos();
-                
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/departamentos.jsp");
+        if ("criar".equals(action)) {
+            Departamento departamento = new Departamento();
+            departamento.setNome(request.getParameter("nome"));
+            departamento.setLocalizacao(request.getParameter("localizacao"));
 
-                request.setAttribute("departamentos", departamentos);
-                request.setAttribute("action", "listar");
-                requestDispatcher.forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(Departamentos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if("formInsert".equals(action)) {
+            Facade.criarDepartamento(departamento);
+
+            response.sendRedirect("/RHINDO/Departamentos?action=carregar");
+        } else if ("carregar".equals(action)) {
+            List<Departamento> departamentos = Facade.carregarDepartamento();
+
+            request.setAttribute("departamentos", departamentos);
+
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/departamentos.jsp");             
-            request.setAttribute("action", "formCadastro");
             requestDispatcher.forward(request, response);
-        } else if("insert".equals(action)) {
-            try {
-                Departamento departamento = new Departamento(0, request.getParameter("nome"), request.getParameter("localizacao"));
-                
-                Facade.insertDepartamento(departamento);
-                
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Departamentos?action=select");
-                requestDispatcher.forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(Departamentos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if("formUpdate".equals(action)) {
-            try {
-                Departamento departamento = Facade.getDepartamento(Integer.parseInt(request.getParameter("id")));
-                
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/departamentos.jsp");
-                request.setAttribute("action", "formUpdate");
-                request.setAttribute("departamento", departamento);
-                requestDispatcher.forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(Departamentos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if("update".equals(action)) {
-            try {
-                Departamento departamento = new Departamento(Integer.parseInt(request.getParameter("id")), request.getParameter("nome"), request.getParameter("localizacao"));
-                
-                Facade.updateDepartamento(departamento);
-                
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Departamentos?action=select");
-                requestDispatcher.forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(Departamentos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if("delete".equals(action)) {
-            try {
-                Departamento departamento = Facade.getDepartamento(Integer.parseInt(request.getParameter("id")));
-                
-                Facade.deleteDepartamento(departamento);
-                
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Departamentos?action=select");
-                requestDispatcher.forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(Departamentos.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        } else if ("editar".equals(action)) {
+            Departamento departamento = new Departamento();
+            departamento.setId(Integer.parseInt(request.getParameter("id")));
+            departamento.setNome(request.getParameter("nome"));
+            departamento.setLocalizacao(request.getParameter("localizacao"));
+            
+            Facade.editarDepartamento(departamento);
+            
+            response.sendRedirect("/RHINDO/Departamentos?action=carregar");
+        } else if ("deletar".equals(action)) {
+            Facade.deletarDepartamento(Integer.parseInt(request.getParameter("id")));
+
+            response.sendRedirect("/RHINDO/Departamentos?action=carregar");
         }
     }
 

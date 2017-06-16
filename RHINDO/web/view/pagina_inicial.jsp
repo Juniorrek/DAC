@@ -38,7 +38,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/RHINDO/Login?action=formUpdate"><i class="fa fa-user fa-fw"></i> Meus dados</a>
+                        <li><a href="/RHINDO/Login?action=editar"><i class="fa fa-user fa-fw"></i> Meus dados</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="/RHINDO/view/login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -61,9 +61,9 @@
                             Funcionario logado = (Funcionario)session.getAttribute("logado");
                             if("Gerente de RH".equals(logado.getPerfil())) {
                         %>
-                                <li><a href="/RHINDO/Funcionarios?action=select"><i class="fa fa-users fa-fw"></i> Funcionários</a></li>
-                                <li><a href="/RHINDO/Departamentos?action=select"><i class="fa fa-building fa-fw"></i> Departamentos</a></li>
-                                <li><a href="/RHINDO/Cargos?action=select"><i class="fa fa-briefcase fa-fw"></i> Cargos</a></li>
+                                <li><a href="/RHINDO/Funcionarios?action=carregar"><i class="fa fa-users fa-fw"></i> Funcionários</a></li>
+                                <li><a href="/RHINDO/Departamentos?action=carregar"><i class="fa fa-building fa-fw"></i> Departamentos</a></li>
+                                <li><a href="/RHINDO/Cargos?action=carregar"><i class="fa fa-briefcase fa-fw"></i> Cargos</a></li>
                                 <li><a href="/RHINDO/view/gerente/fechamento_folha.jsp"><i class="fa fa-book fa-fw"></i> Fechamento da folha</a></li>
                                 <li><a href="/RHINDO/view/gerente/relatorios.jsp"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
                         <%

@@ -39,7 +39,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/ATOA/Login?action=formUpdate"><i class="fa fa-user fa-fw"></i> Meus dados</a>
+                        <li><a href="/ATOA/Login?action=editar"><i class="fa fa-user fa-fw"></i> Meus dados</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="/ATOA/view/login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -61,13 +61,13 @@
                             Funcionario logado = (Funcionario)session.getAttribute("logado");
                             if("Gerente de Departamento".equals(logado.getPerfil())) {
                         %>
-                                <li><a href="/ATOA/Atividades?action=select"><i class="fa fa-users fa-fw"></i> Atividades</a></li>
-                                <li><a href="/ATOA/view/gerente/fechamento_atividades.jsp"><i class="fa fa-building fa-fw"></i> Fechamento de atividades</a></li>
+                                <li><a href="/ATOA/Tipos?action=carregar"><i class="fa fa-users fa-fw"></i> Tipos de atividades</a></li>
+                                <li><a href="/ATOA/Atividades?action=fechar"><i class="fa fa-building fa-fw"></i> Fechamento de atividades</a></li>
                                 <li><a href="/ATOA/view/gerente/relatorios.jsp"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
                         <%
                             } else { 
                         %>
-                                <li><a href="/ATOA/view/funcionario/atividades.jsp"><i class="fa fa-clock-o fa-fw"></i> Atividades</a></li>
+                                <li><a href="/ATOA/Atividades?action=carregar"><i class="fa fa-clock-o fa-fw"></i> Atividades</a></li>
                                 <li><a href="/ATOA/view/funcionario/lista_atividades.jsp"><i class="fa fa-list-alt fa-fw"></i> Lista de atividades</a></li>
                         <%
                             }
@@ -95,7 +95,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <form action ="/RHINDO/Login?action=update" method="POST">
+                            <form action ="/ATOA/Login?action=edit" method="POST">
                                 <fieldset>
                                     <legend>Dados pessoais</legend>
                                     <div class="row">
@@ -212,7 +212,7 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Departamento:</label>
-                                                <select class="form-control" name="id_departamento">
+                                                <select class="form-control" name="departamento">
                                                 <c:forEach items="${departamentos}" var="departamento">
                                                     <option value="${departamento.id}" ${logado.getDepartamento().getNome().equals(departamento.nome) ? 'selected' : ''}>${departamento.nome}</option>
                                                 </c:forEach>
@@ -222,7 +222,7 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Cargo:</label>
-                                                <select class="form-control" name="id_cargo">
+                                                <select class="form-control" name="cargo">
                                                 <c:forEach items="${cargos}" var="cargo">
                                                     <option value="${cargo.id}" ${logado.getCargo().getNome().equals(cargo.nome) ? 'selected' : ''}>${cargo.nome}</option>
                                                 </c:forEach>

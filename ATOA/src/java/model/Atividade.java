@@ -15,20 +15,13 @@ public class Atividade {
     private int id;
     private String nome;
     private String descricao;
+    private Tipo tipo;
     private Date inicio;
     private Date fim;
-    private Departamento departamento;
     private Funcionario funcionario;
+    private int status;
 
-    public Atividade(int id, String nome, String descricao, Date inicio, Date fim, Departamento departamento, Funcionario funcionario) {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.inicio = inicio;
-        this.fim = fim;
-        this.departamento = departamento;
-        this.funcionario = funcionario;
-    }
+    public Atividade () {}
 
     public int getId() {
         return id;
@@ -54,6 +47,14 @@ public class Atividade {
         this.descricao = descricao;
     }
 
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+
     public Date getInicio() {
         return inicio;
     }
@@ -70,19 +71,19 @@ public class Atividade {
         this.fim = fim;
     }
 
-    public Departamento getDepartamento() {
-        return departamento;
-    }
-
-    public void setDepartamento(Departamento departamento) {
-        this.departamento = departamento;
-    }
-
     public Funcionario getFuncionario() {
         return funcionario;
     }
 
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
+    }
+    
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

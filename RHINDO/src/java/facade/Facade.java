@@ -1,12 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package facade;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import DAO.CargoDAO;
 import DAO.DepartamentoDAO;
@@ -15,80 +8,64 @@ import model.Cargo;
 import model.Departamento;
 import model.Funcionario;
 
-/**
- *
- * @author Fornalha
- */
 public class Facade {
-    public static List<Funcionario> getFuncionarios() throws SQLException {
-        List<Funcionario> funcionarios = new ArrayList<Funcionario>();
-        
-        funcionarios = FuncionarioDAO.getFuncionarios();
-        
-        return funcionarios;
+    public static void criarFuncionario(Funcionario funcionario) {
+        FuncionarioDAO.criar(funcionario);
     }
     
-    public static Funcionario getFuncionario(String cpf) throws SQLException {
-        return FuncionarioDAO.getFuncionario(cpf);
+    public static List<Funcionario> carregarFuncionario() {
+        return FuncionarioDAO.carregar();
     }
     
-    public static List<Departamento> getDepartamentos() throws SQLException {
-        List<Departamento> departamentos = new ArrayList<Departamento>();
-        
-        departamentos = DepartamentoDAO.getDepartamentos();
-        
-        return departamentos;
+    public static Funcionario carregarFuncionario(String cpf) {
+        return FuncionarioDAO.carregar(cpf);
     }
     
-    public static Departamento getDepartamento(int id) throws SQLException {     
-        return DepartamentoDAO.getDepartamento(id);
+    public static void editarFuncionario(Funcionario funcionario) {
+        FuncionarioDAO.editar(funcionario);
     }
     
-    public static List<Cargo> getCargos() throws SQLException {
-        List<Cargo> cargos = new ArrayList<Cargo>();
-        
-        cargos = CargoDAO.getCargos();
-        
-        return cargos;
+    public static void deletarFuncionario(String cpf) {
+        FuncionarioDAO.deletar(cpf);
     }
     
-    public static Cargo getCargo(int id) throws SQLException {     
-        return CargoDAO.getCargo(id);
+    public static void criarDepartamento(Departamento departamento) {
+        DepartamentoDAO.criar(departamento);
     }
     
-    public static void updateFuncionario(Funcionario funcionario) throws SQLException {
-        FuncionarioDAO.updateFuncionario(funcionario);
+    public static List<Departamento> carregarDepartamento() {
+        return DepartamentoDAO.carregar();
     }
     
-    public static void insertFuncionario(Funcionario funcionario) throws SQLException {
-        FuncionarioDAO.insertFuncionario(funcionario);
+    public static Departamento carregarDepartamento(int id) {
+        return DepartamentoDAO.carregar(id);
     }
     
-    public static void deleteFuncionario(Funcionario funcionario) throws SQLException {
-        FuncionarioDAO.deleteFuncionario(funcionario);
+    public static void editarDepartamento(Departamento departamento) {
+        DepartamentoDAO.editar(departamento);
     }
     
-    public static void insertDepartamento(Departamento departamento) throws SQLException {
-        DepartamentoDAO.insertDepartamento(departamento);
+    public static void deletarDepartamento(int id) {
+        DepartamentoDAO.deletar(id);
     }
     
-    public static void updateDepartamento(Departamento departamento) throws SQLException {
-        DepartamentoDAO.updateDepartamento(departamento);
+    public static void criarCargo(Cargo cargo) {
+        CargoDAO.criar(cargo);
     }
     
-    public static void deleteDepartamento(Departamento departamento) throws SQLException {
-        DepartamentoDAO.deleteDepartamento(departamento);
+    public static List<Cargo> carregarCargo() {
+        return CargoDAO.carregar();
     }
     
-    public static void insertCargo(Cargo cargo) throws SQLException {
-        CargoDAO.insertCargo(cargo);
+    public static Cargo carregarCargo(int id) {
+        return CargoDAO.carregar(id);
     }
     
-    public static void updateCargo(Cargo cargo) throws SQLException {
-        CargoDAO.updateCargo(cargo);
+    public static void editarCargo(Cargo cargo) {
+        CargoDAO.editar(cargo);
     }
     
-    public static void deleteCargo(Cargo cargo) throws SQLException {
-        CargoDAO.deleteCargo(cargo);
+    public static void deletarCargo(int id) {
+        CargoDAO.deletar(id);
     }
 }

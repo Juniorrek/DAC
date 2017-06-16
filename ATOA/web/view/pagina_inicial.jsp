@@ -39,7 +39,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/ATOA/Login?action=formUpdate"><i class="fa fa-user fa-fw"></i> Meus dados</a>
+                        <li><a href="/ATOA/Login?action=editar"><i class="fa fa-user fa-fw"></i> Meus dados</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="/ATOA/view/login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -62,13 +62,13 @@
                             Funcionario logado = (Funcionario)session.getAttribute("logado");
                             if("Gerente de Departamento".equals(logado.getPerfil())) {
                         %>
-                                <li><a href="/ATOA/Atividades?action=select"><i class="fa fa-users fa-fw"></i> Atividades</a></li>
-                                <li><a href="/ATOA/view/gerente/fechamento_atividades.jsp"><i class="fa fa-building fa-fw"></i> Fechamento de atividades</a></li>
+                                <li><a href="/ATOA/Tipos?action=carregar"><i class="fa fa-users fa-fw"></i> Tipos de atividades</a></li>
+                                <li><a href="/ATOA/Atividades?action=fechar"><i class="fa fa-building fa-fw"></i> Fechamento de atividades</a></li>
                                 <li><a href="/ATOA/view/gerente/relatorios.jsp"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
                         <%
                             } else { 
                         %>
-                                <li><a href="/ATOA/view/funcionario/atividades.jsp"><i class="fa fa-clock-o fa-fw"></i> Atividades</a></li>
+                                <li><a href="/ATOA/Atividades?action=carregar"><i class="fa fa-clock-o fa-fw"></i> Atividades</a></li>
                                 <li><a href="/ATOA/view/funcionario/lista_atividades.jsp"><i class="fa fa-list-alt fa-fw"></i> Lista de atividades</a></li>
                         <%
                             }

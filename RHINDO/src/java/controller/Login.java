@@ -1,16 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,14 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import facade.Facade;
+import java.util.List;
 import model.Cargo;
 import model.Departamento;
 import model.Funcionario;
 
-/**
- *
- * @author Fornalha
- */
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
 
@@ -43,65 +30,57 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         
-        if("login".equals(action)) {
-            try {
-                String cpf = request.getParameter("cpf");
-                Funcionario funcionario = null;
-                
-                funcionario = Facade.getFuncionario(cpf);
-                //Funcionário encontrado
-                if(funcionario != null && ("Gerente de RH".equals(funcionario.getPerfil()) || "Funcionário".equals(funcionario.getPerfil()))) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("logado", funcionario);
-                    response.sendRedirect("view/pagina_inicial.jsp");
-                } else {
-                    RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");
-                    request.setAttribute("erro", "Não encontrado");
-                    requestDispatcher.forward(request, response);
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if("formUpdate".equals(action)) {
-            try {
-                List<Departamento> departamentos = Facade.getDepartamentos();
-                List<Cargo> cargos = Facade.getCargos();
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/meus_dados.jsp");
-                
-                request.setAttribute("departamentos", departamentos);
-                request.setAttribute("cargos", cargos);
-                
-                requestDispatcher.forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(Departamentos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if("update".equals(action)) {
-            try {
-                Funcionario funcionario = new Funcionario(0,
-                        request.getParameter("nome"),
-                        request.getParameter("cpf"),
-                        request.getParameter("rg"),
-                        request.getParameter("celular"),
-                        request.getParameter("email"),
-                        request.getParameter("rua"),
-                        Integer.parseInt(request.getParameter("numero")),
-                        request.getParameter("bairro"),
-                        request.getParameter("cep"),
-                        request.getParameter("cidade"),
-                        request.getParameter("estado"),
-                        request.getParameter("perfil"),
-                        Facade.getDepartamento(Integer.parseInt(request.getParameter("id_departamento"))),
-                        Facade.getCargo(Integer.parseInt(request.getParameter("id_cargo"))));
-                Facade.updateFuncionario(funcionario);
-                
+        if ("login".equals(action)) {
+            String cpf = request.getParameter("cpf");
+            Funcionario funcionario = null;
+            funcionario = Facade.carregarFuncionario(cpf);
+            //Funcionário encontrado
+            if(funcionario != null && ("Gerente de RH".equals(funcionario.getPerfil()) || "Funcionário".equals(funcionario.getPerfil()))) {
                 HttpSession session = request.getSession();
                 session.setAttribute("logado", funcionario);
-                
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Login?action=formUpdate");
+                response.sendRedirect("view/pagina_inicial.jsp");
+            } else {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");
+                request.setAttribute("erro", "Não encontrado");
                 requestDispatcher.forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else if ("editar".equals(action)) {
+            List<Departamento> departamentos = Facade.carregarDepartamento();
+            List<Cargo> cargos = Facade.carregarCargo();
+            
+            request.setAttribute("departamentos", departamentos);
+            request.setAttribute("cargos", cargos);
+            
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/meus_dados.jsp");
+            requestDispatcher.forward(request, response);
+        } else if ("edit".equals(action)) {
+            Departamento departamento = Facade.carregarDepartamento(Integer.parseInt(request.getParameter("departamento")));
+            
+            Cargo cargo = Facade.carregarCargo(Integer.parseInt(request.getParameter("cargo")));
+            
+            Funcionario funcionario = new Funcionario();
+            funcionario.setCpf(request.getParameter("cpf"));
+            funcionario.setNome(request.getParameter("nome"));
+            funcionario.setRg(request.getParameter("rg"));
+            funcionario.setCelular(request.getParameter("celular"));
+            funcionario.setEmail(request.getParameter("email"));
+            funcionario.setRua(request.getParameter("rua"));
+            funcionario.setNumero(Integer.parseInt(request.getParameter("numero")));
+            funcionario.setBairro(request.getParameter("bairro"));
+            funcionario.setCep(request.getParameter("cep"));
+            funcionario.setCidade(request.getParameter("cidade"));
+            funcionario.setEstado(request.getParameter("estado"));
+            funcionario.setDepartamento(departamento);
+            funcionario.setCargo(cargo);
+            funcionario.setPerfil(request.getParameter("perfil"));
+
+            Facade.editarFuncionario(funcionario);
+            funcionario = Facade.carregarFuncionario(funcionario.getCpf());
+            
+            HttpSession session = request.getSession();
+            session.setAttribute("logado", funcionario);
+            
+            response.sendRedirect("/RHINDO/Login?action=editar");
         }
     }
 

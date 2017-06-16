@@ -7,19 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Cargos</title>
+    <title>Tipos de atividades</title>
 
     <!-- DataTables CSS -->
-    <link href="/RHINDO/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/ATOA/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
 
     <!-- DataTables Responsive CSS -->
-    <link href="/RHINDO/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+    <link href="/ATOA/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
 
     <%@ include file="../links_css.html" %>
 
 </head>
 
 <body>
+
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -31,7 +32,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/RHINDO/view/pagina_inicial.jsp">RH-INDO</a>
+                <a class="navbar-brand" href="/ATOA/view/pagina_inicial.jsp">AT-OA</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -43,10 +44,10 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/RHINDO/Login?action=editar"><i class="fa fa-user fa-fw"></i> Meus dados</a>
+                        <li><a href="/ATOA/Login?action=editar"><i class="fa fa-user fa-fw"></i> Meus dados</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="/RHINDO/view/login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/ATOA/view/login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -55,26 +56,13 @@
             </ul>
             <!-- /.navbar-top-links -->
 
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li><a href="/RHINDO/view/pagina_inicial.jsp"><i class="fa fa-home fa-fw"></i> Página inicial</a></li>
-                        <li><a href="/RHINDO/Funcionarios?action=carregar"><i class="fa fa-users fa-fw"></i> Funcionários</a></li>
-                        <li><a href="/RHINDO/Departamentos?action=carregar"><i class="fa fa-building fa-fw"></i> Departamentos</a></li>
-                        <li><a href="/RHINDO/Cargos?action=carregar" class="active"><i class="fa fa-briefcase fa-fw"></i> Cargos</a></li>
-                        <li><a href="/RHINDO/view/gerente/fechamento_folha.jsp"><i class="fa fa-book fa-fw"></i> Fechamento da folha</a></li>
-                        <li><a href="/RHINDO/view/gerente/relatorios.jsp"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
-                    </ul>
-                </div>
-                <!-- /.sidebar-collapse -->
-            </div>
-            <!-- /.navbar-static-side -->
+            <%@ include file="side_bar.jsp" %>
         </nav>
 
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Cargos</h1>
+                    <h1 class="page-header">Tipos de atividades</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -83,7 +71,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Cargos cadastrados no sistema
+                            Tipos de atividades cadastrados no sistema
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -95,40 +83,21 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                             <h4 class="modal-title" id="myModalLabel">Formulário de cadastro</h4>
                                         </div>
-                                        <form action ="/RHINDO/Cargos?action=criar" method="POST">
+                                        <form action ="/ATOA/Tipos?action=criar" method="POST">
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-6">
                                                         <div class="form-group">
                                                             <label>Nome:</label>
                                                             <input class="form-control" name="nome">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="form-group">
-                                                            <label>Salário:</label>
-                                                            <input class="form-control" name="salario">
-                                                        </div>
-                                                    </div>
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
-                                                            <label>Requisitos:</label>
-                                                            <textarea class="form-control" name="requisitos"></textarea>
+                                                            <label>Descrição:</label>
+                                                            <input class="form-control" name="descricao">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4">
-                                                        <div class="form-group">
-                                                            <label>Carga de trabalho min./mês</label>
-                                                            <input class="form-control" name="carga_trabalho_minima_mes">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="form-group">
-                                                            <label>% desconto:</label>
-                                                            <input class="form-control" name="desconto_impostos_gerais">
-                                                        </div>
-                                                    </div>
-                                                    <!-- /.col-lg-6 (nested) -->
                                                 </div>
                                                 <!-- /.row (nested) -->
                                             </div>
@@ -147,25 +116,18 @@
                                     <tr>
                                         <th style="display: none;">ID</th>
                                         <th>Nome</th>
-                                        <th>Salário</th>
-                                        <th>Requisitos</th>
-                                        <th>Carga de trabalho min./mês</th>
-                                        <th>% desconto</th>
+                                        <th>Descrição</th>
                                         <th>Ação</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="${cargos}" var="cargo">
+                                    <c:forEach items="${tipos}" var="tipo">
                                         <tr>
-                                            <td style="display: none;">${cargo.id}</td>
-                                            <td>${cargo.nome}</td>
-                                            <td>${cargo.salario}</td>
-                                            <td>${cargo.requisitos}</td>
-                                            <td>${cargo.carga_trabalho_minima_mes}</td>
-                                            <td>${cargo.desconto_impostos_gerais}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-info" id="editar" style="margin-left: 10px;" data-toggle="modal" data-target="#modalEditar">Editar</button>
-                                                <button type="button" class="btn btn-danger"  onclick="deletar(${cargo.id})" style="margin-left: 10px;" data-toggle="modal" data-target="#modalDeletar">Deletar</button>
+                                            <td style="display: none;">${tipo.id}</td>
+                                            <td>${tipo.nome}</td>
+                                            <td>${tipo.descricao}</td>
+                                            <td><button type="button" class="btn btn-info" id="editar" style="margin-left: 10px;" data-toggle="modal" data-target="#modalEditar">Editar</button>
+                                                <button type="button" class="btn btn-danger"  onclick="deletar(${tipo.id})" style="margin-left: 10px;" data-toggle="modal" data-target="#modalDeletar">Deletar</button>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -179,41 +141,22 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                             <h4 class="modal-title" id="myModalLabel">Formulário de edição</h4>
                                         </div>
-                                        <form action ="/RHINDO/Cargos?action=editar" method="POST">
+                                        <form action ="/ATOA/Tipos?action=editar" method="POST">
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-6">
                                                         <input type="hidden" class="form-control" name="id" >
                                                         <div class="form-group">
                                                             <label>Nome:</label>
                                                             <input class="form-control" name="nome">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="form-group">
-                                                            <label>Salário:</label>
-                                                            <input class="form-control" name="salario">
-                                                        </div>
-                                                    </div>
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
-                                                            <label>Requisitos:</label>
-                                                            <textarea class="form-control" name="requisitos"></textarea>
+                                                            <label>Descrição:</label>
+                                                            <input class="form-control" name="descricao">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4">
-                                                        <div class="form-group">
-                                                            <label>Carga de trabalho min./mês</label>
-                                                            <input class="form-control" name="carga_trabalho_minima_mes">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="form-group">
-                                                            <label>% desconto:</label>
-                                                            <input class="form-control" name="desconto_impostos_gerais">
-                                                        </div>
-                                                    </div>
-                                                    <!-- /.col-lg-6 (nested) -->
                                                 </div>
                                                 <!-- /.row (nested) -->
                                             </div>
@@ -263,14 +206,14 @@
     <%@ include file="../scripts_js.html" %>
     
     <!-- DataTables JavaScript -->
-    <script src="/RHINDO/vendor/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="/RHINDO/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
-    <script src="/RHINDO/vendor/datatables-responsive/dataTables.responsive.js"></script>
+    <script src="/ATOA/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="/ATOA/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="/ATOA/vendor/datatables-responsive/dataTables.responsive.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
         function deletar(id) {
-            $("#deletar").attr("href", "/RHINDO/Cargos?action=deletar&id=" + id);
+            $("#deletar").attr("href", "/ATOA/Tipos?action=deletar&id=" + id);
         }
         
         var table;
@@ -289,10 +232,7 @@
             var data = table.row(current_row).data();//At this point, current_row refers to a valid row in the table, whether is a child row (collapsed by the DataTable's responsiveness) or a 'normal' row
             $("#modalEditar input[name='id']").val(data[0]);
             $("#modalEditar input[name='nome']").val(data[1]);
-            $("#modalEditar input[name='salario']").val(data[2]);
-            $("#modalEditar textarea[name='requisitos']").val(data[3]);
-            $("#modalEditar input[name='carga_trabalho_minima_mes']").val(data[4]);
-            $("#modalEditar input[name='desconto_impostos_gerais']").val(data[5]);
+            $("#modalEditar input[name='descricao']").val(data[2]);
         } );
         var idiomabr = {
             "sEmptyTable": "Nenhum registro encontrado",

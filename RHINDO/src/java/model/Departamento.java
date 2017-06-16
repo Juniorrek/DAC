@@ -1,24 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
-/**
- *
- * @author Fornalha
- */
-public class Departamento {
+public class Departamento implements java.io.Serializable {
     private int id;
     private String nome;
     private String localizacao;
 
-    public Departamento(int id, String nome, String localizacao) {
-        this.id = id;
-        this.nome = nome;
-        this.localizacao = localizacao;
-    }
+    public Departamento() {}
 
     public int getId() {
         return id;

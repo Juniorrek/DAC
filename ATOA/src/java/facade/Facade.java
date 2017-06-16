@@ -1,116 +1,128 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package facade;
 
 import DAO.AtividadeDAO;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import DAO.CargoDAO;
-import DAO.DepartamentoDAO;
-import DAO.FuncionarioDAO;
+import DAO.TipoDAO;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import model.Atividade;
 import model.Cargo;
 import model.Departamento;
 import model.Funcionario;
+import model.Tipo;
 
-/**
- *
- * @author Fornalha
- */
 public class Facade {
-    public static List<Funcionario> getFuncionarios() throws SQLException {
-        List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+    /*public static List<Funcionario> carregarFuncionario() {
+        return null;
+    }*/
+    
+    public static Funcionario carregarFuncionario(String cpf) {
+        Client client = ClientBuilder.newClient();
+        Funcionario funcionario = client
+                    .target("http://localhost:8084/RHINDO/webresources/funcionarios/" + cpf)
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(Funcionario.class);
+            
+        return funcionario;
+    }
+    
+    public static void editarFuncionario(Funcionario funcionario) {
+        Client client = ClientBuilder.newClient();
+        client.target("http://localhost:8084/RHINDO/webresources/funcionarios/")
+            .request(MediaType.APPLICATION_JSON)
+            .put(Entity.json(funcionario), Funcionario.class);
+    }
+    
+    public static List<Departamento> carregarDepartamento() {
+        Client client = ClientBuilder.newClient();
+        Response resp = client
+            .target("http://localhost:8084/RHINDO/webresources/departamentos/")
+            .request(MediaType.APPLICATION_JSON)
+            .get();
+        List<Departamento> lista =
+            resp.readEntity(
+            new GenericType<List<Departamento>>() {}
+            );
         
-        funcionarios = FuncionarioDAO.getFuncionarios();
+        return lista;
+    }
+    
+    public static Departamento carregarDepartamento(int id) {
+        Client client = ClientBuilder.newClient();
+        Departamento departamento = client
+                    .target("http://localhost:8084/RHINDO/webresources/departamentos/" + id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(Departamento.class);
+            
+        return departamento;
+    }
+    
+    public static List<Cargo> carregarCargo() {
+        Client client = ClientBuilder.newClient();
+        Response resp = client
+            .target("http://localhost:8084/RHINDO/webresources/cargos/")
+            .request(MediaType.APPLICATION_JSON)
+            .get();
+        List<Cargo> lista =
+            resp.readEntity(
+            new GenericType<List<Cargo>>() {}
+            );
         
-        return funcionarios;
+        return lista;
     }
     
-    public static Funcionario getFuncionario(String cpf) throws SQLException {
-        return FuncionarioDAO.getFuncionario(cpf);
+    public static Cargo carregarCargo(int id) {
+        Client client = ClientBuilder.newClient();
+        Cargo cargo = client
+                    .target("http://localhost:8084/RHINDO/webresources/cargos/" + id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(Cargo.class);
+            
+        return cargo;
     }
     
-    public static List<Departamento> getDepartamentos() throws SQLException {
-        List<Departamento> departamentos = new ArrayList<Departamento>();
-        
-        departamentos = DepartamentoDAO.getDepartamentos();
-        
-        return departamentos;
+    //QUALIDADE
+    public static void criarTipo(Tipo tipo) {
+        TipoDAO.criar(tipo);
     }
     
-    public static Departamento getDepartamento(int id) throws SQLException {     
-        return DepartamentoDAO.getDepartamento(id);
+    public static List<Tipo> carregarTipo() {
+        return TipoDAO.carregar();
     }
     
-    public static List<Cargo> getCargos() throws SQLException {
-        List<Cargo> cargos = new ArrayList<Cargo>();
-        
-        cargos = CargoDAO.getCargos();
-        
-        return cargos;
+    /*public static Tipo carregarTipo(int id) {
+        return TipoDAO.carregar(id);
+    }*/
+    
+    public static void editarTipo(Tipo tipo) {
+        TipoDAO.editar(tipo);
     }
     
-    public static Cargo getCargo(int id) throws SQLException {     
-        return CargoDAO.getCargo(id);
+    public static void deletarTipo(int id) {
+        TipoDAO.deletar(id);
     }
     
-    public static void updateFuncionario(Funcionario funcionario) throws SQLException {
-        FuncionarioDAO.updateFuncionario(funcionario);
+    /*public static void criarAtividade(Atividade atividade) {
+        AtividadeDAO.criar(atividade);
     }
     
-    public static void insertFuncionario(Funcionario funcionario) throws SQLException {
-        FuncionarioDAO.insertFuncionario(funcionario);
+    public static List<Atividade> carregarAtividade(Funcionario funcionario) {
+        return AtividadeDAO.carregar(funcionario);
     }
     
-    public static void deleteFuncionario(Funcionario funcionario) throws SQLException {
-        FuncionarioDAO.deleteFuncionario(funcionario);
+    public static Atividade carregarAtividade(int id) {
+        return AtividadeDAO.carregar(id);
     }
     
-    public static void insertDepartamento(Departamento departamento) throws SQLException {
-        DepartamentoDAO.insertDepartamento(departamento);
-    }
+    public static void editarAtividade(Atividade atividade) {
+        AtividadeDAO.editar(atividade);
+    }*/
     
-    public static void updateDepartamento(Departamento departamento) throws SQLException {
-        DepartamentoDAO.updateDepartamento(departamento);
-    }
-    
-    public static void deleteDepartamento(Departamento departamento) throws SQLException {
-        DepartamentoDAO.deleteDepartamento(departamento);
-    }
-    
-    public static void insertCargo(Cargo cargo) throws SQLException {
-        CargoDAO.insertCargo(cargo);
-    }
-    
-    public static void updateCargo(Cargo cargo) throws SQLException {
-        CargoDAO.updateCargo(cargo);
-    }
-    
-    public static void deleteCargo(Cargo cargo) throws SQLException {
-        CargoDAO.deleteCargo(cargo);
-    }
-    
-    public static List<Atividade> getAtividades(int id_departamento) throws SQLException {
-        return AtividadeDAO.getAtividades(id_departamento);
-    }
-    
-    public static Atividade getAtividade(int id) throws SQLException {
-        return AtividadeDAO.getAtividade(id);
-    }
-    
-    public static void insertAtividade(Atividade atividade) throws SQLException {
-        AtividadeDAO.insertAtividade(atividade);
-    }
-
-    public static void updateAtividade(Atividade atividade) throws SQLException {
-        AtividadeDAO.updateAtividade(atividade);
-    }
-
-    public static void deleteAtividade(Atividade atividade) throws SQLException {
-        AtividadeDAO.deleteAtividade(atividade);
-    }
+    /*public static void deletarAtividade(int id) {
+        AtividadeDAO.deletar(id);
+    }*/
 }

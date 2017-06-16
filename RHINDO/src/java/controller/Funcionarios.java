@@ -1,16 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,10 +13,6 @@ import model.Cargo;
 import model.Departamento;
 import model.Funcionario;
 
-/**
- *
- * @author Fornalha
- */
 @WebServlet(name = "Funcionarios", urlPatterns = {"/Funcionarios"})
 public class Funcionarios extends HttpServlet {
 
@@ -42,106 +29,69 @@ public class Funcionarios extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         
-        if("select".equals(action)) {
-            try {
-                List<Funcionario> funcionarios = Facade.getFuncionarios();
-                
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/funcionarios.jsp");
-                
-                request.setAttribute("funcionarios", funcionarios);
-                request.setAttribute("action", "listar");
-                requestDispatcher.forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(Funcionarios.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if("formInsert".equals(action)) {
-            try {
-                List<Departamento> departamentos = Facade.getDepartamentos();
-                List<Cargo> cargos = Facade.getCargos();
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/funcionarios.jsp");
-                
-                request.setAttribute("action", "formInsert");
-                request.setAttribute("departamentos", departamentos);
-                request.setAttribute("cargos", cargos);
-                
-                requestDispatcher.forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(Funcionarios.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if("insert".equals(action)) {
-            try {
-                Funcionario funcionario = new Funcionario(0,
-                                                            request.getParameter("nome"),
-                                                            request.getParameter("cpf"),
-                                                            request.getParameter("rg"),
-                                                            request.getParameter("celular"),
-                                                            request.getParameter("email"),
-                                                            request.getParameter("rua"),
-                                                            Integer.parseInt(request.getParameter("numero")),
-                                                            request.getParameter("bairro"),
-                                                            request.getParameter("cep"),
-                                                            request.getParameter("cidade"),
-                                                            request.getParameter("estado"),
-                                                            request.getParameter("perfil"),
-                                                            Facade.getDepartamento(Integer.parseInt(request.getParameter("id_departamento"))),
-                                                            Facade.getCargo(Integer.parseInt(request.getParameter("id_cargo"))));
-                Facade.insertFuncionario(funcionario);
-                
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Funcionarios?action=select");
-                requestDispatcher.forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(Departamentos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if("formUpdate".equals(action)) {
-            try {
-                List<Departamento> departamentos = Facade.getDepartamentos();
-                List<Cargo> cargos = Facade.getCargos();
-                Funcionario funcionario = Facade.getFuncionario(request.getParameter("cpf"));
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/funcionarios.jsp");
-                
-                request.setAttribute("action", "formUpdate");
-                request.setAttribute("funcionario", funcionario);
-                request.setAttribute("departamentos", departamentos);
-                request.setAttribute("cargos", cargos);
-                
-                requestDispatcher.forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(Departamentos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if("update".equals(action)) {
-            try {
-                Funcionario funcionario = new Funcionario(0,
-                                                            request.getParameter("nome"),
-                                                            request.getParameter("cpf"),
-                                                            request.getParameter("rg"),
-                                                            request.getParameter("celular"),
-                                                            request.getParameter("email"),
-                                                            request.getParameter("rua"),
-                                                            Integer.parseInt(request.getParameter("numero")),
-                                                            request.getParameter("bairro"),
-                                                            request.getParameter("cep"),
-                                                            request.getParameter("cidade"),
-                                                            request.getParameter("estado"),
-                                                            request.getParameter("perfil"),
-                                                            Facade.getDepartamento(Integer.parseInt(request.getParameter("id_departamento"))),
-                                                            Facade.getCargo(Integer.parseInt(request.getParameter("id_cargo"))));
-                Facade.updateFuncionario(funcionario);
-                
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Funcionarios?action=select");
-                requestDispatcher.forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(Departamentos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if("delete".equals(action)) {
-            try {
-                Funcionario funcionario = Facade.getFuncionario(request.getParameter("cpf"));
-                Facade.deleteFuncionario(funcionario);
-                
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Funcionarios?action=select");
-                requestDispatcher.forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(Departamentos.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if ("criar".equals(action)) {
+            Departamento departamento = Facade.carregarDepartamento(Integer.parseInt(request.getParameter("departamento")));
+            
+            Cargo cargo = Facade.carregarCargo(Integer.parseInt(request.getParameter("cargo")));
+            
+            Funcionario funcionario = new Funcionario();
+            funcionario.setCpf(request.getParameter("cpf"));
+            funcionario.setNome(request.getParameter("nome"));
+            funcionario.setRg(request.getParameter("rg"));
+            funcionario.setCelular(request.getParameter("celular"));
+            funcionario.setEmail(request.getParameter("email"));
+            funcionario.setRua(request.getParameter("rua"));
+            funcionario.setNumero(Integer.parseInt(request.getParameter("numero")));
+            funcionario.setBairro(request.getParameter("bairro"));
+            funcionario.setCep(request.getParameter("cep"));
+            funcionario.setCidade(request.getParameter("cidade"));
+            funcionario.setEstado(request.getParameter("estado"));
+            funcionario.setDepartamento(departamento);
+            funcionario.setCargo(cargo);
+            funcionario.setPerfil(request.getParameter("perfil"));
+
+            Facade.criarFuncionario(funcionario);
+
+            response.sendRedirect("/RHINDO/Funcionarios?action=carregar");
+        } else if ("carregar".equals(action)) {
+            List<Funcionario> funcionarios = Facade.carregarFuncionario();
+            List<Departamento> departamentos = Facade.carregarDepartamento();
+            List<Cargo> cargos = Facade.carregarCargo();
+
+            request.setAttribute("funcionarios", funcionarios);
+            request.setAttribute("departamentos", departamentos);
+            request.setAttribute("cargos", cargos);
+
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/funcionarios.jsp");             
+            requestDispatcher.forward(request, response);
+        } else if ("editar".equals(action)) {
+            Departamento departamento = Facade.carregarDepartamento(Integer.parseInt(request.getParameter("departamento")));
+            
+            Cargo cargo = Facade.carregarCargo(Integer.parseInt(request.getParameter("cargo")));
+            
+            Funcionario funcionario = new Funcionario();
+            funcionario.setCpf(request.getParameter("cpf"));
+            funcionario.setNome(request.getParameter("nome"));
+            funcionario.setRg(request.getParameter("rg"));
+            funcionario.setCelular(request.getParameter("celular"));
+            funcionario.setEmail(request.getParameter("email"));
+            funcionario.setRua(request.getParameter("rua"));
+            funcionario.setNumero(Integer.parseInt(request.getParameter("numero")));
+            funcionario.setBairro(request.getParameter("bairro"));
+            funcionario.setCep(request.getParameter("cep"));
+            funcionario.setCidade(request.getParameter("cidade"));
+            funcionario.setEstado(request.getParameter("estado"));
+            funcionario.setDepartamento(departamento);
+            funcionario.setCargo(cargo);
+            funcionario.setPerfil(request.getParameter("perfil"));
+
+            Facade.editarFuncionario(funcionario);
+            
+            response.sendRedirect("/RHINDO/Funcionarios?action=carregar");
+        } else if ("deletar".equals(action)) {
+            Facade.deletarFuncionario(request.getParameter("cpf"));
+
+            response.sendRedirect("/RHINDO/Funcionarios?action=carregar");
         }
     }
 
