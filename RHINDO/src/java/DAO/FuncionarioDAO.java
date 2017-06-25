@@ -92,6 +92,56 @@ public class FuncionarioDAO {
         
         return funcionarios;
     }
+    
+    public static List<Funcionario> carregarDep(int id) {
+        List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+        Connection connection = new ConnectionFactory().getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = connection.prepareStatement("SELECT * "
+                                             + "FROM Funcionario "
+                                             + "WHERE departamento = ? AND perfil = 'Funcionário'");
+            stmt.setInt(1, id);
+            ResultSet resultSet = stmt.executeQuery();
+            
+            while(resultSet.next()){
+                Departamento departamento = Facade.carregarDepartamento(resultSet.getInt("departamento"));
+                
+                Cargo cargo = Facade.carregarCargo(resultSet.getInt("cargo"));
+                
+                Funcionario funcionario = new Funcionario();
+                funcionario.setCpf(resultSet.getString("cpf"));
+                funcionario.setNome(resultSet.getString("nome"));
+                funcionario.setRg(resultSet.getString("rg"));
+                funcionario.setCelular(resultSet.getString("celular"));
+                funcionario.setEmail(resultSet.getString("email"));
+                funcionario.setRua(resultSet.getString("rua"));
+                funcionario.setNumero(resultSet.getInt("numero"));
+                funcionario.setBairro(resultSet.getString("bairro"));
+                funcionario.setCep(resultSet.getString("cep"));
+                funcionario.setCidade(resultSet.getString("cidade"));
+                funcionario.setEstado(resultSet.getString("estado"));
+                funcionario.setDepartamento(departamento);
+                funcionario.setCargo(cargo);
+                funcionario.setPerfil(resultSet.getString("perfil"));
+                
+                funcionarios.add(funcionario);
+                
+            }
+        } catch (SQLException exception) {
+            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+        } finally {
+            if (stmt != null)
+                try { stmt.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar stmt. Ex="+exception.getMessage()); }
+            if (connection != null)
+                try { connection.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
+        }
+        
+        return funcionarios;
+    }
 
     public static Funcionario carregar(String cpf) {
         Connection connection = new ConnectionFactory().getConnection();

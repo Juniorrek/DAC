@@ -20,6 +20,7 @@ public class Atividade {
     private Timestamp inicio;
     private Timestamp fim;
     private Funcionario funcionario;
+    private String status;
 
     public Atividade () {}
 
@@ -77,5 +78,13 @@ public class Atividade {
 
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

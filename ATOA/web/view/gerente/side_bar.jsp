@@ -4,8 +4,8 @@
             <li><a href="/ATOA/view/pagina_inicial.jsp"><i class="fa fa-home fa-fw"></i> Página Inicial</a></li>
             <li><a href="/ATOA/Tipos?action=carregar"><i class="fa fa-users fa-fw"></i> Tipos de atividades</a></li>
             <li><a href="/ATOA/Atividades?action=carregarCorrecoes"><i class="fa fa-check fa-fw"></i> Aprovar correções</a></li>
-            <li><a href="/ATOA/Atividades?action=fechar"><i class="fa fa-building fa-fw"></i> Fechamento de atividades</a></li>
-            <li><a href="/ATOA/view/gerente/relatorios.jsp"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
+            <li><a href="/ATOA/Atividades?action=Formfechar"><i class="fa fa-building fa-fw"></i> Fechamento de atividades</a></li>
+            <li><a href="/ATOA/Relatorios?action=form"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

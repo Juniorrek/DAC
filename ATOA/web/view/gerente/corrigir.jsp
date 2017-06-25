@@ -84,6 +84,7 @@
                                             <th>Tipo</th>
                                             <th>Início</th>
                                             <th>Fim</th>
+                                            <th>Status</th>
                                             <th>Funcionario</th>
                                             <th style="display: none;">ID2</th>
                                             <th style="display: none;">Nome2</th>
@@ -92,6 +93,7 @@
                                             <th style="display: none;">Início2</th>
                                             <th style="display: none;">Fim2</th>
                                             <th style="display: none;">Funcionario2</th>
+                                            <th style="display: none;">Status2</th>
                                             <th>Ação</th>
                                         </tr>
                                     </thead>
@@ -105,6 +107,7 @@
                                                 <td>${correcao.antes.inicio}</td>
                                                 <td>${correcao.antes.fim}</td>
                                                 <td>${correcao.antes.funcionario.nome}</td>
+                                                <td>${correcao.antes.status}</td>
                                                 <td style="display: none;">${correcao.depois.id}</td>
                                                 <td style="display: none;">${correcao.depois.nome}</td>
                                                 <td style="display: none;">${correcao.depois.descricao}</td>
@@ -112,6 +115,7 @@
                                                 <td style="display: none;">${correcao.depois.inicio}</td>
                                                 <td style="display: none;">${correcao.depois.fim}</td>
                                                 <td style="display: none;">${correcao.depois.funcionario.nome}</td>
+                                                <td style="display: none;">${correcao.depois.status}</td>
                                                 <td><button type="button" class="btn btn-info" id="vizualizar" style="margin-left: 10px;" data-toggle="modal" data-target="#modalVizualizar">Vizualizar</button>
                                                 </td>
                                             </tr>
@@ -168,6 +172,16 @@
                                                                 <input type="datetime-local" class="form-control" name="fim1" disabled>
                                                             </div>
                                                         </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label>Status:</label>
+                                                                <select class="form-control" name="status1" disabled>
+                                                                    <option value="EM ANDAMENTO">EM ANDAMENTO</option>
+                                                                    <option value="FINALIZADA">FINALIZADA</option>
+                                                                    <option value="PENDENTE">PENDENTE</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <h1>DEPOIS</h1>
                                                     <div class="row">
@@ -208,6 +222,16 @@
                                                             <div class="form-group">
                                                                 <label>Fim:</label>
                                                                 <input type="datetime-local" class="form-control" name="fim2" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label>Status:</label>
+                                                                <select class="form-control" name="status2" disabled>
+                                                                    <option value="EM ANDAMENTO">EM ANDAMENTO</option>
+                                                                    <option value="FINALIZADA">FINALIZADA</option>
+                                                                    <option value="PENDENTE">PENDENTE</option>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -273,23 +297,27 @@
                 $("#modalVizualizar input[name='fim1']").val("");
                 $("#modalVizualizar input[name='fim1']").prop('disabled', true);
             }
+            val = $("#modalVizualizar select[name='status1']").find("option:contains("+data[7]+")").val();
+            $("#modalVizualizar select[name='status1']").val(val);
             
-            $("#modalVizualizar input[name='id2']").val(data[7]);
-            $("#modalVizualizar input[name='nome2']").val(data[8]);
-            $("#modalVizualizar input[name='descricao2']").val(data[9]);
-            var val = $("#modalVizualizar select[name='tipo2']").find("option:contains("+data[10]+")").val();
+            $("#modalVizualizar input[name='id2']").val(data[8]);
+            $("#modalVizualizar input[name='nome2']").val(data[9]);
+            $("#modalVizualizar input[name='descricao2']").val(data[10]);
+            var val = $("#modalVizualizar select[name='tipo2']").find("option:contains("+data[11]+")").val();
             $("#modalVizualizar select[name='tipo2']").val(val);
-            $("#modalVizualizar input[name='inicio2']").val(data[11].replace(" ", "T").substr(0, 16));
-            if (data[12] !== "") {
+            $("#modalVizualizar input[name='inicio2']").val(data[12].replace(" ", "T").substr(0, 16));
+            if (data[13] !== "") {
                 $("#modalVizualizar input[name='fim2']").prop('disabled', true);
-                $("#modalVizualizar input[name='fim2']").val(data[12].replace(" ", "T").substr(0, 16));
+                $("#modalVizualizar input[name='fim2']").val(data[13].replace(" ", "T").substr(0, 16));
             } else {
                 $("#modalVizualizar input[name='fim2']").val("");
                 $("#modalVizualizar input[name='fim2']").prop('disabled', true);
             }
+            val = $("#modalVizualizar select[name='status2']").find("option:contains("+data[15]+")").val();
+            $("#modalVizualizar select[name='status2']").val(val);
             
-            $("#reprovar").attr("href", "/ATOA/Atividades?action=reprovar&id=" + data[7]);
-            $("#aprovar").attr("href", "/ATOA/Atividades?action=aprovar&id=" + data[7]);
+            $("#reprovar").attr("href", "/ATOA/Atividades?action=reprovar&id=" + data[0]);
+            $("#aprovar").attr("href", "/ATOA/Atividades?action=aprovar&id=" + data[0]);
         } );
         var idiomabr = {
             "sEmptyTable": "Nenhum registro encontrado",

@@ -63,13 +63,13 @@
                         %>
                                 <li><a href="/ATOA/Tipos?action=carregar"><i class="fa fa-users fa-fw"></i> Tipos de atividades</a></li>
                                 <li><a href="/ATOA/Atividades?action=carregarCorrecoes"><i class="fa fa-check fa-fw"></i> Aprovar correções</a></li>
-                                <li><a href="/ATOA/Atividades?action=fechar"><i class="fa fa-building fa-fw"></i> Fechamento de atividades</a></li>
-                                <li><a href="/ATOA/view/gerente/relatorios.jsp"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
+                                <li><a href="/ATOA/Atividades?action=Formfechar"><i class="fa fa-building fa-fw"></i> Fechamento de atividades</a></li>
+                                <li><a href="/ATOA/Relatorios?action=form"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
                         <%
                             } else { 
                         %>
                                 <li><a href="/ATOA/Atividades?action=carregar"><i class="fa fa-clock-o fa-fw"></i> Atividades</a></li>
-                                <li><a href="/ATOA/view/funcionario/lista_atividades.jsp"><i class="fa fa-list-alt fa-fw"></i> Lista de atividades</a></li>
+                                <li><a href="/ATOA/Atividades?action=carregarMes"><i class="fa fa-list-alt fa-fw"></i> Atividades do mês</a></li>
                         <%
                             }
                         %>

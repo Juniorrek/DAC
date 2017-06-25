@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <head>
 
@@ -66,31 +67,49 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-7">
                                     <div class="form-group">
                                         <label>Tipo de relatório:</label>
-                                        <select class="form-control">
-                                            <option>Funcionário</option>
-                                            <option>Departamento/dia</option>
-                                        </select>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="opt" id="optionsRadiosInline1" value="1" checked="">Consolidado por funcionário
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="opt" id="optionsRadiosInline2" value="2">Consolidado por dia
+                                        </label>
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label style="display:none;">Tipo de relatório:</label><br>
-                                        <button class="btn btn-info">Gerar</button>
+                                <div class="col-lg-5">
+                                    <div id="opt1" class="desc form-group">
+                                        <form action="/ATOA/Relatorios?action=funcionario" method="post" target="_blank">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-info">Gerar</button>
+                                            </div>
+                                            <select id="funcs" class="form-control" name="especifico">
+                                            <c:forEach items="${funcionarios}" var="funcionario">
+                                                <option value="${funcionario.cpf}">${funcionario.nome}</option>
+                                            </c:forEach>
+                                            </select>
+                                        </form>
+                                    </div>
+                                    <div id="opt2" class="desc form-group" hidden>
+                                        <form action="/ATOA/Relatorios?action=dia" method="post" target="_blank">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-info">Gerar</button>
+                                            </div>
+                                            <input type="date" class="form-control" name="dia">
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                             <!-- /.row (nested) -->
-                            <div class="panel panel-default">
+                            <!--<div class="panel panel-default">
                                 <div class="panel-heading">
                                     Relatório
                                 </div>
                                 <div class="panel-body">
                                     
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -106,7 +125,14 @@
     <!-- /#wrapper -->
 
     <%@ include file="../scripts_js.html" %>
+    <script>
+        $("input[name='opt']").click(function() {
+            var test = $(this).val();
 
+            $("div.desc").hide();
+            $("#opt" + test).show();
+        });
+    </script>
 </body>
 
 </html>

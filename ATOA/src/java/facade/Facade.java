@@ -3,6 +3,7 @@ package facade;
 import DAO.AtividadeDAO;
 import java.util.List;
 import DAO.TipoDAO;
+import java.sql.Timestamp;
 import java.util.Map;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -17,9 +18,19 @@ import model.Funcionario;
 import model.Tipo;
 
 public class Facade {
-    /*public static List<Funcionario> carregarFuncionario() {
-        return null;
-    }*/
+    public static List<Funcionario> carregarFuncionarioDep(Departamento departamento) {
+        Client client = ClientBuilder.newClient();
+        Response resp = client
+            .target("http://localhost:8084/RHINDO/webresources/funcionarios/departamento/" + departamento.getId())
+            .request(MediaType.APPLICATION_JSON)
+            .get();
+        List<Funcionario> lista =
+            resp.readEntity(
+            new GenericType<List<Funcionario>>() {}
+            );
+        
+        return lista;
+    }
     
     public static Funcionario carregarFuncionario(String cpf) {
         Client client = ClientBuilder.newClient();
@@ -132,6 +143,22 @@ public class Facade {
     
     public static void reprovarCorrecao(int id) {
         AtividadeDAO.reprovarCorrecao(id);
+    }
+    
+    public static List<Atividade> carregarAtividadeMes(Funcionario funcionario) {
+        return AtividadeDAO.carregarMes(funcionario);
+    }
+    
+    public static List<Atividade> carregarAtividadeDep(Funcionario funcionario) {
+        return AtividadeDAO.carregarDep(funcionario);
+    }
+    
+    public static void fecharAtividade() {
+        AtividadeDAO.fechar();
+    }
+    
+    public static void fecharAtividade(String cpf) {
+        AtividadeDAO.fechar(cpf);
     }
     
     /*public static void corrigirAtividade(Atividade atividade) {

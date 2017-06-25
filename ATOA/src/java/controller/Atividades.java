@@ -97,6 +97,18 @@ public class Atividades extends HttpServlet {
             HttpSession session = request.getSession();
             Funcionario logado = (Funcionario) session.getAttribute("logado");
             atividade.setFuncionario(logado);
+            switch (request.getParameter("status")) {
+                case "EM ANDAMENTO":
+                case "PENDENTE":
+                    atividade.setFim(null);
+                    break;
+                case "FINALIZADA":
+                    if (atividade.getFim() == null) {
+                        atividade.setFim(new Timestamp(System.currentTimeMillis()));
+                    }
+                    break;
+            }
+            atividade.setStatus(request.getParameter("status"));
             
             Facade.solicitarCorrigirAtividade(atividade);
             
@@ -126,6 +138,36 @@ public class Atividades extends HttpServlet {
             Facade.finalizarAtividade(Integer.parseInt(request.getParameter("id")));
 
             response.sendRedirect("/ATOA/Atividades?action=carregar");
+        } else if ("carregarMes".equals(action)) {
+            HttpSession session = request.getSession();
+            Funcionario logado = (Funcionario) session.getAttribute("logado");
+            List<Atividade> atividades = Facade.carregarAtividadeMes(logado);
+            
+            request.setAttribute("atividades", atividades);
+            
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/funcionario/atividades_mes.jsp");             
+            requestDispatcher.forward(request, response);
+        } else if ("Formfechar".equals(action)) {
+            HttpSession session = request.getSession();
+            Funcionario logado = (Funcionario) session.getAttribute("logado");
+            List<Atividade> atividades = Facade.carregarAtividadeDep(logado);
+            List<Funcionario> funcionarios = Facade.carregarFuncionarioDep(logado.getDepartamento());
+            
+            request.setAttribute("atividades", atividades);
+            request.setAttribute("funcionarios", funcionarios);
+            
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/fechamento_atividades.jsp");             
+            requestDispatcher.forward(request, response);
+        } else if ("fechar".equals(action)) {
+            String especifico = request.getParameter("especifico");
+            
+            if (especifico == null) {
+                Facade.fecharAtividade();
+            } else {
+                Facade.fecharAtividade(especifico);
+            }
+            
+            response.sendRedirect("/ATOA/Atividades?action=Formfechar");
         }
     }
 

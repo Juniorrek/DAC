@@ -17,6 +17,10 @@ public class Facade {
         return FuncionarioDAO.carregar();
     }
     
+    public static List<Funcionario> carregarFuncionario(int id) {
+        return FuncionarioDAO.carregarDep(id);
+    }
+    
     public static Funcionario carregarFuncionario(String cpf) {
         return FuncionarioDAO.carregar(cpf);
     }

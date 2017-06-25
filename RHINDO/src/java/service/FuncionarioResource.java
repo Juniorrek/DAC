@@ -9,8 +9,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import model.Funcionario;
 import facade.Facade;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
 
 @Path("funcionarios")
 public class FuncionarioResource {
@@ -22,6 +25,16 @@ public class FuncionarioResource {
      * Creates a new instance of FuncionarioResource
      */
     public FuncionarioResource() {
+    }
+    
+    @GET
+    @Path("/departamento/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response carregarDep(@PathParam("id") int id) {
+        List<Funcionario> funcionarios = Facade.carregarFuncionario(id);
+        
+        GenericEntity<List<Funcionario>> lista = new GenericEntity<List<Funcionario>>(funcionarios) {};
+        return Response.ok().entity(lista).build();
     }
 
     @GET

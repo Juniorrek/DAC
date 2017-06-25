@@ -61,7 +61,7 @@
                     <ul class="nav" id="side-menu">
                         <li><a href="/ATOA/view/pagina_inicial.jsp"><i class="fa fa-home fa-fw"></i> Página Inicial</a></li>
                         <li><a href="/ATOA/Atividades?action=carregar"><i class="fa fa-clock-o fa-fw"></i> Atividades</a></li>
-                                <li><a href="/ATOA/view/funcionario/lista_atividades.jsp"><i class="fa fa-list-alt fa-fw"></i> Lista de atividades</a></li>
+                        <li><a href="/ATOA/Atividades?action=carregarMes"><i class="fa fa-list-alt fa-fw"></i> Atividades do mês</a></li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -141,6 +141,7 @@
                                             <th>Tipo</th>
                                             <th>Início</th>
                                             <th>Fim</th>
+                                            <th>Status</th>
                                             <th>Ação</th>
                                         </tr>
                                     </thead>
@@ -153,7 +154,11 @@
                                                 <td>${atividade.tipo.nome}</td>
                                                 <td>${atividade.inicio}</td>
                                                 <td>${atividade.fim}</td>
-                                                <td><button type="button" class="btn btn-info" id="corrigir" style="margin-left: 10px;" data-toggle="modal" data-target="#modalCorrigir">Corrigir</button>
+                                                <td>${atividade.status}</td>
+                                                <td>
+                                                    <c:if test = "${empty atividade.fim || atividade.status == 'FINALIZADA'}">
+                                                        <button type="button" class="btn btn-info" id="corrigir" style="margin-left: 10px;" data-toggle="modal" data-target="#modalCorrigir">Corrigir</button>
+                                                    </c:if>
                                                     <c:if test = "${empty atividade.fim}">
                                                         <button type="button" class="btn btn-danger"  onclick="finalizar(${atividade.id})" style="margin-left: 10px;" data-toggle="modal" data-target="#modalFinalizar">Finalizar</button>
                                                     </c:if>
@@ -212,6 +217,16 @@
                                                             <div class="form-group">
                                                                 <label>Fim:</label>
                                                                 <input type="datetime-local" class="form-control" name="fim">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label>Status:</label>
+                                                                <select class="form-control" name="status">
+                                                                    <option value="EM ANDAMENTO">EM ANDAMENTO</option>
+                                                                    <option value="FINALIZADA">FINALIZADA</option>
+                                                                    <option value="PENDENTE" disabled>PENDENTE</option>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -300,7 +315,8 @@
                 $("#modalCorrigir input[name='fim']").val("");
                 $("#modalCorrigir input[name='fim']").prop('disabled', true);
             }
-            
+            val = $("#modalCorrigir select[name='status']").find("option:contains("+data[6]+")").val();
+            $("#modalCorrigir select[name='status']").val(val);
         } );
         var idiomabr = {
             "sEmptyTable": "Nenhum registro encontrado",
