@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Atividades</title>
+    <title>Corrigir atividades</title>
 
     <!-- DataTables CSS -->
     <link href="/ATOA/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
@@ -56,23 +56,13 @@
             </ul>
             <!-- /.navbar-top-links -->
 
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li><a href="/ATOA/view/pagina_inicial.jsp"><i class="fa fa-home fa-fw"></i> Página Inicial</a></li>
-                        <li><a href="/ATOA/Atividades?action=carregar"><i class="fa fa-clock-o fa-fw"></i> Atividades</a></li>
-                                <li><a href="/ATOA/view/funcionario/lista_atividades.jsp"><i class="fa fa-list-alt fa-fw"></i> Lista de atividades</a></li>
-                    </ul>
-                </div>
-                <!-- /.sidebar-collapse -->
-            </div>
-            <!-- /.navbar-static-side -->
+            <%@ include file="side_bar.jsp" %>
         </nav>
 
         <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Atividades</h1>
+                        <h1 class="page-header">Correção de atividades aguardando aprovação</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -85,53 +75,6 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <button type="button" class="btn btn-success" style="margin-bottom: 10px;" data-toggle="modal" data-target="#modalCriar" id="iniciar">Iniciar atividade</button>
-                                <div class="modal fade" id="modalCriar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <h4 class="modal-title" id="myModalLabel">Formulário</h4>
-                                            </div>
-                                            <form action ="/ATOA/Atividades?action=criar" method="POST">
-                                                <div class="modal-body">
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label>Nome:</label>
-                                                                <input class="form-control" name="nome">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label>Tipo:</label>
-                                                                <select class="form-control" name="tipo">
-                                                                <c:forEach items="${tipos}" var="tipo">
-                                                                    <option value="${tipo.id}">${tipo.nome}</option>
-                                                                </c:forEach>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <div class="form-group">
-                                                                <label>Descrição:</label>
-                                                                <input class="form-control" name="descricao">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" class="btn btn-success">Iniciar</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <!-- /.modal-content -->
-                                    </div>
-                                    <!-- /.modal-dialog -->
-                                </div>
                                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
@@ -141,51 +84,62 @@
                                             <th>Tipo</th>
                                             <th>Início</th>
                                             <th>Fim</th>
+                                            <th>Funcionario</th>
+                                            <th style="display: none;">ID2</th>
+                                            <th style="display: none;">Nome2</th>
+                                            <th style="display: none;">Descrição2</th>
+                                            <th style="display: none;">Tipo2</th>
+                                            <th style="display: none;">Início2</th>
+                                            <th style="display: none;">Fim2</th>
+                                            <th style="display: none;">Funcionario2</th>
                                             <th>Ação</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach items="${atividades}" var="atividade">
+                                        <c:forEach items="${correcoes}" var="correcao">
                                             <tr>
-                                                <td style="display: none;">${atividade.id}</td>
-                                                <td>${atividade.nome}</td>
-                                                <td>${atividade.descricao}</td>
-                                                <td>${atividade.tipo.nome}</td>
-                                                <td>${atividade.inicio}</td>
-                                                <td>${atividade.fim}</td>
-                                                <td><button type="button" class="btn btn-info" id="corrigir" style="margin-left: 10px;" data-toggle="modal" data-target="#modalCorrigir">Corrigir</button>
-                                                    <c:if test = "${empty atividade.fim}">
-                                                        <button type="button" class="btn btn-danger"  onclick="finalizar(${atividade.id})" style="margin-left: 10px;" data-toggle="modal" data-target="#modalFinalizar">Finalizar</button>
-                                                    </c:if>
+                                                <td style="display: none;">${correcao.antes.id}</td>
+                                                <td>${correcao.antes.nome}</td>
+                                                <td>${correcao.antes.descricao}</td>
+                                                <td>${correcao.antes.tipo.nome}</td>
+                                                <td>${correcao.antes.inicio}</td>
+                                                <td>${correcao.antes.fim}</td>
+                                                <td>${correcao.antes.funcionario.nome}</td>
+                                                <td style="display: none;">${correcao.depois.id}</td>
+                                                <td style="display: none;">${correcao.depois.nome}</td>
+                                                <td style="display: none;">${correcao.depois.descricao}</td>
+                                                <td style="display: none;">${correcao.depois.tipo.nome}</td>
+                                                <td style="display: none;">${correcao.depois.inicio}</td>
+                                                <td style="display: none;">${correcao.depois.fim}</td>
+                                                <td style="display: none;">${correcao.depois.funcionario.nome}</td>
+                                                <td><button type="button" class="btn btn-info" id="vizualizar" style="margin-left: 10px;" data-toggle="modal" data-target="#modalVizualizar">Vizualizar</button>
                                                 </td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
                                 </table>
                                 <!-- /.table-responsive -->
-                                <div class="modal fade" id="modalCorrigir" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="modalVizualizar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                 <h4 class="modal-title" id="myModalLabel">Formulário de correção</h4>
                                             </div>
-                                            <h4 style="margin-left: 15px;">Sobre a correção:</h4>
-                                            <p style="margin-left: 15px;">Será feito um pedido de correção que deverá ser aprovado pelo gerente do departamento.</p>
-                                            <form action ="/ATOA/Atividades?action=solicitarCorrigir" method="POST">
                                                 <div class="modal-body">
+                                                    <h1>ANTES</h1>
                                                     <div class="row">
                                                         <div class="col-lg-6">
-                                                            <input type="hidden" class="form-control" name="id" >
+                                                            <input type="hidden" class="form-control" name="id1" >
                                                             <div class="form-group">
                                                                 <label>Nome:</label>
-                                                                <input class="form-control" name="nome">
+                                                                <input class="form-control" name="nome1" disabled>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>Tipo:</label>
-                                                                <select class="form-control" name="tipo">
+                                                                <select class="form-control" name="tipo1" disabled>
                                                                 <c:forEach items="${tipos}" var="tipo">
                                                                     <option value="${tipo.id}">${tipo.nome}</option>
                                                                 </c:forEach>
@@ -197,7 +151,7 @@
                                                         <div class="col-lg-12">
                                                             <div class="form-group">
                                                                 <label>Descrição:</label>
-                                                                <input class="form-control" name="descricao">
+                                                                <input class="form-control" name="descricao1" disabled>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -205,41 +159,64 @@
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>Início:</label>
-                                                                <input type="datetime-local" class="form-control" name="inicio">
+                                                                <input type="datetime-local" class="form-control" name="inicio1" disabled>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>Fim:</label>
-                                                                <input type="datetime-local" class="form-control" name="fim">
+                                                                <input type="datetime-local" class="form-control" name="fim1" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <h1>DEPOIS</h1>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <input type="hidden" class="form-control" name="id2">
+                                                            <div class="form-group">
+                                                                <label>Nome:</label>
+                                                                <input class="form-control" name="nome2" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label>Tipo:</label>
+                                                                <select class="form-control" name="tipo2" disabled>
+                                                                <c:forEach items="${tipos}" var="tipo">
+                                                                    <option value="${tipo.id}">${tipo.nome}</option>
+                                                                </c:forEach>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="form-group">
+                                                                <label>Descrição:</label>
+                                                                <input class="form-control" name="descricao2" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label>Início:</label>
+                                                                <input type="datetime-local" class="form-control" name="inicio2" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label>Fim:</label>
+                                                                <input type="datetime-local" class="form-control" name="fim2" disabled>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" class="btn btn-success">Solicitar correção</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Voltar</button>
+                                                    <a href="" type="button" class="btn btn-danger" id="reprovar">Reprovar</a>
+                                                    <a href="" type="button" class="btn btn-success" id="aprovar">Aprovar</a>
                                                 </div>
-                                            </form>
-                                        </div>
-                                        <!-- /.modal-content -->
-                                    </div>
-                                    <!-- /.modal-dialog -->
-                                </div>
-                                <div class="modal fade" id="modalFinalizar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <h4 class="modal-title" id="myModalLabel">FINALIZAR</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                Tem certeza que deseja finalizar?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                <a href="" type="button" class="btn btn-danger" id="finalizar">Finalizar</a>
-                                            </div>
                                         </div>
                                         <!-- /.modal-content -->
                                     </div>
@@ -268,10 +245,6 @@
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
-        function finalizar(id) {
-            $("#finalizar").attr("href", "/ATOA/Atividades?action=finalizar&id=" + id);
-        }
-        
         var table;
         $(document).ready(function() {
             table = $('#dataTables-example').DataTable({
@@ -280,27 +253,43 @@
                 aaSorting: [[0,'desc']]
             });
         });
-        $("#dataTables-example tbody").on( 'click', 'button[id="corrigir"]', function () {
+        $("#dataTables-example tbody").on( 'click', 'button[id="vizualizar"]', function () {
             //THANKS FOR THE LORD https://stackoverflow.com/a/38515622/8173621
             var current_row = $(this).parents('tr');
             if (current_row.hasClass('child')) {//Check if the current row is a child row
                 current_row = current_row.prev();//If it is, then point to the row before it (its 'parent')
             }
             var data = table.row(current_row).data();//At this point, current_row refers to a valid row in the table, whether is a child row (collapsed by the DataTable's responsiveness) or a 'normal' row
-            $("#modalCorrigir input[name='id']").val(data[0]);
-            $("#modalCorrigir input[name='nome']").val(data[1]);
-            $("#modalCorrigir input[name='descricao']").val(data[2]);
-            var val = $("#modalCorrigir select[name='tipo']").find("option:contains("+data[3]+")").val();
-            $("#modalCorrigir select[name='tipo']").val(val);
-            $("#modalCorrigir input[name='inicio']").val(data[4].replace(" ", "T").substr(0, 16));
+            $("#modalVizualizar input[name='id1']").val(data[0]);
+            $("#modalVizualizar input[name='nome1']").val(data[1]);
+            $("#modalVizualizar input[name='descricao1']").val(data[2]);
+            var val = $("#modalVizualizar select[name='tipo1']").find("option:contains("+data[3]+")").val();
+            $("#modalVizualizar select[name='tipo1']").val(val);
+            $("#modalVizualizar input[name='inicio1']").val(data[4].replace(" ", "T").substr(0, 16));
             if (data[5] !== "") {
-                $("#modalCorrigir input[name='fim']").prop('disabled', false);
-                $("#modalCorrigir input[name='fim']").val(data[5].replace(" ", "T").substr(0, 16));
+                $("#modalVizualizar input[name='fim1']").prop('disabled', true);
+                $("#modalVizualizar input[name='fim1']").val(data[5].replace(" ", "T").substr(0, 16));
             } else {
-                $("#modalCorrigir input[name='fim']").val("");
-                $("#modalCorrigir input[name='fim']").prop('disabled', true);
+                $("#modalVizualizar input[name='fim1']").val("");
+                $("#modalVizualizar input[name='fim1']").prop('disabled', true);
             }
             
+            $("#modalVizualizar input[name='id2']").val(data[7]);
+            $("#modalVizualizar input[name='nome2']").val(data[8]);
+            $("#modalVizualizar input[name='descricao2']").val(data[9]);
+            var val = $("#modalVizualizar select[name='tipo2']").find("option:contains("+data[10]+")").val();
+            $("#modalVizualizar select[name='tipo2']").val(val);
+            $("#modalVizualizar input[name='inicio2']").val(data[11].replace(" ", "T").substr(0, 16));
+            if (data[12] !== "") {
+                $("#modalVizualizar input[name='fim2']").prop('disabled', true);
+                $("#modalVizualizar input[name='fim2']").val(data[12].replace(" ", "T").substr(0, 16));
+            } else {
+                $("#modalVizualizar input[name='fim2']").val("");
+                $("#modalVizualizar input[name='fim2']").prop('disabled', true);
+            }
+            
+            $("#reprovar").attr("href", "/ATOA/Atividades?action=reprovar&id=" + data[7]);
+            $("#aprovar").attr("href", "/ATOA/Atividades?action=aprovar&id=" + data[7]);
         } );
         var idiomabr = {
             "sEmptyTable": "Nenhum registro encontrado",

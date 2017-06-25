@@ -3,6 +3,7 @@ package facade;
 import DAO.AtividadeDAO;
 import java.util.List;
 import DAO.TipoDAO;
+import java.util.Map;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -24,9 +25,8 @@ public class Facade {
         Client client = ClientBuilder.newClient();
         Funcionario funcionario = client
                     .target("http://localhost:8084/RHINDO/webresources/funcionarios/" + cpf)
-                    .request(MediaType.APPLICATION_JSON)
+                    .request(MediaType.APPLICATION_JSON+"; charset=utf-8")
                     .get(Funcionario.class);
-            
         return funcionario;
     }
     
@@ -86,17 +86,17 @@ public class Facade {
     }
     
     //QUALIDADE
-    public static void criarTipo(Tipo tipo) {
-        TipoDAO.criar(tipo);
+    public static void criarTipo(Tipo tipo, Departamento departamento) {
+        TipoDAO.criar(tipo, departamento);
     }
     
-    public static List<Tipo> carregarTipo() {
-        return TipoDAO.carregar();
+    public static List<Tipo> carregarTipo(Departamento departamento) {
+        return TipoDAO.carregar(departamento);
     }
     
-    /*public static Tipo carregarTipo(int id) {
+    public static Tipo carregarTipo(int id) {
         return TipoDAO.carregar(id);
-    }*/
+    }
     
     public static void editarTipo(Tipo tipo) {
         TipoDAO.editar(tipo);
@@ -106,7 +106,7 @@ public class Facade {
         TipoDAO.deletar(id);
     }
     
-    /*public static void criarAtividade(Atividade atividade) {
+    public static void criarAtividade(Atividade atividade) {
         AtividadeDAO.criar(atividade);
     }
     
@@ -114,15 +114,37 @@ public class Facade {
         return AtividadeDAO.carregar(funcionario);
     }
     
+    public static void finalizarAtividade(int id) {
+        AtividadeDAO.finalizar(id);
+    }
+    
+    public static void solicitarCorrigirAtividade(Atividade atividade) {
+        AtividadeDAO.solicitarCorrigir(atividade);
+    }
+    
+    public static List<Map<String, Atividade>> carregarCorrecoes() {
+        return AtividadeDAO.carregarCorrecoes();
+    }
+    
+    public static void aprovarCorrecao(int id) {
+        AtividadeDAO.aprovarCorrecao(id);
+    }
+    
+    public static void reprovarCorrecao(int id) {
+        AtividadeDAO.reprovarCorrecao(id);
+    }
+    
+    /*public static void corrigirAtividade(Atividade atividade) {
+        AtividadeDAO.corrigir(atividade);
+    }*/
+    
+    /*
+    
     public static Atividade carregarAtividade(int id) {
         return AtividadeDAO.carregar(id);
     }
     
     public static void editarAtividade(Atividade atividade) {
         AtividadeDAO.editar(atividade);
-    }*/
-    
-    /*public static void deletarAtividade(int id) {
-        AtividadeDAO.deletar(id);
     }*/
 }

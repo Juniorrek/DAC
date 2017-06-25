@@ -9,8 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import model.Departamento;
 import model.Tipo;
 
 /**
@@ -18,16 +20,31 @@ import model.Tipo;
  * @author Fornalha
  */
 public class TipoDAO {
-    public static void criar(Tipo tipo) {
+    public static void criar(Tipo tipo, Departamento departamento) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
         try {
             stmt = connection.prepareStatement("INSERT INTO Tipo (nome, descricao) "
-                                             + "VALUES (?, ?)");
+                                             + "VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, tipo.getNome());
             stmt.setString(2, tipo.getDescricao());
-            stmt.executeUpdate();
+            int affectedRows = stmt.executeUpdate();
+            
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    stmt = connection.prepareStatement("INSERT INTO RelTipoDepartamento (tipo, departamento) "
+                                             + "VALUES (?, ?)");
+                    stmt.setInt(1, generatedKeys.getInt(1));
+                    stmt.setInt(2, departamento.getId());
+                    stmt.executeUpdate();
+                } else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
         } catch (SQLException exception) {
             throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
@@ -40,14 +57,16 @@ public class TipoDAO {
         }
     }
     
-    public static List<Tipo> carregar() {
+    public static List<Tipo> carregar(Departamento departamento) {
         List<Tipo> tipos = new ArrayList<Tipo>();
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
         
         try {
-            stmt = connection.prepareStatement("SELECT * "
-                                             + "FROM Tipo ");
+            stmt = connection.prepareStatement("SELECT Tipo.* "
+                                             + "FROM Tipo, RelTipoDepartamento "
+                                             + "WHERE RelTipoDepartamento.tipo = tipo.id AND RelTipoDepartamento.departamento = ?");
+            stmt.setInt(1, departamento.getId());
             ResultSet resultSet = stmt.executeQuery();
             
             while(resultSet.next()){

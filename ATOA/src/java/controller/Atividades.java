@@ -7,7 +7,14 @@ package controller;
 
 import facade.Facade;
 import java.io.IOException;
+import java.util.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Atividade;
 import model.Funcionario;
+import model.Tipo;
 
 /**
  *
@@ -38,16 +46,87 @@ public class Atividades extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         
-        /*if ("carregar".equals(action)) {
+        if ("criar".equals(action)) {
+            Atividade atividade = new Atividade();
+            atividade.setNome(request.getParameter("nome"));
+            atividade.setTipo(Facade.carregarTipo(Integer.parseInt(request.getParameter("tipo"))));
+            atividade.setDescricao(request.getParameter("descricao"));
+            atividade.setInicio(new Timestamp(System.currentTimeMillis()));
+            
             HttpSession session = request.getSession();
-            Funcionario funcionario = (Funcionario) session.getAttribute("logado");
-            List<Atividade> atividades = Facade.carregarAtividade(funcionario);
+            Funcionario logado = (Funcionario) session.getAttribute("logado");
+            atividade.setFuncionario(logado);
+            
+            Facade.criarAtividade(atividade);
 
+            response.sendRedirect("/ATOA/Atividades?action=carregar");
+        } else if ("carregar".equals(action)) {
+            HttpSession session = request.getSession();
+            Funcionario logado = (Funcionario) session.getAttribute("logado");
+            List<Atividade> atividades = Facade.carregarAtividade(logado);
+            List<Tipo> tipos = Facade.carregarTipo(logado.getDepartamento());
+
+            request.setAttribute("tipos", tipos);
             request.setAttribute("atividades", atividades);
 
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/funcionario/atividades.jsp");             
             requestDispatcher.forward(request, response);
-        }*/
+        } else if ("solicitarCorrigir".equals(action)) {
+            Atividade atividade = new Atividade();
+            atividade.setId(Integer.parseInt(request.getParameter("id")));
+            atividade.setNome(request.getParameter("nome"));
+            atividade.setTipo(Facade.carregarTipo(Integer.parseInt(request.getParameter("tipo"))));
+            atividade.setDescricao(request.getParameter("descricao"));
+            
+            try{
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+                Date parsedDate = dateFormat.parse(request.getParameter("inicio").replace("T", " "));
+                Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+                atividade.setInicio(timestamp);
+                if (request.getParameter("fim") != null) {
+                    parsedDate = dateFormat.parse(request.getParameter("fim").replace("T", " "));
+                    Timestamp timestamp2 = new java.sql.Timestamp(parsedDate.getTime());
+                    atividade.setFim(timestamp2);
+                } else {
+                    Timestamp timestamp2 = null;
+                    atividade.setFim(timestamp2);
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(Atividades.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            HttpSession session = request.getSession();
+            Funcionario logado = (Funcionario) session.getAttribute("logado");
+            atividade.setFuncionario(logado);
+            
+            Facade.solicitarCorrigirAtividade(atividade);
+            
+            response.sendRedirect("/ATOA/Atividades?action=carregar");
+        } else if ("carregarCorrecoes".equals(action)) {
+            List<Map<String, Atividade>> correcoes = Facade.carregarCorrecoes();
+            
+            request.setAttribute("correcoes", correcoes);
+            
+            HttpSession session = request.getSession();
+            Funcionario logado = (Funcionario) session.getAttribute("logado");
+            List<Tipo> tipos = Facade.carregarTipo(logado.getDepartamento());
+
+            request.setAttribute("tipos", tipos);
+
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/corrigir.jsp");             
+            requestDispatcher.forward(request, response);
+        } else if ("reprovar".equals(action)) {
+            Facade.reprovarCorrecao(Integer.parseInt(request.getParameter("id")));
+            
+            response.sendRedirect("/ATOA/Atividades?action=carregarCorrecoes");
+        } else if ("aprovar".equals(action)) {
+            Facade.aprovarCorrecao(Integer.parseInt(request.getParameter("id")));
+            
+            response.sendRedirect("/ATOA/Atividades?action=carregarCorrecoes");
+        } else if ("finalizar".equals(action)) {
+            Facade.finalizarAtividade(Integer.parseInt(request.getParameter("id")));
+
+            response.sendRedirect("/ATOA/Atividades?action=carregar");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

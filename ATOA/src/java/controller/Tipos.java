@@ -9,6 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Funcionario;
 import model.Tipo;
 
 @WebServlet(name = "Tipos", urlPatterns = {"/Tipos"})
@@ -32,11 +34,16 @@ public class Tipos extends HttpServlet {
             tipo.setNome(request.getParameter("nome"));
             tipo.setDescricao(request.getParameter("descricao"));
 
-            Facade.criarTipo(tipo);
+            HttpSession session = request.getSession();
+            Funcionario logado = (Funcionario) session.getAttribute("logado");
+            
+            Facade.criarTipo(tipo, logado.getDepartamento());
 
             response.sendRedirect("/ATOA/Tipos?action=carregar");
         } else if ("carregar".equals(action)) {
-            List<Tipo> tipos = Facade.carregarTipo();
+            HttpSession session = request.getSession();
+            Funcionario logado = (Funcionario) session.getAttribute("logado");
+            List<Tipo> tipos = Facade.carregarTipo(logado.getDepartamento());
 
             request.setAttribute("tipos", tipos);
 

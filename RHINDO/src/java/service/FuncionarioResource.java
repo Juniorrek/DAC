@@ -26,10 +26,9 @@ public class FuncionarioResource {
 
     @GET
     @Path("/{cpf}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Funcionario carregar(@PathParam("cpf") String cpf) {
         Funcionario funcionario = Facade.carregarFuncionario(cpf);
-        
         return funcionario;
     }
     

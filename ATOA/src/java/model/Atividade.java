@@ -6,6 +6,7 @@
 package model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -16,10 +17,9 @@ public class Atividade {
     private String nome;
     private String descricao;
     private Tipo tipo;
-    private Date inicio;
-    private Date fim;
+    private Timestamp inicio;
+    private Timestamp fim;
     private Funcionario funcionario;
-    private int status;
 
     public Atividade () {}
 
@@ -55,19 +55,19 @@ public class Atividade {
         this.tipo = tipo;
     }
 
-    public Date getInicio() {
+    public Timestamp getInicio() {
         return inicio;
     }
 
-    public void setInicio(Date inicio) {
+    public void setInicio(Timestamp inicio) {
         this.inicio = inicio;
     }
 
-    public Date getFim() {
+    public Timestamp getFim() {
         return fim;
     }
 
-    public void setFim(Date fim) {
+    public void setFim(Timestamp fim) {
         this.fim = fim;
     }
 
@@ -77,13 +77,5 @@ public class Atividade {
 
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
-    }
-    
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 }
