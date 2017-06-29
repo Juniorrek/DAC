@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import model.Folha;
 
 /**
  *
@@ -416,22 +417,32 @@ public class AtividadeDAO {
         return atividades;
     }
     
-    public static void fechar() {
+    public static void fechar(Funcionario logado) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = connection.prepareStatement("UPDATE Atividade "
-                                             + "SET status = 'FECHADA' "
-                                             + "WHERE status = 'FINALIZADA'");
+            stmt = connection.prepareStatement("UPDATE Atividade " +
+                "JOIN Funcionario ON funcionario.cpf = atividade.funcionario " +
+                "JOIN Departamento ON funcionario.departamento = departamento.id"  +
+                "SET status = 'FECHADA', notificacao = false " +
+                "WHERE status = 'FINALIZADA' AND funcionario.departamento = ? ");
+            stmt.setInt(1, logado.getDepartamento().getId());
             stmt.executeUpdate();
             
-            stmt = connection.prepareStatement("UPDATE Atividade "
-                                             + "SET status = 'PENDENTE' "
-                                             + "WHERE status = 'EM ANDAMENTO'");
+            stmt = connection.prepareStatement("UPDATE Atividade " +
+                "JOIN Funcionario ON funcionario.cpf = atividade.funcionario " +
+                "JOIN Departamento ON funcionario.departamento = departamento.id " +
+                "SET status = 'PENDENTE', notificacao = false " +
+                "WHERE status = 'EM ANDAMENTO' AND funcionario.departamento = ? ");
+            stmt.setInt(1, logado.getDepartamento().getId());
             stmt.executeUpdate();
             
-            stmt = connection.prepareStatement("DELETE FROM CorrigirAtividade");
+            stmt = connection.prepareStatement("DELETE CorrigirAtividade " +
+                "FROM CorrigirAtividade " +
+                "INNER JOIN Funcionario ON funcionario.cpf = CorrigirAtividade.funcionario " +
+                "WHERE funcionario.departamento = ?");
+            stmt.setInt(1, logado.getDepartamento().getId());
             stmt.executeUpdate();
         } catch (SQLException exception) {
             throw new RuntimeException("Erro. Origem="+exception.getMessage());
@@ -451,13 +462,13 @@ public class AtividadeDAO {
 
         try {
             stmt = connection.prepareStatement("UPDATE Atividade "
-                                             + "SET status = 'FECHADA' "
+                                             + "SET status = 'FECHADA', notificacao = false "
                                              + "WHERE status = 'FINALIZADA' AND funcionario = ?");
             stmt.setString(1, cpf);
             stmt.executeUpdate();
             
             stmt = connection.prepareStatement("UPDATE Atividade "
-                                             + "SET status = 'PENDENTE' "
+                                             + "SET status = 'PENDENTE', notificacao = false "
                                              + "WHERE status = 'EM ANDAMENTO' AND funcionario = ?");
             stmt.setString(1, cpf);
             stmt.executeUpdate();
@@ -475,6 +486,99 @@ public class AtividadeDAO {
                 try { connection.close(); }
                 catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
         }
+    }
+    
+    public static List<Folha> fecharFolha(int mes) {
+        List<Folha> folhas = new ArrayList<Folha>();
+        Connection connection = new ConnectionFactory().getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = connection.prepareStatement("SELECT funcionario as funcionario, SUM(((TIMESTAMPDIFF(MINUTE, inicio, fim)) - (TIMESTAMPDIFF(DAY, inicio, fim) * 16 * 60)) / 60) as horas_trabalhadas, MONTH(fim) as mes "
+                    + "FROM Atividade "
+                    + "WHERE status = 'FECHADA' AND MONTH(fim) = ? "
+                    + "GROUP BY funcionario");
+            stmt.setInt(1, mes);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+
+                //CONSOLIDA AS FECHADAS
+                stmt = connection.prepareStatement("UPDATE Atividade "
+                                                 + "SET status = 'CONSOLIDADA' "
+                                                 + "WHERE status = 'FECHADA' AND MONTH(fim) = ?");
+                stmt.setInt(1, mes);
+                stmt.executeUpdate();
+
+                do {
+                    Folha folha = new Folha();
+                    Funcionario funcionario = new Funcionario();
+                    funcionario.setCpf(resultSet.getString("funcionario"));
+                    folha.setFuncionario(funcionario);
+                    folha.setHoras_trabalhadas(resultSet.getFloat("horas_trabalhadas"));
+                    folha.setMes(mes);
+
+                    folhas.add(folha);
+                } while(resultSet.next());
+
+                //NOTIFICAÇÃO
+                stmt = connection.prepareStatement("SELECT * FROM Atividade WHERE status != 'FECHADA' AND MONTH(fim) = ? GROUP BY funcionario");
+                stmt.setInt(1, mes);
+                resultSet = stmt.executeQuery();
+                while (resultSet.next()) {
+                    Funcionario funcionario = Facade.carregarFuncionario(resultSet.getString("funcionario"));//PRA PEGAR DEPARTAMENTO
+                    Facade.notificarDepartamento(funcionario.getDepartamento());
+                }
+            }
+        } catch (SQLException exception) {
+            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+        } finally {
+            if (stmt != null)
+                try { stmt.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar stmt. Ex="+exception.getMessage()); }
+            if (connection != null)
+                try { connection.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
+        }
+        
+        return folhas;
+    }
+    
+    public static List<Folha> horas_trabalhadas(String de, String ate, String cpf) {
+        List<Folha> folhas = new ArrayList<Folha>();
+        Connection connection = new ConnectionFactory().getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = connection.prepareStatement("SELECT funcionario as funcionario, SUM(((TIMESTAMPDIFF(MINUTE, inicio, fim)) - (TIMESTAMPDIFF(DAY, inicio, fim) * 16 * 60)) / 60) as horas_trabalhadas, MONTH(fim) as mes " +
+                                    "FROM Atividade " +
+                                    "WHERE funcionario = ? AND fim BETWEEN ? AND ? " +
+                                    "GROUP BY MONTH(fim)");
+            stmt.setString(1, cpf);
+            stmt.setString(2, de);
+            stmt.setString(3, ate);
+            ResultSet resultSet = stmt.executeQuery();
+            while(resultSet.next()) {
+                Folha folha = new Folha();
+                Funcionario funcionario = new Funcionario();
+                funcionario.setCpf(cpf);
+                folha.setFuncionario(funcionario);
+                folha.setHoras_trabalhadas(resultSet.getFloat("horas_trabalhadas"));
+                folha.setMes(resultSet.getInt("mes"));
+
+                folhas.add(folha);
+            }
+        } catch (SQLException exception) {
+            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+        } finally {
+            if (stmt != null)
+                try { stmt.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar stmt. Ex="+exception.getMessage()); }
+            if (connection != null)
+                try { connection.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
+        }
+        
+        return folhas//;TESTAMONTANDO RELATORIO
     }
     
     /*

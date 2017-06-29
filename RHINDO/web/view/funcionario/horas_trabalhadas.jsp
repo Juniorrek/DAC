@@ -40,7 +40,7 @@
                         <li><a href="/RHINDO/Login?action=editar"><i class="fa fa-user fa-fw"></i> Meus dados</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="/RHINDO/view/login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/RHINDO/Login?action=logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -80,34 +80,28 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-lg-2">
-                                    <div class="form-group">
-                                        <label>De:</label>
-                                        <input type="date">
+                                <form action="/RHINDO/Folha?action=horas_trabalhadas" method="post" target="_blank">
+                                    <div class="col-lg-2">
+                                        <div class="form-group">
+                                            <label>De:</label>
+                                            <input type="date" name="de">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="form-group">
-                                        <label>Até:</label>
-                                        <input type="date">
+                                    <div class="col-lg-2">
+                                        <div class="form-group">
+                                            <label>Até:</label>
+                                            <input type="date" name="ate">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label style="display:none;">Tipo de relatório:</label><br>
-                                        <button class="btn btn-info">Gerar</button>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label style="display:none;">Tipo de relatório:</label><br>
+                                            <button type="submit" class="btn btn-info">Gerar</button>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                             <!-- /.row (nested) -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Relatório
-                                </div>
-                                <div class="panel-body">
-                                    
-                                </div>
-                            </div>
                         </div>
                         <!-- /.panel-body -->
                     </div>

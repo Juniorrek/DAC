@@ -37,6 +37,9 @@ public class Login extends HttpServlet {
             if(funcionario != null && ("Gerente de Departamento".equals(funcionario.getPerfil()) || "Funcionário".equals(funcionario.getPerfil()))) {
                 HttpSession session = request.getSession();
                 session.setAttribute("logado", funcionario);
+                if (funcionario.getDepartamento().isNotificacao()) {
+                    session.setAttribute("notificacao", true);
+                }
                 response.sendRedirect("view/pagina_inicial.jsp");
             } else {
                 RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");
@@ -81,6 +84,12 @@ public class Login extends HttpServlet {
             session.setAttribute("logado", funcionario);
             
             response.sendRedirect("/ATOA/Login?action=editar");
+        } else if ("logout".equals(action)) {
+            HttpSession session = request.getSession(false);
+            if (session!=null)
+               session.invalidate(); 
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");
+            requestDispatcher.forward(request, response);
         }
     }
 

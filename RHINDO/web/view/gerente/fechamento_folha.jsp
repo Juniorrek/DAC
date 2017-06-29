@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <head>
 
@@ -40,7 +41,7 @@
                         <li><a href="/RHINDO/Login?action=editar"><i class="fa fa-user fa-fw"></i> Meus dados</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="/RHINDO/view/login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/RHINDO/Login?action=logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -65,7 +66,7 @@
             </div>
             <!-- /.navbar-static-side -->
         </nav>
-
+        
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -78,7 +79,31 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-group">
+                                        <form action="/RHINDO/Folha?action=fechar" method="post">
+                                            <div class="form-group">
+                                                <select name="mes" class="form-control">
+                                                    <option value="1">Janeiro</option>
+                                                    <option value="2">Fevereiro</option>
+                                                    <option value="3">Março</option>
+                                                    <option value="4">Abril</option>
+                                                    <option value="5">Maio</option>
+                                                    <option value="6">Junho</option>
+                                                    <option value="7">Julho</option>
+                                                    <option value="8">Agosto</option>
+                                                    <option value="9">Setembro</option>
+                                                    <option value="10">Outubro</option>
+                                                    <option value="11">Novembro</option>
+                                                    <option value="12">Dezembro</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-info">Fechar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -95,6 +120,29 @@
 
     <%@ include file="../scripts_js.html" %>
 
+    <c:if test="${not empty modal}">
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Fechamento da folha</h4>
+                    </div>
+                    <div class="modal-body">
+                        ${modal}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <script>
+            $("#modal").modal('show'); 
+        </script>
+    </c:if>
 </body>
 
 </html>

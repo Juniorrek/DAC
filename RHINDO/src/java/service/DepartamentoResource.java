@@ -42,4 +42,10 @@ public class DepartamentoResource {
         
         return departamento;
     }
+    
+    @GET
+    @Path("/notificar/{id}")
+    public void notificar(@PathParam("id") int id) {
+        Facade.notificarDepartamento(id);
+    }
 }

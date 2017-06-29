@@ -4,6 +4,7 @@ public class Departamento implements java.io.Serializable {
     private int id;
     private String nome;
     private String localizacao;
+    private boolean notificacao;
 
     public Departamento() {}
 
@@ -29,5 +30,13 @@ public class Departamento implements java.io.Serializable {
 
     public void setLocalizacao(String localizacao) {
         this.localizacao = localizacao;
+    }
+
+    public boolean isNotificacao() {
+        return notificacao;
+    }
+
+    public void setNotificacao(boolean notificacao) {
+        this.notificacao = notificacao;
     }
 }

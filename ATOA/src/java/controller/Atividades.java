@@ -159,10 +159,12 @@ public class Atividades extends HttpServlet {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/fechamento_atividades.jsp");             
             requestDispatcher.forward(request, response);
         } else if ("fechar".equals(action)) {
+            HttpSession session = request.getSession();
+            Funcionario logado = (Funcionario) session.getAttribute("logado");
             String especifico = request.getParameter("especifico");
             
             if (especifico == null) {
-                Facade.fecharAtividade();
+                Facade.fecharAtividade(logado);
             } else {
                 Facade.fecharAtividade(especifico);
             }

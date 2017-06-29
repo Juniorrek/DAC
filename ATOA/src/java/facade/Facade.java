@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 import model.Atividade;
 import model.Cargo;
 import model.Departamento;
+import model.Folha;
 import model.Funcionario;
 import model.Tipo;
 
@@ -70,6 +71,14 @@ public class Facade {
                     .get(Departamento.class);
             
         return departamento;
+    }
+    
+    public static void notificarDepartamento(Departamento departamento) {
+        Client client = ClientBuilder.newClient();
+        client
+            .target("http://localhost:8084/RHINDO/webresources/departamentos/notificar/" + departamento.getId())
+            .request()
+            .get();
     }
     
     public static List<Cargo> carregarCargo() {
@@ -153,12 +162,20 @@ public class Facade {
         return AtividadeDAO.carregarDep(funcionario);
     }
     
-    public static void fecharAtividade() {
-        AtividadeDAO.fechar();
+    public static void fecharAtividade(Funcionario logado) {
+        AtividadeDAO.fechar(logado);
     }
     
     public static void fecharAtividade(String cpf) {
         AtividadeDAO.fechar(cpf);
+    }
+    
+    public static List<Folha> fecharFolha(int mes) {
+        return AtividadeDAO.fecharFolha(mes);
+    }
+    
+    public static List<Folha> horas_trabalhadas(String de, String ate, String cpf) {
+        return AtividadeDAO.horas_trabalhadas(de, ate, cpf);
     }
     
     /*public static void corrigirAtividade(Atividade atividade) {

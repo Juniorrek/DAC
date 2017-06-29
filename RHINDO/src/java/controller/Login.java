@@ -81,6 +81,12 @@ public class Login extends HttpServlet {
             session.setAttribute("logado", funcionario);
             
             response.sendRedirect("/RHINDO/Login?action=editar");
+        } else if ("logout".equals(action)) {
+            HttpSession session = request.getSession(false);
+            if (session!=null)
+               session.invalidate(); 
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");
+            requestDispatcher.forward(request, response);
         }
     }
 

@@ -1,11 +1,18 @@
 package facade;
 
+import DAO.FolhaDAO;
 import java.util.List;
 import DAO.CargoDAO;
 import DAO.DepartamentoDAO;
 import DAO.FuncionarioDAO;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import model.Cargo;
 import model.Departamento;
+import model.Folha;
 import model.Funcionario;
 
 public class Facade {
@@ -53,6 +60,10 @@ public class Facade {
         DepartamentoDAO.deletar(id);
     }
     
+    public static void notificarDepartamento(int id) {
+        DepartamentoDAO.notificar(id);
+    }
+    
     public static void criarCargo(Cargo cargo) {
         CargoDAO.criar(cargo);
     }
@@ -71,5 +82,37 @@ public class Facade {
     
     public static void deletarCargo(int id) {
         CargoDAO.deletar(id);
+    }
+    
+    public static String fecharFolha(int mes) {
+        Client client = ClientBuilder.newClient();
+        Response resp = client
+            .target("http://localhost:8084/ATOA/webresources/atividades/fechar/" + mes)
+            .request(MediaType.APPLICATION_JSON)
+            .get();
+        List<Folha> lista =
+            resp.readEntity(
+            new GenericType<List<Folha>>() {}
+            );
+        if (lista.isEmpty()) {
+            return "Sem atividades para serem consolidadas neste mês !!!";
+        } else {
+            FolhaDAO.fechar(lista);
+            return "Folha fechada com sucesso !!!";
+        }
+    }
+    
+    public static List<Folha> horasTrabalhadas(String de, String ate, Funcionario logado) {
+        Client client = ClientBuilder.newClient();
+        Response resp = client
+            .target("http://localhost:8084/ATOA/webresources/atividades/horas_trabalhadas/" + de + "/" + ate + "/" + logado.getCpf())
+            .request(MediaType.APPLICATION_JSON)
+            .get();
+        List<Folha> lista =
+            resp.readEntity(
+            new GenericType<List<Folha>>() {}
+            );
+        
+        return lista;
     }
 }

@@ -1,5 +1,6 @@
 <%@page import="model.Funcionario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -42,7 +43,7 @@
                         <li><a href="/ATOA/Login?action=editar"><i class="fa fa-user fa-fw"></i> Meus dados</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="/ATOA/view/login.jsp"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/ATOA/Login?action=logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -86,6 +87,9 @@
                 <div class="col-lg-12">
                     <h2 class="page-header">Sistema de ATi​ vidades O​rdenadamente A​lcançáveis</h2>
                     <p class="lead">O Sistema de Atividades obtém a lista de funcionários do departamento através de solicitação ao Sistema de RH.</p>
+                    <c:if test="${not empty notificacao}">
+                         <p class="lead">O departamento tem atividades a serem fechadas !!!</p>
+                    </c:if>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

@@ -80,6 +80,7 @@ public class DepartamentoDAO {
                 departamento.setId(resultSet.getInt("id"));
                 departamento.setNome(resultSet.getString("nome"));
                 departamento.setLocalizacao(resultSet.getString("localizacao"));
+                departamento.setNotificacao(resultSet.getBoolean("notificacao"));
                 
                 return departamento;
             } else {
@@ -127,6 +128,28 @@ public class DepartamentoDAO {
 
         try {
             stmt = connection.prepareStatement("DELETE FROM Departamento "
+                                             + "WHERE id = ? ");
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException exception) {
+            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+        } finally {
+            if (stmt != null)
+                try { stmt.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar stmt. Ex="+exception.getMessage()); }
+            if (connection != null)
+                try { connection.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
+        }
+    }
+    
+    public static void notificar(int id) {
+        Connection connection = new ConnectionFactory().getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = connection.prepareStatement("UPDATE Departamento "
+                                             + "SET notificacao = true "
                                              + "WHERE id = ? ");
             stmt.setInt(1, id);
             stmt.executeUpdate();
