@@ -22,7 +22,7 @@
                         <h3 class="panel-title">Digite seu CPF e senha</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" action="/RHINDO/Login?action=login" method="POST">
+                        <form role="form" action="/RHINDO/Login?action=login" method="POST" id="formLogin">
                             <fieldset>
                                 <div class="form-group ${not empty erroCpf ? 'has-error' : ''}">
                                     <c:if test="${not empty erroCpf}">
@@ -48,8 +48,22 @@
 
     <%@ include file="scripts_js.html" %>
     <script src="/RHINDO/jquery.maskedinput.min.js"></script>
+    <script src="/RHINDO/jquery-validation-1.16.0/dist/jquery.validate.min.js"></script>
     <script>
         $("#cpf").mask("999.999.999-99");
+        $("#formLogin").validate({
+            rules: {
+                cpf: "required",
+                senha: "required"
+            },
+            messages: {
+                cpf: "Digite seu CPF !!!",
+                senha: "Digite sua senha !!!"
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
     </script>
 </body>
 

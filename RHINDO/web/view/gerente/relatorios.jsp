@@ -54,9 +54,9 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li><a href="/RHINDO/view/pagina_inicial.jsp"><i class="fa fa-home fa-fw"></i> Página inicial</a></li>
-                        <li><a href="/RHINDO/Funcionarios?action=select"><i class="fa fa-users fa-fw"></i> Funcionários</a></li>
-                        <li><a href="/RHINDO/Departamentos?action=select"><i class="fa fa-building fa-fw"></i> Departamentos</a></li>
-                        <li><a href="/RHINDO/Cargos?action=select"><i class="fa fa-briefcase fa-fw"></i> Cargos</a></li>
+                        <li><a href="/RHINDO/Funcionarios?action=carregar"><i class="fa fa-users fa-fw"></i> Funcionários</a></li>
+                        <li><a href="/RHINDO/Departamentos?action=carregar"><i class="fa fa-building fa-fw"></i> Departamentos</a></li>
+                        <li><a href="/RHINDO/Cargos?action=carregar"><i class="fa fa-briefcase fa-fw"></i> Cargos</a></li>
                         <li><a href="/RHINDO/view/gerente/fechamento_folha.jsp"><i class="fa fa-book fa-fw"></i> Fechamento da folha</a></li>
                         <li><a href="/RHINDO/view/gerente/relatorios.jsp" class="active"><i class="fa fa-file-text fa-fw"></i> Relatórios</a></li>
                     </ul>

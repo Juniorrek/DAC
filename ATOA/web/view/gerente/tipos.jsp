@@ -83,7 +83,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                             <h4 class="modal-title" id="myModalLabel">Formulário de cadastro</h4>
                                         </div>
-                                        <form action ="/ATOA/Tipos?action=criar" method="POST">
+                                        <form action ="/ATOA/Tipos?action=criar" method="POST" id="formCriar">
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-lg-6">
@@ -141,7 +141,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                             <h4 class="modal-title" id="myModalLabel">Formulário de edição</h4>
                                         </div>
-                                        <form action ="/ATOA/Tipos?action=editar" method="POST">
+                                        <form action ="/ATOA/Tipos?action=editar" method="POST" id="formEditar">
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-lg-6">
@@ -209,6 +209,7 @@
     <script src="/ATOA/vendor/datatables/js/jquery.dataTables.min.js"></script>
     <script src="/ATOA/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
     <script src="/ATOA/vendor/datatables-responsive/dataTables.responsive.js"></script>
+    <script src="/ATOA/jquery-validation-1.16.0/dist/jquery.validate.min.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
@@ -257,6 +258,29 @@
                 "sSortDescending": ": Ordenar colunas de forma descendente"
             }
         };
+        
+        $("#formCriar").validate({
+            rules: {
+                nome: "required"
+            },
+            messages: {
+                nome: "Digite o nome !!!"
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+        $("#formEditar").validate({
+            rules: {
+                nome: "required"
+            },
+            messages: {
+                nome: "Digite o nome !!!"
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
     </script>
     <c:if test="${erroNome}">
         <script>$("#modalCriar").modal('show');</script>

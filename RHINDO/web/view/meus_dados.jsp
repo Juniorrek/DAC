@@ -97,7 +97,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <form action ="/RHINDO/Login?action=edit" method="POST">
+                            <form action ="/RHINDO/Login?action=edit" method="POST" id="formEditar">
                                 <fieldset>
                                     <legend>Dados pessoais</legend>
                                     <div class="row">
@@ -138,13 +138,13 @@
                                         <div class="col-lg-6">
                                             <div class="form-group ${not erroSenha ? '' : 'has-error'}">
                                                 <label class="control-label">${not erroSenha ? 'Senha:' : 'Senha e confirmação diferente !!!'}</label>
-                                                <input class="form-control"  type="password" name="senha">
+                                                <input class="form-control"  type="password" name="senha" id="senha">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group ${not erroSenha ? '' : 'has-error'}">
                                                 <label class="control-label">Confirmação de senha:</label>
-                                                <input class="form-control"  type="password" name="confirmacao">
+                                                <input class="form-control"  type="password" name="confirmacao" id="confirmacao">
                                             </div>
                                         </div>
                                     </div>
@@ -273,11 +273,22 @@
 
     <%@ include file="scripts_js.html" %>
     <script src="/RHINDO/jquery.maskedinput.min.js"></script>
+    <script src="/RHINDO/jquery-validation-1.16.0/dist/jquery.validate.min.js"></script>
     <script>
         $("#cpf").mask("999.999.999-99");
         $("#rg").mask("99.999.999-9");
         $("#celular").mask("(99) 9999-9999?9");
         $("#cep").mask("99.999-999");
+        $("#formEditar").validate({
+            rules: {
+                senha: {
+                    equalTo: "#confirmacao"
+                }
+            },
+            messages: {
+                senha: "Senha e confirmação diferentes !!!"
+            }
+        });
     </script>
 </body>
 

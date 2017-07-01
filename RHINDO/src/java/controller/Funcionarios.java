@@ -60,9 +60,13 @@ public class Funcionarios extends HttpServlet {
                 erro = true;
                 request.setAttribute("erroCpf", true);
             }
+            if ("".equals(request.getParameter("senha"))) {
+                erro = true;
+                request.setAttribute("erroSenha", "Senha é obrigatório:");
+            }
             if (!request.getParameter("senha").equals(request.getParameter("confirmacao"))) {
                 erro = true;
-                request.setAttribute("erroSenha", true);
+                request.setAttribute("erroSenha", "Senha e confirmação diferente !!!");
             }
             //
             if (erro) {

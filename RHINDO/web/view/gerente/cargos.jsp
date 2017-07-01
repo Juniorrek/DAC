@@ -95,7 +95,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                             <h4 class="modal-title" id="myModalLabel">Formulário de cadastro</h4>
                                         </div>
-                                        <form action ="/RHINDO/Cargos?action=criar" method="POST">
+                                        <form action ="/RHINDO/Cargos?action=criar" method="POST" id="formCriar">
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-lg-6">
@@ -179,7 +179,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                             <h4 class="modal-title" id="myModalLabel">Formulário de edição</h4>
                                         </div>
-                                        <form action ="/RHINDO/Cargos?action=editar" method="POST">
+                                        <form action ="/RHINDO/Cargos?action=editar" method="POST" id="formEditar">
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-lg-6">
@@ -321,10 +321,45 @@
     
     <script src="/RHINDO/jquery.maskMoney.min.js"></script>
     <script src="/RHINDO/jquery.maskedinput.min.js"></script>
+    <script src="/RHINDO/jquery-validation-1.16.0/dist/jquery.validate.min.js"></script>
     <script>
         $(".salario").maskMoney({"prefix" : "R$ ", "decimal" : ",", "thousands" : "."});
         $(".desconto").mask("9?99 %");
         $(".horas").mask("9?9999999999999 hr(s)", { placeholder: "" });
+        $("#formCriar").validate({
+            rules: {
+                nome: "required",
+                salario: "required",
+                carga_trabalho_minima_mes: "required",
+                desconto_impostos_gerais: "required"
+            },
+            messages: {
+                nome: "Digite o nome !!!",
+                salario: "Digite o salário !!!",
+                carga_trabalho_minima_mes: "Digite a carga !!!",
+                desconto_impostos_gerais: "Digite o desconto !!!"
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+        $("#formEditar").validate({
+            rules: {
+                nome: "required",
+                salario: "required",
+                carga_trabalho_minima_mes: "required",
+                desconto_impostos_gerais: "required"
+            },
+            messages: {
+                nome: "Digite o nome !!!",
+                salario: "Digite o salário !!!",
+                carga_trabalho_minima_mes: "Digite a carga !!!",
+                desconto_impostos_gerais: "Digite o desconto !!!"
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
     </script>
     <script>
         $("#dataTables-example tbody td").each(function() {

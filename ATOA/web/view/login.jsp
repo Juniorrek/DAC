@@ -21,7 +21,7 @@
                         <h3 class="panel-title"> <span class="glyphicon glyphicon-log-in"></span> Login - Portal ATOA<img id="login" src="../vendor/bootstrap/img/logo_atoa1.ico"></h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" action="/ATOA/Login?action=login" method="post">
+                        <form role="form" action="/ATOA/Login?action=login" method="post" id="formLogin">
                             <fieldset>
                                 <div class="form-group ${not empty erroCpf ? 'has-error' : ''}">
                                     <c:if test="${not empty erroCpf}">
@@ -47,8 +47,22 @@
 
     <%@ include file="scripts_js.html" %>
     <script src="/ATOA/jquery.maskedinput.min.js"></script>
+    <script src="/ATOA/jquery-validation-1.16.0/dist/jquery.validate.min.js"></script>
     <script>
         $("#cpf").mask("999.999.999-99");
+        $("#formLogin").validate({
+            rules: {
+                cpf: "required",
+                senha: "required"
+            },
+            messages: {
+                cpf: "Digite seu CPF !!!",
+                senha: "Digite sua senha !!!"
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
     </script>
 </body>
 

@@ -93,7 +93,7 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                 <h4 class="modal-title" id="myModalLabel">Formulário</h4>
                                             </div>
-                                            <form action ="/ATOA/Atividades?action=criar" method="POST">
+                                            <form action ="/ATOA/Atividades?action=criar" method="POST" id="formCriar">
                                                 <div class="modal-body">
                                                     <div class="row">
                                                         <div class="col-lg-6">
@@ -177,7 +177,7 @@
                                             </div>
                                             <h4 style="margin-left: 15px;">Sobre a correção:</h4>
                                             <p style="margin-left: 15px;">Será feito um pedido de correção que deverá ser aprovado pelo gerente do departamento.</p>
-                                            <form action ="/ATOA/Atividades?action=solicitarCorrigir" method="POST">
+                                            <form action ="/ATOA/Atividades?action=solicitarCorrigir" method="POST" id="formCorrigir">
                                                 <div class="modal-body">
                                                     <div class="row">
                                                         <div class="col-lg-6">
@@ -280,6 +280,7 @@
     <script src="/ATOA/vendor/datatables/js/jquery.dataTables.min.js"></script>
     <script src="/ATOA/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
     <script src="/ATOA/vendor/datatables-responsive/dataTables.responsive.js"></script>
+    <script src="/ATOA/jquery-validation-1.16.0/dist/jquery.validate.min.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
@@ -341,6 +342,30 @@
                 "sSortDescending": ": Ordenar colunas de forma descendente"
             }
         };
+        $("#formCriar").validate({
+            rules: {
+                nome: "required"
+            },
+            messages: {
+                nome: "Nome é obrigatório !!!"
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+        $("#formCorrigir").validate({
+            rules: {
+                nome: "required",
+                inicio: "required"
+            },
+            messages: {
+                nome: "Nome é obrigatório !!!",
+                inicio: "Início é obrigatório !!!"
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
     </script>
     
     <script>

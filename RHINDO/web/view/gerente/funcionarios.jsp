@@ -96,7 +96,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                             <h4 class="modal-title" id="myModalLabel">Formulário de cadastro</h4>
                                         </div>
-                                        <form action ="/RHINDO/Funcionarios?action=criar" method="POST">
+                                        <form action ="/RHINDO/Funcionarios?action=criar" method="POST" id="formCriar">
                                             <div class="modal-body">
                                                 <fieldset>
                                                     <legend>Dados pessoais</legend>
@@ -136,13 +136,13 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <div class="form-group ${not erroSenha ? '' : 'has-error'}">
-                                                                <label class="control-label">${not erroSenha ? 'Senha:' : 'Senha e confirmação diferente !!!'}</label>
+                                                            <div class="form-group ${empty erroSenha ? '' : 'has-error'}">
+                                                                <label class="control-label">${empty erroSenha ? 'Senha:' : erroSenha}</label>
                                                                 <input class="form-control"  type="password" name="senha">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <div class="form-group ${not erroSenha ? '' : 'has-error'}">
+                                                            <div class="form-group ${empty erroSenha ? '' : 'has-error'}">
                                                                 <label class="control-label">Confirmação de senha:</label>
                                                                 <input class="form-control"  type="password" name="confirmacao">
                                                             </div>
@@ -320,7 +320,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                             <h4 class="modal-title" id="myModalLabel">Formulário de edição</h4>
                                         </div>
-                                        <form action ="/RHINDO/Funcionarios?action=editar" method="POST">
+                                        <form action ="/RHINDO/Funcionarios?action=editar" method="POST" id="formEditar">
                                             <div class="modal-body">
                                                 <fieldset>
                                                     <legend>Dados pessoais</legend>
@@ -593,11 +593,36 @@
     </script>
     
     <script src="/RHINDO/jquery.maskedinput.min.js"></script>
+    <script src="/RHINDO/jquery-validation-1.16.0/dist/jquery.validate.min.js"></script>
     <script>
         $(".cpf").mask("999.999.999-99");
         $(".rg").mask("99.999.999-9");
         $(".celular").mask("(99) 9999-9999?9");
         $(".cep").mask("99.999-999");
+        $("#formCriar").validate({
+            rules: {
+                cpf: "required",
+                senha: "required"
+            },
+            messages: {
+                cpf: "Digite seu CPF !!!",
+                senha: "Digite sua senha !!!"
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+        $("#formEditar").validate({
+            rules: {
+                cpf: "required"
+            },
+            messages: {
+                cpf: "Digite seu CPF !!!"
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
     </script>
     <script>
         $("#dataTables-example tbody td").each(function() {

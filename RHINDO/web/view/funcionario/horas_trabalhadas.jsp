@@ -78,7 +78,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="row">
-                                <form action="/RHINDO/Folha?action=horas_trabalhadas" method="post" target="_blank">
+                                <form action="/RHINDO/Folha?action=horas_trabalhadas" method="post" target="_blank" id="form">
                                     <div class="col-lg-2">
                                         <div class="form-group ${erroDe ? 'has-error' : ''}">
                                             <label class="control-label">${erroAte ? 'De é obrigatório:' : 'De:'}</label>
@@ -115,7 +115,22 @@
     <!-- /#wrapper -->
 
     <%@ include file="../scripts_js.html" %>
-
+    <script src="/RHINDO/jquery-validation-1.16.0/dist/jquery.validate.min.js"></script>
+    <script>
+        $("#form").validate({
+            rules: {
+                de: "required",
+                ate: "required"
+            },
+            messages: {
+                de: "De é obrigatório !!!",
+                ate: "Até é obrigatório !!!"
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+    </script>
 </body>
 
 </html>

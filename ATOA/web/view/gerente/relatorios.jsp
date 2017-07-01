@@ -95,7 +95,7 @@
                                         <c:if test="${erroDia}">
                                             <label class="control-label">${erroDia}</label>
                                         </c:if>
-                                        <form action="/ATOA/Relatorios?action=dia" method="post" target="_blank">
+                                        <form action="/ATOA/Relatorios?action=dia" method="post" target="_blank" id="form">
                                             <input type="date" class="form-group form-control" name="dia">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-info">Gerar</button>
@@ -128,12 +128,24 @@
     <!-- /#wrapper -->
 
     <%@ include file="../scripts_js.html" %>
+    <script src="/ATOA/jquery-validation-1.16.0/dist/jquery.validate.min.js"></script>
     <script>
         $("input[name='opt']").click(function() {
             var test = $(this).val();
 
             $("div.desc").hide();
             $("#opt" + test).show();
+        });
+        $("#form").validate({
+            rules: {
+                dia: "required"
+            },
+            messages: {
+                dia: "Dia é obrigatório !!!"
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
         });
     </script>
 </body>
