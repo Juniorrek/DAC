@@ -15,6 +15,7 @@ public class Funcionario implements java.io.Serializable {
     private String perfil;
     private Departamento departamento;
     private Cargo cargo;
+    private String senha;
 
     public Funcionario() {}
 
@@ -128,5 +129,13 @@ public class Funcionario implements java.io.Serializable {
 
     public void setCargo(Cargo cargo) {
         this.cargo = cargo;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <head>
@@ -107,9 +108,9 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label>CPF:</label>
-                                                                <input class="form-control" name="cpf">
+                                                            <div class="form-group ${erroCpf ? 'has-error' : ''}">
+                                                                <label class="control-label">${erroCpf ? 'CPF inválido:' : 'CPF:'}</label>
+                                                                <input class="form-control cpf" name="cpf">
                                                                 <p class="help-block">Somente números.</p>
                                                             </div>
                                                         </div>
@@ -117,7 +118,7 @@
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>RG:</label>
-                                                                <input class="form-control" name="rg">
+                                                                <input class="form-control rg" name="rg">
                                                                 <p class="help-block">Somente números.</p>
                                                             </div>
                                                         </div>
@@ -125,13 +126,25 @@
                                                         <div class="col-lg-5">
                                                             <div class="form-group">
                                                                 <label>Celular:</label>
-                                                                <input class="form-control" name="celular">
+                                                                <input class="form-control celular" name="celular">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-7">
                                                             <div class="form-group">
                                                                 <label>Email:</label>
                                                                 <input class="form-control" name="email">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group ${not erroSenha ? '' : 'has-error'}">
+                                                                <label class="control-label">${not erroSenha ? 'Senha:' : 'Senha e confirmação diferente !!!'}</label>
+                                                                <input class="form-control"  type="password" name="senha">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group ${not erroSenha ? '' : 'has-error'}">
+                                                                <label class="control-label">Confirmação de senha:</label>
+                                                                <input class="form-control"  type="password" name="confirmacao">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -143,7 +156,7 @@
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
                                                                 <label>CEP:</label>
-                                                                <input class="form-control" name="cep">
+                                                                <input class="form-control cep" name="cep">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
@@ -155,7 +168,7 @@
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
                                                                 <label>Número:</label>
-                                                                <input class="form-control" name="numero">
+                                                                <input class="form-control" name="numero" type="number">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-5">
@@ -278,14 +291,14 @@
                                 <c:forEach items="${funcionarios}" var="funcionario">
                                     <tr>
                                         <td>${funcionario.nome}</td>
-                                        <td>${funcionario.cpf}</td>
-                                        <td>${funcionario.rg}</td>
-                                        <td>${funcionario.celular}</td>
-                                        <td>${funcionario.email}</td>
+                                        <td class="tdcpf" nowrap>${funcionario.cpf}</td>
+                                        <td class="tdrg" nowrap>${funcionario.rg}</td>
+                                        <td class="tdcelular" nowrap>${funcionario.celular}</td>
+                                        <td nowrap>${funcionario.email}</td>
                                         <td>${funcionario.rua}</td>
                                         <td>${funcionario.numero}</td>
                                         <td>${funcionario.bairro}</td>
-                                        <td>${funcionario.cep}</td>
+                                        <td class="tdcep" nowrap>${funcionario.cep}</td>
                                         <td>${funcionario.cidade}</td>
                                         <td>${funcionario.estado}</td>
                                         <td>${funcionario.perfil}</td>
@@ -321,7 +334,7 @@
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>CPF:</label>
-                                                                <input class="form-control" name="cpf">
+                                                                <input class="form-control cpf" name="cpf" readonly="readonly">
                                                                 <p class="help-block">Somente números.</p>
                                                             </div>
                                                         </div>
@@ -329,7 +342,7 @@
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>RG:</label>
-                                                                <input class="form-control" name="rg">
+                                                                <input class="form-control rg" name="rg">
                                                                 <p class="help-block">Somente números.</p>
                                                             </div>
                                                         </div>
@@ -337,13 +350,25 @@
                                                         <div class="col-lg-5">
                                                             <div class="form-group">
                                                                 <label>Celular:</label>
-                                                                <input class="form-control" name="celular">
+                                                                <input class="form-control celular" name="celular">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-7">
                                                             <div class="form-group">
                                                                 <label>Email:</label>
                                                                 <input class="form-control" name="email">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group ${not erroSenha2 ? '' : 'has-error'}">
+                                                                <label class="control-label">${not erroSenha2 ? 'Senha:' : 'Senha e confirmação diferente !!!'}</label>
+                                                                <input class="form-control"  type="password" name="senha">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group ${not erroSenha2 ? '' : 'has-error'}">
+                                                                <label class="control-label">Confirmação de senha:</label>
+                                                                <input class="form-control"  type="password" name="confirmacao">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -355,7 +380,7 @@
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
                                                                 <label>CEP:</label>
-                                                                <input class="form-control" name="cep">
+                                                                <input class="form-control cep" name="cep">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
@@ -367,7 +392,7 @@
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
                                                                 <label>Número:</label>
-                                                                <input class="form-control" name="numero">
+                                                                <input class="form-control" name="numero" type="number">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-5">
@@ -566,6 +591,30 @@
             }
         };
     </script>
+    
+    <script src="/RHINDO/jquery.maskedinput.min.js"></script>
+    <script>
+        $(".cpf").mask("999.999.999-99");
+        $(".rg").mask("99.999.999-9");
+        $(".celular").mask("(99) 9999-9999?9");
+        $(".cep").mask("99.999-999");
+    </script>
+    <script>
+        $("#dataTables-example tbody td").each(function() {
+           if ($(this).attr('class') === "tdcpf") {
+               $(this).html($(this).html().replace( /(\d{3})(\d)/ , "$1.$2").replace( /(\d{3})(\d)/ , "$1.$2").replace( /(\d{3})(\d{1,2})$/ , "$1-$2"));
+           } else if ($(this).attr('class') === "tdrg") {
+               $(this).html($(this).html().replace( /(\d{2})(\d)/ , "$1.$2").replace( /(\d{3})(\d)/ , "$1.$2").replace( /(\d{3})(\d{1,2})$/ , "$1-$2"));
+           } else if ($(this).attr('class') === "tdcelular") {
+               $(this).html($(this).html().replace( /(\d{2})(\d)/ , "($1) $2").replace( /(\d{4})(\d)/ , "$1-$2"));
+           } else if ($(this).attr('class') === "tdcep") {
+               $(this).html($(this).html().replace( /(\d{2})(\d)/ , "$1.$2").replace( /(\d{3})(\d)/ , "$1-$2"));
+           }
+        });
+    </script>
+    <c:if test="${erroCpf || erroSenha}">
+        <script>$("#modalCriar").modal('show');</script>
+    </c:if>
 </body>
 
 </html>

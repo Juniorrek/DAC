@@ -81,22 +81,25 @@
                                 <div class="col-lg-5">
                                     <div id="opt1" class="desc form-group">
                                         <form action="/ATOA/Relatorios?action=funcionario" method="post" target="_blank">
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-info">Gerar</button>
-                                            </div>
-                                            <select id="funcs" class="form-control" name="especifico">
+                                            <select id="funcs" class="form-group form-control" name="especifico">
                                             <c:forEach items="${funcionarios}" var="funcionario">
                                                 <option value="${funcionario.cpf}">${funcionario.nome}</option>
                                             </c:forEach>
                                             </select>
-                                        </form>
-                                    </div>
-                                    <div id="opt2" class="desc form-group" hidden>
-                                        <form action="/ATOA/Relatorios?action=dia" method="post" target="_blank">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-info">Gerar</button>
                                             </div>
-                                            <input type="date" class="form-control" name="dia">
+                                        </form>
+                                    </div>
+                                    <div id="opt2" class="desc form-group ${erroDia ? 'has-error' : ''}" hidden>
+                                        <c:if test="${erroDia}">
+                                            <label class="control-label">${erroDia}</label>
+                                        </c:if>
+                                        <form action="/ATOA/Relatorios?action=dia" method="post" target="_blank">
+                                            <input type="date" class="form-group form-control" name="dia">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-info">Gerar</button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>

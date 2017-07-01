@@ -31,20 +31,39 @@ public class Login extends HttpServlet {
         String action = request.getParameter("action");
         
         if("login".equals(action)) {
-            String cpf = request.getParameter("cpf");
-            Funcionario funcionario = Facade.carregarFuncionario(cpf);
-            //Funcionário encontrado
-            if(funcionario != null && ("Gerente de Departamento".equals(funcionario.getPerfil()) || "Funcionário".equals(funcionario.getPerfil()))) {
-                HttpSession session = request.getSession();
-                session.setAttribute("logado", funcionario);
-                if (funcionario.getDepartamento().isNotificacao()) {
-                    session.setAttribute("notificacao", true);
-                }
-                response.sendRedirect("view/pagina_inicial.jsp");
-            } else {
+            String cpf = request.getParameter("cpf").replace(".", "").replace("-", "");
+            String senha = request.getParameter("senha");
+            
+            boolean erro = false;
+            if ("".equals(cpf)) {
+                erro = true;
+                request.setAttribute("erroCpf", "Digite seu CPF !!!");
+            } 
+            if ("".equals(senha)) {
+                erro = true;
+                request.setAttribute("erroSenha", "Digite sua senha !!!");
+            }
+            //
+            if (erro) {
+                request.setAttribute("cpf", cpf);
                 RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");
-                request.setAttribute("erro", "Não encontrado");
                 requestDispatcher.forward(request, response);
+            } else {
+            
+                Funcionario funcionario = Facade.carregarFuncionario(cpf, senha);
+                //Funcionário encontrado
+                if(funcionario != null && ("Gerente de Departamento".equals(funcionario.getPerfil()) || "Funcionário".equals(funcionario.getPerfil()))) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("logado", funcionario);
+                    if (funcionario.getDepartamento().isNotificacao()) {
+                        session.setAttribute("notificacao", true);
+                    }
+                    response.sendRedirect("view/pagina_inicial.jsp");
+                } else {
+                    RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");
+                    request.setAttribute("erroCpf", "CPF e senha não cadastrados !!!");
+                    requestDispatcher.forward(request, response);
+                }
             }
         } else if ("editar".equals(action)) {
             List<Departamento> departamentos = Facade.carregarDepartamento();
@@ -56,34 +75,51 @@ public class Login extends HttpServlet {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/meus_dados.jsp");
             requestDispatcher.forward(request, response);
         } else if ("edit".equals(action)) {
-            System.out.println("a");
-            Departamento departamento = Facade.carregarDepartamento(Integer.parseInt(request.getParameter("departamento")));
-            System.out.println("b");
-            Cargo cargo = Facade.carregarCargo(Integer.parseInt(request.getParameter("cargo")));
-            System.out.println("c");
-            Funcionario funcionario = new Funcionario();
-            funcionario.setCpf(request.getParameter("cpf"));
-            funcionario.setNome(request.getParameter("nome"));
-            funcionario.setRg(request.getParameter("rg"));
-            funcionario.setCelular(request.getParameter("celular"));
-            funcionario.setEmail(request.getParameter("email"));
-            funcionario.setRua(request.getParameter("rua"));
-            funcionario.setNumero(Integer.parseInt(request.getParameter("numero")));
-            funcionario.setBairro(request.getParameter("bairro"));
-            funcionario.setCep(request.getParameter("cep"));
-            funcionario.setCidade(request.getParameter("cidade"));
-            funcionario.setEstado(request.getParameter("estado"));
-            funcionario.setDepartamento(departamento);
-            funcionario.setCargo(cargo);
-            funcionario.setPerfil(request.getParameter("perfil"));
-            System.out.println(funcionario.getCargo().getNome());
-            Facade.editarFuncionario(funcionario);
-            funcionario = Facade.carregarFuncionario(funcionario.getCpf());
-            System.out.println(funcionario.getCargo().getNome());
-            HttpSession session = request.getSession();
-            session.setAttribute("logado", funcionario);
-            
-            response.sendRedirect("/ATOA/Login?action=editar");
+            boolean erro = false;
+            if (!request.getParameter("senha").equals(request.getParameter("confirmacao"))) {
+                erro = true;
+                request.setAttribute("erroSenha", true);
+            }
+            //
+            if (erro) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/meus_dados.jsp");
+                requestDispatcher.forward(request, response);
+            } else {
+                Departamento departamento = null;
+                Cargo cargo = null;
+                String perfil = null;
+                if (request.getParameter("departamento") != null) {
+                    departamento = Facade.carregarDepartamento(Integer.parseInt(request.getParameter("departamento")));
+                    cargo = Facade.carregarCargo(Integer.parseInt(request.getParameter("cargo")));
+                    perfil = request.getParameter("perfil");
+                }
+
+                HttpSession session = request.getSession();
+                Funcionario logado = (Funcionario)session.getAttribute("logado");
+                Funcionario funcionario = new Funcionario();
+                funcionario.setCpf(logado.getCpf());
+                funcionario.setNome(request.getParameter("nome"));
+                funcionario.setRg(request.getParameter("rg").replace(".", "").replace("-", ""));
+                funcionario.setCelular(request.getParameter("celular").replace("(", "").replace(")", "").replace("-", "").replace(" ", ""));
+                funcionario.setEmail(request.getParameter("email"));
+                funcionario.setRua(request.getParameter("rua"));
+                funcionario.setNumero(Integer.parseInt(request.getParameter("numero")));
+                funcionario.setBairro(request.getParameter("bairro"));
+                funcionario.setCep(request.getParameter("cep").replace(".", "").replace("-", ""));
+                funcionario.setCidade(request.getParameter("cidade"));
+                funcionario.setEstado(request.getParameter("estado"));
+                funcionario.setDepartamento(departamento);
+                funcionario.setCargo(cargo);
+                funcionario.setPerfil(perfil);
+                funcionario.setSenha(request.getParameter("senha"));
+
+                Facade.editarFuncionario(funcionario);
+                funcionario = Facade.carregarFuncionario(funcionario.getCpf());
+
+                session.setAttribute("logado", funcionario);
+
+                response.sendRedirect("/ATOA/Login?action=editar");
+            }
         } else if ("logout".equals(action)) {
             HttpSession session = request.getSession(false);
             if (session!=null)

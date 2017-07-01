@@ -70,7 +70,7 @@
                             } else { 
                         %>
                                 <li><a href="/RHINDO/view/funcionario/horas_trabalhadas.jsp"><i class="fa fa-clock-o fa-fw"></i> Horas trabalhas</a></li>
-                                <li><a href="/RHINDO/view/funcionario/holerite.jsp"><i class="fa fa-list-alt fa-fw"></i> Holerite</a></li>
+                                <li><a href="/RHINDO/Holerite?action=obter"><i class="fa fa-list-alt fa-fw"></i> Holerite</a></li>
                         <%
                             }
                         %>

@@ -87,9 +87,9 @@
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Nome:</label>
-                                                            <input class="form-control" name="nome">
+                                                        <div class="form-group ${erroNome ? 'has-error' : ''}">
+                                                                <label class="control-label">${erroNome ? 'Nome é obrigatório:' : 'Nome:'}</label>
+                                                                <input class="form-control" name="nome">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -146,9 +146,9 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <input type="hidden" class="form-control" name="id" >
-                                                        <div class="form-group">
-                                                            <label>Nome:</label>
-                                                            <input class="form-control" name="nome">
+                                                        <div class="form-group ${erroNome2 ? 'has-error' : ''}">
+                                                                <label class="control-label">${erroNome2 ? 'Nome é obrigatório:' : 'Nome:'}</label>
+                                                                <input class="form-control" name="nome">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -258,6 +258,9 @@
             }
         };
     </script>
+    <c:if test="${erroNome}">
+        <script>$("#modalCriar").modal('show');</script>
+    </c:if>
 </body>
 
 </html>

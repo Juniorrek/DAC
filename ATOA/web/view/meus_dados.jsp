@@ -109,7 +109,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>CPF:</label>
-                                                <input class="form-control" value="${logado.getCpf()}" name="cpf">
+                                                <input class="form-control" value="${logado.getCpf()}" id="cpf" name="cpf" disabled>
                                                 <p class="help-block">Somente números.</p>
                                             </div>
                                         </div>
@@ -117,7 +117,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>RG:</label>
-                                                <input class="form-control"  value="${logado.getRg()}" name="rg">
+                                                <input class="form-control"  value="${logado.getRg()}" id="rg" name="rg">
                                                 <p class="help-block">Somente números.</p>
                                             </div>
                                         </div>
@@ -125,13 +125,25 @@
                                         <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label>Celular:</label>
-                                                <input class="form-control"  value="${logado.getCelular()}" name="celular">
+                                                <input class="form-control"  value="${logado.getCelular()}" id="celular" name="celular">
                                             </div>
                                         </div>
                                         <div class="col-lg-7">
                                             <div class="form-group">
                                                 <label>Email:</label>
                                                 <input class="form-control"  value="${logado.getEmail()}" name="email">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group ${not erroSenha ? '' : 'has-error'}">
+                                                <label class="control-label">${not erroSenha ? 'Senha:' : 'Senha e confirmação diferente !!!'}</label>
+                                                <input class="form-control"  type="password" name="senha">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group ${not erroSenha ? '' : 'has-error'}">
+                                                <label class="control-label">Confirmação de senha:</label>
+                                                <input class="form-control"  type="password" name="confirmacao">
                                             </div>
                                         </div>
                                     </div>
@@ -143,7 +155,7 @@
                                         <div class="col-lg-3">
                                             <div class="form-group">
                                                 <label>CEP:</label>
-                                                <input class="form-control"  value="${logado.getCep()}" name="cep">
+                                                <input class="form-control"  value="${logado.getCep()}" id="cep" name="cep">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
@@ -213,7 +225,7 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Departamento:</label>
-                                                <select class="form-control" name="departamento">
+                                                <select class="form-control" name="departamento" disabled>
                                                 <c:forEach items="${departamentos}" var="departamento">
                                                     <option value="${departamento.id}" ${logado.getDepartamento().getNome().equals(departamento.nome) ? 'selected' : ''}>${departamento.nome}</option>
                                                 </c:forEach>
@@ -223,7 +235,7 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Cargo:</label>
-                                                <select class="form-control" name="cargo">
+                                                <select class="form-control" name="cargo" disabled>
                                                 <c:forEach items="${cargos}" var="cargo">
                                                     <option value="${cargo.id}" ${logado.getCargo().getNome().equals(cargo.nome) ? 'selected' : ''}>${cargo.nome}</option>
                                                 </c:forEach>
@@ -233,7 +245,7 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Perfil:</label>
-                                                <select class="form-control" name="perfil">
+                                                <select class="form-control" name="perfil" disabled>
                                                     <option value="Gerente de Departamento" ${logado.getPerfil() == "Gerente de Departamento" ? 'selected' : ''}>Gerente de Departamento</option>
                                                     <option value="Funcionário" ${logado.getPerfil() == "Funcionário" ? 'selected' : ''}>Funcionário</option>
                                                 </select>
@@ -259,7 +271,13 @@
     <!-- /#wrapper -->
 
     <%@ include file="scripts_js.html" %>
-    
+    <script src="/RHINDO/jquery.maskedinput.min.js"></script>
+    <script>
+        $("#cpf").mask("999.999.999-99");
+        $("#rg").mask("99.999.999-9");
+        $("#celular").mask("(99) 9999-9999?9");
+        $("#cep").mask("99.999-999");
+    </script>
 </body>
 
 </html>

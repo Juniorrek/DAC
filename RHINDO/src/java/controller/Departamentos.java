@@ -28,13 +28,24 @@ public class Departamentos extends HttpServlet {
         String action = request.getParameter("action");
         
         if ("criar".equals(action)) {
-            Departamento departamento = new Departamento();
-            departamento.setNome(request.getParameter("nome"));
-            departamento.setLocalizacao(request.getParameter("localizacao"));
+            boolean erro = false;
+            if ("".equals(request.getParameter("nome"))) {
+                erro = true;
+                request.setAttribute("erroNome", true);
+            }
+            //
+            if (erro) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Departamentos?action=carregar");
+                requestDispatcher.forward(request, response);
+            } else {
+                Departamento departamento = new Departamento();
+                departamento.setNome(request.getParameter("nome"));
+                departamento.setLocalizacao(request.getParameter("localizacao"));
 
-            Facade.criarDepartamento(departamento);
+                Facade.criarDepartamento(departamento);
 
-            response.sendRedirect("/RHINDO/Departamentos?action=carregar");
+                response.sendRedirect("/RHINDO/Departamentos?action=carregar");
+            }
         } else if ("carregar".equals(action)) {
             List<Departamento> departamentos = Facade.carregarDepartamento();
 
@@ -43,14 +54,25 @@ public class Departamentos extends HttpServlet {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/departamentos.jsp");             
             requestDispatcher.forward(request, response);
         } else if ("editar".equals(action)) {
-            Departamento departamento = new Departamento();
-            departamento.setId(Integer.parseInt(request.getParameter("id")));
-            departamento.setNome(request.getParameter("nome"));
-            departamento.setLocalizacao(request.getParameter("localizacao"));
-            
-            Facade.editarDepartamento(departamento);
-            
-            response.sendRedirect("/RHINDO/Departamentos?action=carregar");
+            boolean erro = false;
+            if ("".equals(request.getParameter("nome"))) {
+                erro = true;
+                request.setAttribute("erroNome2", true);
+            }
+            //
+            if (erro) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Departamentos?action=carregar");
+                requestDispatcher.forward(request, response);
+            } else {
+                Departamento departamento = new Departamento();
+                departamento.setId(Integer.parseInt(request.getParameter("id")));
+                departamento.setNome(request.getParameter("nome"));
+                departamento.setLocalizacao(request.getParameter("localizacao"));
+
+                Facade.editarDepartamento(departamento);
+
+                response.sendRedirect("/RHINDO/Departamentos?action=carregar");
+            }
         } else if ("deletar".equals(action)) {
             Facade.deletarDepartamento(Integer.parseInt(request.getParameter("id")));
 

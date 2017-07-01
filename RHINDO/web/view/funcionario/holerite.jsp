@@ -61,10 +61,8 @@
                         <li>
                             <a href="/RHINDO/view/pagina_inicial.jsp"><i class="fa fa-home fa-fw"></i> Página inicial</a>
                         </li>
-                        <%
-                            out.println("<li><a href=\"horas_trabalhadas.jsp\"><i class=\"fa fa-clock-o fa-fw\"></i> Horas trabalhas</a></li>");
-                            out.println("<li><a href=\"holerite.jsp\"><i class=\"fa fa-list-alt fa-fw\"></i> Holerite</a></li>");
-                        %>
+                        <li><a href="/RHINDO/view/funcionario/horas_trabalhadas.jsp"><i class="fa fa-clock-o fa-fw"></i> Horas trabalhas</a></li>
+                                <li><a href="/RHINDO/Holerite?action=obter"><i class="fa fa-list-alt fa-fw"></i> Holerite</a></li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -84,9 +82,13 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
+                            <a href="/RHINDO/Holerite?action=pdf" type="button" class="btn btn-info" target="_blank" style="margin-bottom: 1%;">PDF</a>
                             <table width="100%" class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
+                                        <th>CPF</th>
+                                        <th>Nome</th>
+                                        <th>Mês</th>
                                         <th>Hrs trabalhadas</th>
                                         <th>Salário bruto</th>
                                         <th>Salário líquido</th>
@@ -94,9 +96,12 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>30</td>
-                                        <td>1000</td>
-                                        <td>800</td> 
+                                        <td>${holerite.cpf}</td>
+                                        <td>${holerite.nome}</td>
+                                        <td>${holerite.mes}</td>
+                                        <td>${holerite.horas_trabalhadas}</td>
+                                        <td>${holerite.salario_bruto}</td>
+                                        <td>${holerite.salario_liquido}</td>
                                     </tr>
                                 </tbody>
                             </table>

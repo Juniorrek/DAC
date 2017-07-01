@@ -23,24 +23,18 @@
                     <div class="panel-body">
                         <form role="form" action="/ATOA/Login?action=login" method="post">
                             <fieldset>
-                                <%
-                                String erro = (String) request.getAttribute("erro");
-
-                                if("Não encontrado".equals(erro)) {
-                                %>
-                                    <div class="form-group has-error">
-                                        <label class="control-label" for="inputError">Funcionário não cadastrado</label>
-                                        <input class="form-control" placeholder="CPF" name="cpf" type="cpf" autofocus>
-                                    </div>
-                                <%
-                                } else {
-                                %>
-                                    <div class="form-group">
-                                        <input class="form-control" placeholder="CPF" name="cpf" type="cpf" autofocus>
-                                    </div>
-                                <%
-                                    }
-                                %>
+                                <div class="form-group ${not empty erroCpf ? 'has-error' : ''}">
+                                    <c:if test="${not empty erroCpf}">
+                                        <label class="control-label">${erroCpf}</label>
+                                    </c:if>
+                                    <input class="form-control" placeholder="CPF" id="cpf" name="cpf" type="cpf" value="${cpf}" autofocus>
+                                </div>
+                                <div class="form-group ${not empty erroSenha ? 'has-error' : ''}">
+                                    <c:if test="${not empty erroSenha}">
+                                        <label class="control-label">${erroSenha}</label>
+                                    </c:if>
+                                    <input class="form-control" placeholder="Senha" name="senha" type="password" autofocus>
+                                </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <input type="submit" value="Entrar" class="btn btn-lg btn-success btn-block">
                             </fieldset>
@@ -52,7 +46,10 @@
     </div>
 
     <%@ include file="scripts_js.html" %>
-
+    <script src="/ATOA/jquery.maskedinput.min.js"></script>
+    <script>
+        $("#cpf").mask("999.999.999-99");
+    </script>
 </body>
 
 </html>

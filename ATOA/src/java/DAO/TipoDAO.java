@@ -154,6 +154,11 @@ public class TipoDAO {
         PreparedStatement stmt = null;
 
         try {
+            stmt = connection.prepareStatement("DELETE FROM RelTipoDepartamento "
+                                             + "WHERE tipo = ? ");
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            
             stmt = connection.prepareStatement("DELETE FROM Tipo "
                                              + "WHERE id = ? ");
             stmt.setInt(1, id);

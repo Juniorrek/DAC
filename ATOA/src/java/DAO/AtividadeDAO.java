@@ -48,6 +48,7 @@ public class AtividadeDAO {
             stmt.setInt(3, atividade.getTipo().getId());
             stmt.setTimestamp(4, atividade.getInicio());
             stmt.setString(5, atividade.getFuncionario().getCpf());
+            System.out.println("vou inserir");
             stmt.executeUpdate();
         } catch (SQLException exception) {
             throw new RuntimeException("Erro. Origem="+exception.getMessage());
@@ -173,6 +174,7 @@ public class AtividadeDAO {
             stmt.setTimestamp(13, atividade.getFim());
             stmt.setString(14, atividade.getFuncionario().getCpf());
             stmt.setString(15, atividade.getStatus());
+            
             stmt.executeUpdate();
         } catch (SQLException exception) {
             throw new RuntimeException("Erro. Origem="+exception.getMessage());
@@ -186,7 +188,8 @@ public class AtividadeDAO {
         }
     }
     
-    public static List<Map<String, Atividade>> carregarCorrecoes() {
+    public static List<Map<String, Atividade>> carregarCorrecoes(Funcionario logado) {
+        //ws
         List<Map<String, Atividade>> correcoes = new ArrayList<Map<String, Atividade>>();
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
@@ -197,41 +200,44 @@ public class AtividadeDAO {
             ResultSet resultSet = stmt.executeQuery();
             
             while(resultSet.next()){
-                Map<String, Atividade> correcao = new HashMap<String, Atividade>();
-                
-                Atividade atividade = new Atividade();
-                atividade.setId(resultSet.getInt("id"));
-                atividade.setNome(resultSet.getString("nome"));
-                atividade.setDescricao(resultSet.getString("descricao"));
-                atividade.setTipo(TipoDAO.carregar(resultSet.getInt("tipo")));
-                atividade.setInicio(resultSet.getTimestamp("inicio"));
-                atividade.setFim(resultSet.getTimestamp("fim"));
-                atividade.setFuncionario(Facade.carregarFuncionario(resultSet.getString("funcionario")));
-                atividade.setStatus(resultSet.getString("status"));
-                
-                
-                
-                stmt = connection.prepareStatement("SELECT * "
-                                             + "FROM Atividade "
-                                             + "WHERE id = ?");
-                stmt.setInt(1, resultSet.getInt("id"));
-                ResultSet resultSet2 = stmt.executeQuery();
-                if(resultSet2.next()) {
-                    Atividade atividade2 = new Atividade();
-                    atividade2.setId(resultSet2.getInt("id"));
-                    atividade2.setNome(resultSet2.getString("nome"));
-                    atividade2.setDescricao(resultSet2.getString("descricao"));
-                    atividade2.setTipo(TipoDAO.carregar(resultSet2.getInt("tipo")));
-                    atividade2.setInicio(resultSet2.getTimestamp("inicio"));
-                    atividade2.setFim(resultSet2.getTimestamp("fim"));
-                    atividade2.setFuncionario(Facade.carregarFuncionario(resultSet2.getString("funcionario")));
-                    atividade2.setStatus(resultSet2.getString("status"));
-                    
-                    correcao.put("antes", atividade2);
-                    correcao.put("depois", atividade);
+                Funcionario funcionario = Facade.carregarFuncionario(resultSet.getString("funcionario"));
+                if (funcionario.getDepartamento().getId() == logado.getDepartamento().getId()) {
+                    Map<String, Atividade> correcao = new HashMap<String, Atividade>();
+
+                    Atividade atividade = new Atividade();
+                    atividade.setId(resultSet.getInt("id"));
+                    atividade.setNome(resultSet.getString("nome"));
+                    atividade.setDescricao(resultSet.getString("descricao"));
+                    atividade.setTipo(TipoDAO.carregar(resultSet.getInt("tipo")));
+                    atividade.setInicio(resultSet.getTimestamp("inicio"));
+                    atividade.setFim(resultSet.getTimestamp("fim"));
+                    atividade.setFuncionario(funcionario);
+                    atividade.setStatus(resultSet.getString("status"));
+
+
+
+                    stmt = connection.prepareStatement("SELECT * "
+                                                 + "FROM Atividade "
+                                                 + "WHERE id = ?");
+                    stmt.setInt(1, resultSet.getInt("id"));
+                    ResultSet resultSet2 = stmt.executeQuery();
+                    if(resultSet2.next()) {
+                        Atividade atividade2 = new Atividade();
+                        atividade2.setId(resultSet2.getInt("id"));
+                        atividade2.setNome(resultSet2.getString("nome"));
+                        atividade2.setDescricao(resultSet2.getString("descricao"));
+                        atividade2.setTipo(TipoDAO.carregar(resultSet2.getInt("tipo")));
+                        atividade2.setInicio(resultSet2.getTimestamp("inicio"));
+                        atividade2.setFim(resultSet2.getTimestamp("fim"));
+                        atividade2.setFuncionario(Facade.carregarFuncionario(resultSet2.getString("funcionario")));
+                        atividade2.setStatus(resultSet2.getString("status"));
+
+                        correcao.put("antes", atividade2);
+                        correcao.put("depois", atividade);
+                    }
+
+                    correcoes.add(correcao);
                 }
-                
-                correcoes.add(correcao);
             }
         } catch (SQLException exception) {
             throw new RuntimeException("Erro. Origem="+exception.getMessage());
@@ -291,7 +297,7 @@ public class AtividadeDAO {
                 atividade.setStatus(resultSet.getString("status"));
             }
             
-            if ("EM ANDAMENTO".equals(atividade.getStatus())) {
+            /*if ("EM ANDAMENTO".equals(atividade.getStatus())) {
                 stmt = connection.prepareStatement("SELECT * "
                                              + "FROM Atividade "
                                              + "WHERE fim is null AND funcionario = ?");
@@ -300,7 +306,7 @@ public class AtividadeDAO {
                 while(resultSett.next()){
                     Facade.finalizarAtividade(resultSett.getInt("id"));
                 }
-            }
+            }*/
             
             stmt = connection.prepareStatement("DELETE FROM CorrigirAtividade "
                                              + "WHERE id = ? ");
@@ -314,7 +320,11 @@ public class AtividadeDAO {
             stmt.setString(2, atividade.getDescricao());
             stmt.setInt(3, atividade.getTipo().getId());
             stmt.setTimestamp(4, atividade.getInicio());
-            stmt.setTimestamp(5, atividade.getFim());
+            if ("FINALIZADA".equals(atividade.getStatus())) {
+                stmt.setTimestamp(5, atividade.getFim());
+            } else {
+                stmt.setTimestamp(5, null);
+            }
             stmt.setString(6, atividade.getFuncionario().getCpf());
             stmt.setString(7, atividade.getStatus());
             stmt.setInt(8, atividade.getId());
@@ -344,9 +354,10 @@ public class AtividadeDAO {
         try {
             stmt = connection.prepareStatement("SELECT * "
                                              + "FROM Atividade "
-                                             + "WHERE funcionario = ? AND MONTH(inicio) = ?");
+                                             + "WHERE funcionario = ? AND (MONTH(inicio) = ? OR MONTH(fim) = ?)");
             stmt.setString(1, funcionario.getCpf());
             stmt.setInt(2, cal.get(Calendar.MONTH) + 1);
+            stmt.setInt(3, cal.get(Calendar.MONTH) + 1);
             ResultSet resultSet = stmt.executeQuery();
             
             while(resultSet.next()){
@@ -384,24 +395,25 @@ public class AtividadeDAO {
         
         try {
             stmt = connection.prepareStatement("SELECT atividade.* "
-                                             + "FROM Atividade, Funcionario "
-                                             + "WHERE atividade.funcionario = funcionario.cpf AND funcionario.departamento = ? AND (atividade.status = 'EM ANDAMENTO' OR atividade.status = 'FINALIZADA') ");
-            stmt.setInt(1, funcionario.getDepartamento().getId());
+                                             + "FROM Atividade "
+                                             + "WHERE atividade.status = 'EM ANDAMENTO' OR atividade.status = 'FINALIZADA' ");
             ResultSet resultSet = stmt.executeQuery();
             
             while(resultSet.next()){
-                Atividade atividade = new Atividade();
-                atividade.setId(resultSet.getInt("id"));
-                atividade.setNome(resultSet.getString("nome"));
-                atividade.setDescricao(resultSet.getString("descricao"));
-                atividade.setTipo(TipoDAO.carregar(resultSet.getInt("tipo")));
-                atividade.setInicio(resultSet.getTimestamp("inicio"));
-                atividade.setFim(resultSet.getTimestamp("fim"));
-                atividade.setFuncionario(Facade.carregarFuncionario(resultSet.getString("funcionario")));
-                atividade.setStatus(resultSet.getString("status"));
-                
-                atividades.add(atividade);
-                
+                Funcionario func = Facade.carregarFuncionario(resultSet.getString("funcionario"));
+                if (funcionario.getDepartamento().getId() == func.getDepartamento().getId()) {
+                    Atividade atividade = new Atividade();
+                    atividade.setId(resultSet.getInt("id"));
+                    atividade.setNome(resultSet.getString("nome"));
+                    atividade.setDescricao(resultSet.getString("descricao"));
+                    atividade.setTipo(TipoDAO.carregar(resultSet.getInt("tipo")));
+                    atividade.setInicio(resultSet.getTimestamp("inicio"));
+                    atividade.setFim(resultSet.getTimestamp("fim"));
+                    atividade.setFuncionario(func);
+                    atividade.setStatus(resultSet.getString("status"));
+
+                    atividades.add(atividade);
+                }
             }
         } catch (SQLException exception) {
             throw new RuntimeException("Erro. Origem="+exception.getMessage());
@@ -422,28 +434,50 @@ public class AtividadeDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = connection.prepareStatement("UPDATE Atividade " +
+            stmt = connection.prepareStatement("SELECT * FROM Atividade "
+                                                + "WHERE status = 'FINALIZADA' ");
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                Funcionario funcionario = Facade.carregarFuncionario(rs.getString("funcionario"));
+                if (funcionario.getDepartamento().getId() == logado.getDepartamento().getId()) {
+                    stmt = connection.prepareStatement("UPDATE Atividade "
+                                                        + "SET status = 'FECHADA' "
+                                                        + "WHERE status = 'FINALIZADA' and funcionario = ? ");
+                    stmt.setString(1, funcionario.getCpf());
+                    stmt.executeUpdate();
+                    
+                    stmt = connection.prepareStatement("DELETE FROM CorrigirAtividade "
+                                                        + "WHERE funcionario = ? ");
+                    stmt.setString(1, funcionario.getCpf());
+                    stmt.executeUpdate();
+                }
+            }
+            /*stmt = connection.prepareStatement("UPDATE Atividade " +
                 "JOIN Funcionario ON funcionario.cpf = atividade.funcionario " +
                 "JOIN Departamento ON funcionario.departamento = departamento.id"  +
                 "SET status = 'FECHADA', notificacao = false " +
                 "WHERE status = 'FINALIZADA' AND funcionario.departamento = ? ");
             stmt.setInt(1, logado.getDepartamento().getId());
-            stmt.executeUpdate();
+            stmt.executeUpdate();*/
             
-            stmt = connection.prepareStatement("UPDATE Atividade " +
-                "JOIN Funcionario ON funcionario.cpf = atividade.funcionario " +
-                "JOIN Departamento ON funcionario.departamento = departamento.id " +
-                "SET status = 'PENDENTE', notificacao = false " +
-                "WHERE status = 'EM ANDAMENTO' AND funcionario.departamento = ? ");
-            stmt.setInt(1, logado.getDepartamento().getId());
-            stmt.executeUpdate();
-            
-            stmt = connection.prepareStatement("DELETE CorrigirAtividade " +
-                "FROM CorrigirAtividade " +
-                "INNER JOIN Funcionario ON funcionario.cpf = CorrigirAtividade.funcionario " +
-                "WHERE funcionario.departamento = ?");
-            stmt.setInt(1, logado.getDepartamento().getId());
-            stmt.executeUpdate();
+            stmt = connection.prepareStatement("SELECT * FROM Atividade "
+                                                + "WHERE status = 'EM ANDAMENTO' ");
+            rs = stmt.executeQuery();
+            while(rs.next()) {
+                Funcionario funcionario = Facade.carregarFuncionario(rs.getString("funcionario"));
+                if (funcionario.getDepartamento().getId() == logado.getDepartamento().getId()) {
+                    stmt = connection.prepareStatement("UPDATE Atividade "
+                                                        + "SET status = 'PENDENTE' "
+                                                        + "WHERE status = 'EM ANDAMENTO' and funcionario = ? ");
+                    stmt.setString(1, funcionario.getCpf());
+                    stmt.executeUpdate();
+                    
+                    stmt = connection.prepareStatement("DELETE FROM CorrigirAtividade "
+                                                        + "WHERE funcionario = ? ");
+                    stmt.setString(1, funcionario.getCpf());
+                    stmt.executeUpdate();
+                }
+            }
         } catch (SQLException exception) {
             throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
@@ -462,13 +496,13 @@ public class AtividadeDAO {
 
         try {
             stmt = connection.prepareStatement("UPDATE Atividade "
-                                             + "SET status = 'FECHADA', notificacao = false "
+                                             + "SET status = 'FECHADA' "
                                              + "WHERE status = 'FINALIZADA' AND funcionario = ?");
             stmt.setString(1, cpf);
             stmt.executeUpdate();
             
             stmt = connection.prepareStatement("UPDATE Atividade "
-                                             + "SET status = 'PENDENTE', notificacao = false "
+                                             + "SET status = 'PENDENTE' "
                                              + "WHERE status = 'EM ANDAMENTO' AND funcionario = ?");
             stmt.setString(1, cpf);
             stmt.executeUpdate();
@@ -512,7 +546,7 @@ public class AtividadeDAO {
                 do {
                     Folha folha = new Folha();
                     Funcionario funcionario = new Funcionario();
-                    funcionario.setCpf(resultSet.getString("funcionario"));
+                    funcionario = Facade.carregarFuncionario(resultSet.getString("funcionario"));
                     folha.setFuncionario(funcionario);
                     folha.setHoras_trabalhadas(resultSet.getFloat("horas_trabalhadas"));
                     folha.setMes(mes);
@@ -560,7 +594,7 @@ public class AtividadeDAO {
             while(resultSet.next()) {
                 Folha folha = new Folha();
                 Funcionario funcionario = new Funcionario();
-                funcionario.setCpf(cpf);
+                funcionario = Facade.carregarFuncionario(cpf);
                 folha.setFuncionario(funcionario);
                 folha.setHoras_trabalhadas(resultSet.getFloat("horas_trabalhadas"));
                 folha.setMes(resultSet.getInt("mes"));
@@ -578,7 +612,83 @@ public class AtividadeDAO {
                 catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
         }
         
-        return folhas//;TESTAMONTANDO RELATORIO
+        return folhas;//;TESTAMONTANDO RELATORIO
+    }
+    
+    public static List<Folha> horas_trabalhadas_dep_mes(int mes) {
+        List<Folha> folhas = new ArrayList<Folha>();
+        Connection connection = new ConnectionFactory().getConnection();
+        PreparedStatement stmt = null;
+        //WSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+        try {
+            stmt = connection.prepareStatement("SELECT funcionario as funcionario, SUM(((TIMESTAMPDIFF(MINUTE, inicio, fim)) - (TIMESTAMPDIFF(DAY, inicio, fim) * 16 * 60)) / 60) as horas_trabalhadas, MONTH(fim) as mes " +
+                                                "FROM Atividade " +
+                                                "JOIN Funcionario ON funcionario.cpf = atividade.funcionario " +
+                                                "WHERE MONTH(fim) = ? " +
+                                                "GROUP BY funcionario.departamento");
+            stmt.setInt(1, mes);
+            ResultSet resultSet = stmt.executeQuery();
+            while(resultSet.next()) {
+                Folha folha = new Folha();
+                Funcionario funcionario = new Funcionario();
+                funcionario = Facade.carregarFuncionario(resultSet.getString("funcionario"));
+                folha.setFuncionario(funcionario);
+                folha.setHoras_trabalhadas(resultSet.getFloat("horas_trabalhadas"));
+                folha.setMes(resultSet.getInt("mes"));
+
+                folhas.add(folha);
+            }
+        } catch (SQLException exception) {
+            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+        } finally {
+            if (stmt != null)
+                try { stmt.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar stmt. Ex="+exception.getMessage()); }
+            if (connection != null)
+                try { connection.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
+        }
+        
+        return folhas;//;TESTAMONTANDO RELATORIO
+    }
+    
+    public static List<Folha> funcncumpriu(int mes) {
+        List<Folha> folhas = new ArrayList<Folha>();
+        Connection connection = new ConnectionFactory().getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = connection.prepareStatement("SELECT funcionario as funcionario, SUM(((TIMESTAMPDIFF(MINUTE, inicio, fim)) - (TIMESTAMPDIFF(DAY, inicio, fim) * 16 * 60)) / 60) as horas_trabalhadas, MONTH(fim) as mes " +
+                                                "FROM Atividade a " +
+                                                "WHERE MONTH(fim) = ? " +
+                                                "GROUP BY funcionario");
+            stmt.setInt(1, mes);
+            ResultSet resultSet = stmt.executeQuery();
+            while(resultSet.next()) {
+                Funcionario funcionario = new Funcionario();
+                funcionario = Facade.carregarFuncionario(resultSet.getString("funcionario"));
+                
+                if (resultSet.getFloat("horas_trabalhadas") < funcionario.getCargo().getCarga_trabalho_minima_mes()) {
+                    Folha folha = new Folha();
+                    folha.setFuncionario(funcionario);
+                    folha.setHoras_trabalhadas(resultSet.getFloat("horas_trabalhadas"));
+                    folha.setMes(resultSet.getInt("mes"));
+
+                    folhas.add(folha);
+                }
+            }
+        } catch (SQLException exception) {
+            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+        } finally {
+            if (stmt != null)
+                try { stmt.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar stmt. Ex="+exception.getMessage()); }
+            if (connection != null)
+                try { connection.close(); }
+                catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
+        }
+        
+        return folhas;//;TESTAMONTANDO RELATORIO
     }
     
     /*

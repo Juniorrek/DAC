@@ -94,14 +94,14 @@
                                     </div>
                                     <div id="opt2" class="desc form-group" hidden>
                                         <form action="/ATOA/Atividades?action=fechar" method="post">
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-info">Fechar</button>
-                                            </div>
-                                            <select id="funcs" class="form-control" name="especifico">
+                                            <select id="funcs" class="form-group form-control" name="especifico">
                                             <c:forEach items="${funcionarios}" var="funcionario">
                                                 <option value="${funcionario.cpf}">${funcionario.nome}</option>
                                             </c:forEach>
                                             </select>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-info">Fechar</button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -132,8 +132,8 @@
                                             <td>${atividade.nome}</td>
                                             <td>${atividade.descricao}</td>
                                             <td>${atividade.tipo.nome}</td>
-                                            <td>${atividade.inicio}</td>
-                                            <td>${atividade.fim}</td>
+                                            <td class="data">${atividade.inicio}</td>
+                                            <td class="data">${atividade.fim}</td>
                                             <td>${atividade.funcionario.nome}</td>
                                             <td>${atividade.status}</td>
                                         </tr>
@@ -199,7 +199,10 @@
             $("#opt" + test).show();
 
             if (test === '2') {
-                table.column(6).search( $("#funcs option:selected").text() ).draw();
+                //var regExSearch = '^\\s' + myValue +'\\s*$';
+                var reg = '^' + $("#funcs option:selected").text() + '$';
+                table.column(6).search(reg, true, false).draw();
+                //table.column(6).search( $("#funcs option:selected").text() ).draw();
             } else {
                 $("input[class='form-control input-sm']").val("");
                 table.column(6).search("").draw();
@@ -207,7 +210,17 @@
         });
         
         $("#funcs").change(function() {
-            table.column(6).search( $("#funcs option:selected").text() ).draw();
+            var reg = '^' + $("#funcs option:selected").text() + '$';
+            table.column(6).search(reg, true, false).draw();
+        });
+    </script>
+    <script>
+        $("#dataTables-example tbody td").each(function() {
+           if ($(this).attr('class') === "data") {
+               $(this).html($(this).html().replace( /(\d{4})(.)(\d{2})(.)(\d{2})(.)(\d{2})(.)(\d{2,2})/ , "$5/$3/$1 $7:$9"));
+               var a = $(this).html();
+               $(this).html($(this).html().substr(0, a.length - 5))
+           }
         });
     </script>
 </body>

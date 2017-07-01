@@ -12,8 +12,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,10 +30,10 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
  *
- * @author Fornalha
+ * @author david
  */
-@WebServlet(name = "Folha", urlPatterns = {"/Folha"})
-public class Folha extends HttpServlet {
+@WebServlet(name = "Holerite", urlPatterns = {"/Holerite"})
+public class Holerite extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,64 +48,66 @@ public class Folha extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         
-        if ("fechar".equals(action)) {
-            String mes = request.getParameter("mes");
+        if ("obter".equals(action)) {
+            HttpSession session = request.getSession();
+            Funcionario logado = (Funcionario) session.getAttribute("logado");
+            Timestamp dataAtual = new Timestamp(System.currentTimeMillis());
+            long timestamp = dataAtual.getTime();
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(timestamp);
             
-            request.setAttribute("modal", Facade.fecharFolha(Integer.parseInt(mes)));
+            model.Holerite holerite = Facade.obterHolerite(logado, cal.get(Calendar.MONTH) + 1);
             
-            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/fechamento_folha.jsp");             
+            request.setAttribute("holerite", holerite);
+            
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/funcionario/holerite.jsp");             
             requestDispatcher.forward(request, response);
-        } else if ("horas_trabalhadas".equals(action)) {
-            boolean erro = false;
-            if ("".equals(request.getParameter("de"))) {
-                erro = true;
-                request.setAttribute("erroDe", true);
-            } 
-            if ("".equals(request.getParameter("ate"))) {
-                erro = true;
-                request.setAttribute("erroAte", true);
-            }
-            //
-            if (erro) {
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/funcionario/horas_trabalhadas.jsp");
+        } else if ("pdf".equals(action)) {
+            HttpSession session = request.getSession();
+            Funcionario logado = (Funcionario) session.getAttribute("logado");
+            Timestamp dataAtual = new Timestamp(System.currentTimeMillis());
+            long timestamp = dataAtual.getTime();
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(timestamp);
+            
+            model.Holerite holerite = Facade.obterHolerite(logado, cal.get(Calendar.MONTH) + 1);
+            if (holerite == null) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Holerite?action=obter");             
                 requestDispatcher.forward(request, response);
-            } else {
-                String de = request.getParameter("de");
-                String ate = request.getParameter("ate");
-                HttpSession session = request.getSession();
-                Funcionario logado = (Funcionario) session.getAttribute("logado");
+            }
+            
+            Connection con = new ConnectionFactory().getConnection();
+            try {
+                String jasper = request.getContextPath() + "/holerite.jasper";
+                String host = "http://" + request.getServerName() + ":" + request.getServerPort();
 
-                List<model.Folha> listaa = Facade.horasTrabalhadas(de, ate, logado);
+                URL jasperURL = new URL(host + jasper);
 
-                Connection con = new ConnectionFactory().getConnection();
-                try {
-                    String jasper = request.getContextPath() + "/horas_intervalos_datas.jasper";
-                    String host = "http://" + request.getServerName() + ":" + request.getServerPort();
+                HashMap params = new HashMap();
+                params.put("cpf", holerite.getCpf());
+                params.put("mes", holerite.getMes());
+                params.put("nome", holerite.getNome());
+                params.put("horas_trabalhadas", holerite.getHoras_trabalhadas());
+                params.put("salario_bruto", holerite.getSalario_bruto());
+                params.put("salario_liquido", holerite.getSalario_liquido());
 
-                    URL jasperURL = new URL(host + jasper);
+                byte[] bytes = JasperRunManager.runReportToPdf(jasperURL.openStream(), params, new JREmptyDataSource());
 
-                    HashMap params = new HashMap();
-                    JRBeanCollectionDataSource lista = new JRBeanCollectionDataSource(listaa);
-                    params.put("lista", lista);
+                if (bytes != null) {
+                    response.setContentType("application/pdf");
 
-                    byte[] bytes = JasperRunManager.runReportToPdf(jasperURL.openStream(), params, new JREmptyDataSource());
+                    OutputStream ops = response.getOutputStream();
 
-                    if (bytes != null) {
-                        response.setContentType("application/pdf");
+                    ops.write(bytes);
+                }
+            } catch (JRException e) {
+                System.out.println("Erro no jasper : " + e.getMessage());
+            } finally {
+                if (con != null) {
+                    try {
+                        con.close();
+                    } catch (Exception e) {
 
-                        OutputStream ops = response.getOutputStream();
-
-                        ops.write(bytes);
-                    }
-                } catch (JRException e) {
-                    System.out.println("Erro no jasper : " + e.getMessage());
-                } finally {
-                    if (con != null) {
-                        try {
-                            con.close();
-                        } catch (Exception e) {
-
-                        }
                     }
                 }
             }

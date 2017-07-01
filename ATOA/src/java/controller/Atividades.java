@@ -47,19 +47,31 @@ public class Atividades extends HttpServlet {
         String action = request.getParameter("action");
         
         if ("criar".equals(action)) {
-            Atividade atividade = new Atividade();
-            atividade.setNome(request.getParameter("nome"));
-            atividade.setTipo(Facade.carregarTipo(Integer.parseInt(request.getParameter("tipo"))));
-            atividade.setDescricao(request.getParameter("descricao"));
-            atividade.setInicio(new Timestamp(System.currentTimeMillis()));
-            
-            HttpSession session = request.getSession();
-            Funcionario logado = (Funcionario) session.getAttribute("logado");
-            atividade.setFuncionario(logado);
-            
-            Facade.criarAtividade(atividade);
+            boolean erro = false;
+            if ("".equals(request.getParameter("nome"))) {
+                erro = true;
+                request.setAttribute("erroNome", true);
+            }
+            //
+            if (erro) {
+                //REDIRECT N PRESERVA ATTRIBUTO
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Atividades?action=carregar");
+                requestDispatcher.forward(request, response);
+            } else {
+                Atividade atividade = new Atividade();
+                atividade.setNome(request.getParameter("nome"));
+                atividade.setTipo(Facade.carregarTipo(Integer.parseInt(request.getParameter("tipo"))));
+                atividade.setDescricao(request.getParameter("descricao"));
+                atividade.setInicio(new Timestamp(System.currentTimeMillis()));
 
-            response.sendRedirect("/ATOA/Atividades?action=carregar");
+                HttpSession session = request.getSession();
+                Funcionario logado = (Funcionario) session.getAttribute("logado");
+                atividade.setFuncionario(logado);
+
+                Facade.criarAtividade(atividade);
+
+                response.sendRedirect("/ATOA/Atividades?action=carregar");
+            }
         } else if ("carregar".equals(action)) {
             HttpSession session = request.getSession();
             Funcionario logado = (Funcionario) session.getAttribute("logado");
@@ -72,54 +84,59 @@ public class Atividades extends HttpServlet {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/funcionario/atividades.jsp");             
             requestDispatcher.forward(request, response);
         } else if ("solicitarCorrigir".equals(action)) {
-            Atividade atividade = new Atividade();
-            atividade.setId(Integer.parseInt(request.getParameter("id")));
-            atividade.setNome(request.getParameter("nome"));
-            atividade.setTipo(Facade.carregarTipo(Integer.parseInt(request.getParameter("tipo"))));
-            atividade.setDescricao(request.getParameter("descricao"));
-            
-            try{
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-                Date parsedDate = dateFormat.parse(request.getParameter("inicio").replace("T", " "));
-                Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
-                atividade.setInicio(timestamp);
-                if (request.getParameter("fim") != null) {
-                    parsedDate = dateFormat.parse(request.getParameter("fim").replace("T", " "));
-                    Timestamp timestamp2 = new java.sql.Timestamp(parsedDate.getTime());
-                    atividade.setFim(timestamp2);
-                } else {
-                    Timestamp timestamp2 = null;
-                    atividade.setFim(timestamp2);
-                }
-            } catch (ParseException ex) {
-                Logger.getLogger(Atividades.class.getName()).log(Level.SEVERE, null, ex);
+            boolean erro = false;
+            if ("".equals(request.getParameter("nome"))) {
+                erro = true;
+                request.setAttribute("erroNome2", true);
             }
+            if ("".equals(request.getParameter("inicio"))) {
+                erro = true;
+                request.setAttribute("erroInicio2", true);
+            }
+            //
+            if (erro) {
+                //REDIRECT N PRESERVA ATTRIBUTO
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Atividades?action=carregar");
+                requestDispatcher.forward(request, response);
+            } else {
+                Atividade atividade = new Atividade();
+                atividade.setId(Integer.parseInt(request.getParameter("id")));
+                atividade.setNome(request.getParameter("nome"));
+                atividade.setTipo(Facade.carregarTipo(Integer.parseInt(request.getParameter("tipo"))));
+                atividade.setDescricao(request.getParameter("descricao"));
+
+                try{
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+                    Date parsedDate = dateFormat.parse(request.getParameter("inicio").replace("T", " "));
+                    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+                    atividade.setInicio(timestamp);
+                    if (request.getParameter("fim") != null) {
+                        parsedDate = dateFormat.parse(request.getParameter("fim").replace("T", " "));
+                        Timestamp timestamp2 = new java.sql.Timestamp(parsedDate.getTime());
+                        atividade.setFim(timestamp2);
+                    } else {
+                        Timestamp timestamp2 = null;
+                        atividade.setFim(timestamp2);
+                    }
+                } catch (ParseException ex) {
+                    Logger.getLogger(Atividades.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                HttpSession session = request.getSession();
+                Funcionario logado = (Funcionario) session.getAttribute("logado");
+                atividade.setFuncionario(logado);
+                atividade.setStatus(request.getParameter("status"));
+
+                Facade.solicitarCorrigirAtividade(atividade);
+
+                response.sendRedirect("/ATOA/Atividades?action=carregar");
+            }
+        } else if ("carregarCorrecoes".equals(action)) {
             HttpSession session = request.getSession();
             Funcionario logado = (Funcionario) session.getAttribute("logado");
-            atividade.setFuncionario(logado);
-            switch (request.getParameter("status")) {
-                case "EM ANDAMENTO":
-                case "PENDENTE":
-                    atividade.setFim(null);
-                    break;
-                case "FINALIZADA":
-                    if (atividade.getFim() == null) {
-                        atividade.setFim(new Timestamp(System.currentTimeMillis()));
-                    }
-                    break;
-            }
-            atividade.setStatus(request.getParameter("status"));
-            
-            Facade.solicitarCorrigirAtividade(atividade);
-            
-            response.sendRedirect("/ATOA/Atividades?action=carregar");
-        } else if ("carregarCorrecoes".equals(action)) {
-            List<Map<String, Atividade>> correcoes = Facade.carregarCorrecoes();
+            List<Map<String, Atividade>> correcoes = Facade.carregarCorrecoes(logado);
             
             request.setAttribute("correcoes", correcoes);
             
-            HttpSession session = request.getSession();
-            Funcionario logado = (Funcionario) session.getAttribute("logado");
             List<Tipo> tipos = Facade.carregarTipo(logado.getDepartamento());
 
             request.setAttribute("tipos", tipos);

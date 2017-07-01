@@ -9,7 +9,7 @@ package model;
  *
  * @author Fornalha
  */
-public class Folha {
+public class Folha implements java.io.Serializable {
     private Funcionario funcionario;
     private float horas_trabalhadas;
     private int mes;

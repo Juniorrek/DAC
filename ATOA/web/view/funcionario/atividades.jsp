@@ -97,8 +97,8 @@
                                                 <div class="modal-body">
                                                     <div class="row">
                                                         <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label>Nome:</label>
+                                                            <div class="form-group ${erroNome ? 'has-error' : ''}">
+                                                                <label class="control-label">${erroNome ? 'Nome é obrigatório:' : 'Nome:'}</label>
                                                                 <input class="form-control" name="nome">
                                                             </div>
                                                         </div>
@@ -152,8 +152,8 @@
                                                 <td>${atividade.nome}</td>
                                                 <td>${atividade.descricao}</td>
                                                 <td>${atividade.tipo.nome}</td>
-                                                <td>${atividade.inicio}</td>
-                                                <td>${atividade.fim}</td>
+                                                <td class="data">${atividade.inicio}</td>
+                                                <td class="data">${atividade.fim}</td>
                                                 <td>${atividade.status}</td>
                                                 <td>
                                                     <c:if test = "${empty atividade.fim || atividade.status == 'FINALIZADA'}">
@@ -182,8 +182,8 @@
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <input type="hidden" class="form-control" name="id" >
-                                                            <div class="form-group">
-                                                                <label>Nome:</label>
+                                                            <div class="form-group ${erroNome2 ? 'has-error' : ''}">
+                                                                <label class="control-label">${erroNome2 ? 'Nome é obrigatório:' : 'Nome:'}</label>
                                                                 <input class="form-control" name="nome">
                                                             </div>
                                                         </div>
@@ -208,8 +208,8 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label>Início:</label>
+                                                            <div class="form-group ${erroInicio2 ? 'has-error' : ''}">
+                                                                <label class="control-label">${erroInicio2 ? 'Início é obrigatório:' : 'Início:'}</label>
                                                                 <input type="datetime-local" class="form-control" name="inicio">
                                                             </div>
                                                         </div>
@@ -219,13 +219,13 @@
                                                                 <input type="datetime-local" class="form-control" name="fim">
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-6" hidden>
                                                             <div class="form-group">
                                                                 <label>Status:</label>
                                                                 <select class="form-control" name="status">
                                                                     <option value="EM ANDAMENTO">EM ANDAMENTO</option>
                                                                     <option value="FINALIZADA">FINALIZADA</option>
-                                                                    <option value="PENDENTE" disabled>PENDENTE</option>
+                                                                    <option value="PENDENTE">PENDENTE</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -307,10 +307,10 @@
             $("#modalCorrigir input[name='descricao']").val(data[2]);
             var val = $("#modalCorrigir select[name='tipo']").find("option:contains("+data[3]+")").val();
             $("#modalCorrigir select[name='tipo']").val(val);
-            $("#modalCorrigir input[name='inicio']").val(data[4].replace(" ", "T").substr(0, 16));
+            $("#modalCorrigir input[name='inicio']").val(data[4].replace( /(\d{2})(.)(\d{2})(.)(\d{4})(.)(\d{2})(.)(\d{2,2})/ , "$5-$3-$1T$7:$9"));
             if (data[5] !== "") {
                 $("#modalCorrigir input[name='fim']").prop('disabled', false);
-                $("#modalCorrigir input[name='fim']").val(data[5].replace(" ", "T").substr(0, 16));
+                $("#modalCorrigir input[name='fim']").val(data[5].replace( /(\d{2})(.)(\d{2})(.)(\d{4})(.)(\d{2})(.)(\d{2,2})/ , "$5-$3-$1T$7:$9"));
             } else {
                 $("#modalCorrigir input[name='fim']").val("");
                 $("#modalCorrigir input[name='fim']").prop('disabled', true);
@@ -342,6 +342,21 @@
             }
         };
     </script>
+    
+    <script>
+        $("#dataTables-example tbody td").each(function() {
+           if ($(this).attr('class') === "data") {
+               $(this).html($(this).html().replace( /(\d{4})(.)(\d{2})(.)(\d{2})(.)(\d{2})(.)(\d{2,2})/ , "$5/$3/$1 $7:$9"));
+               var a = $(this).html();
+               $(this).html($(this).html().substr(0, a.length - 5))
+           }
+        });
+    </script>
+    
+    <c:if test="${erroNome}">
+        <script>$("#modalCriar").modal('show');</script>
+    </c:if>
+        <!-- não abro a outra modal pq precisa do trigger de cima pra pegar datatable.......... -->
 </body>
 
 </html>

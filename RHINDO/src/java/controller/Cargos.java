@@ -28,33 +28,79 @@ public class Cargos extends HttpServlet {
         String action = request.getParameter("action");
         
         if ("criar".equals(action)) {
-            Cargo cargo = new Cargo();
-            cargo.setNome(request.getParameter("nome"));
-            cargo.setSalario(Float.parseFloat(request.getParameter("salario")));
-            cargo.setRequisitos(request.getParameter("requisitos"));
-            cargo.setCarga_trabalho_minima_mes(Integer.parseInt(request.getParameter("carga_trabalho_minima_mes")));
-            cargo.setDesconto_impostos_gerais(Integer.parseInt(request.getParameter("desconto_impostos_gerais")));
+            boolean erro = false;
+            if ("".equals(request.getParameter("nome"))) {
+                erro = true;
+                request.setAttribute("erroNome", true);
+            }
+            if ("".equals(request.getParameter("salario"))) {
+                erro = true;
+                request.setAttribute("erroSalario", true);
+            }
+            if ("".equals(request.getParameter("carga_trabalho_minima_mes"))) {
+                erro = true;
+                request.setAttribute("erroCarga_trabalho_minima_mes", true);
+            }
+            if ("".equals(request.getParameter("desconto_impostos_gerais"))) {
+                erro = true;
+                request.setAttribute("erroDesconto_impostos_gerais", true);
+            }
+            //
+            if (erro) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Cargos?action=carregar");
+                requestDispatcher.forward(request, response);
+            } else {
+                Cargo cargo = new Cargo();
+                cargo.setNome(request.getParameter("nome"));
+                cargo.setSalario(Float.parseFloat(request.getParameter("salario").replace("R$ ", "").replace(".", "").replace(",", ".")));
+                cargo.setRequisitos(request.getParameter("requisitos"));
+                cargo.setCarga_trabalho_minima_mes(Integer.parseInt(request.getParameter("carga_trabalho_minima_mes")));
+                cargo.setDesconto_impostos_gerais(Integer.parseInt(request.getParameter("desconto_impostos_gerais")));
 
-            Facade.criarCargo(cargo);
+                Facade.criarCargo(cargo);
 
-            response.sendRedirect("/RHINDO/Cargos?action=carregar");
+                response.sendRedirect("/RHINDO/Cargos?action=carregar");
+            }
         } else if ("carregar".equals(action)) {
             List<Cargo> cargos = Facade.carregarCargo();
             request.setAttribute("cargos", cargos);
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/cargos.jsp");             
             requestDispatcher.forward(request, response);
         } else if ("editar".equals(action)) {
-            Cargo cargo = new Cargo();
-            cargo.setId(Integer.parseInt(request.getParameter("id")));
-            cargo.setNome(request.getParameter("nome"));
-            cargo.setSalario(Float.parseFloat(request.getParameter("salario")));
-            cargo.setRequisitos(request.getParameter("requisitos"));
-            cargo.setCarga_trabalho_minima_mes(Integer.parseInt(request.getParameter("carga_trabalho_minima_mes")));
-            cargo.setDesconto_impostos_gerais(Integer.parseInt(request.getParameter("desconto_impostos_gerais")));
-            
-            Facade.editarCargo(cargo);
-            
-            response.sendRedirect("/RHINDO/Cargos?action=carregar");
+            boolean erro = false;
+            if ("".equals(request.getParameter("nome"))) {
+                erro = true;
+                request.setAttribute("erroNome2", true);
+            }
+            if ("".equals(request.getParameter("salario"))) {
+                erro = true;
+                request.setAttribute("erroSalario2", true);
+            }
+            if ("".equals(request.getParameter("carga_trabalho_minima_mes"))) {
+                erro = true;
+                request.setAttribute("erroCarga_trabalho_minima_mes2", true);
+            }
+            if ("".equals(request.getParameter("desconto_impostos_gerais"))) {
+                erro = true;
+                request.setAttribute("erroDesconto_impostos_gerais2", true);
+            }
+            //
+            if (erro) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Cargos?action=carregar");
+                requestDispatcher.forward(request, response);
+            } else {
+                Cargo cargo = new Cargo();
+                cargo.setId(Integer.parseInt(request.getParameter("id")));
+                cargo.setNome(request.getParameter("nome"));
+                cargo.setSalario(Float.parseFloat(request.getParameter("salario").replace("R$ ", "").replace(".", "").replace(",", ".")));
+                cargo.setRequisitos(request.getParameter("requisitos"));
+                cargo.setCarga_trabalho_minima_mes(Integer.parseInt(request.getParameter("carga_trabalho_minima_mes")));
+                cargo.setDesconto_impostos_gerais(Integer.parseInt(request.getParameter("desconto_impostos_gerais")));
+
+                Facade.editarCargo(cargo);
+
+                response.sendRedirect("/RHINDO/Cargos?action=carregar");
+            }
         } else if ("deletar".equals(action)) {
             Facade.deletarCargo(Integer.parseInt(request.getParameter("id")));
 

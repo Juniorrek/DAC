@@ -84,8 +84,8 @@
                                             <th>Tipo</th>
                                             <th>Início</th>
                                             <th>Fim</th>
-                                            <th>Status</th>
                                             <th>Funcionario</th>
+                                            <th>Status</th>
                                             <th style="display: none;">ID2</th>
                                             <th style="display: none;">Nome2</th>
                                             <th style="display: none;">Descrição2</th>
@@ -104,16 +104,16 @@
                                                 <td>${correcao.antes.nome}</td>
                                                 <td>${correcao.antes.descricao}</td>
                                                 <td>${correcao.antes.tipo.nome}</td>
-                                                <td>${correcao.antes.inicio}</td>
-                                                <td>${correcao.antes.fim}</td>
+                                                <td class="data">${correcao.antes.inicio}</td>
+                                                <td class="data">${correcao.antes.fim}</td>
                                                 <td>${correcao.antes.funcionario.nome}</td>
                                                 <td>${correcao.antes.status}</td>
                                                 <td style="display: none;">${correcao.depois.id}</td>
                                                 <td style="display: none;">${correcao.depois.nome}</td>
                                                 <td style="display: none;">${correcao.depois.descricao}</td>
                                                 <td style="display: none;">${correcao.depois.tipo.nome}</td>
-                                                <td style="display: none;">${correcao.depois.inicio}</td>
-                                                <td style="display: none;">${correcao.depois.fim}</td>
+                                                <td class="data" style="display: none;">${correcao.depois.inicio}</td>
+                                                <td class="data" style="display: none;">${correcao.depois.fim}</td>
                                                 <td style="display: none;">${correcao.depois.funcionario.nome}</td>
                                                 <td style="display: none;">${correcao.depois.status}</td>
                                                 <td><button type="button" class="btn btn-info" id="vizualizar" style="margin-left: 10px;" data-toggle="modal" data-target="#modalVizualizar">Vizualizar</button>
@@ -289,10 +289,10 @@
             $("#modalVizualizar input[name='descricao1']").val(data[2]);
             var val = $("#modalVizualizar select[name='tipo1']").find("option:contains("+data[3]+")").val();
             $("#modalVizualizar select[name='tipo1']").val(val);
-            $("#modalVizualizar input[name='inicio1']").val(data[4].replace(" ", "T").substr(0, 16));
+            $("#modalVizualizar input[name='inicio1']").val(data[4].replace( /(\d{2})(.)(\d{2})(.)(\d{4})(.)(\d{2})(.)(\d{2,2})/ , "$5-$3-$1T$7:$9"));
             if (data[5] !== "") {
                 $("#modalVizualizar input[name='fim1']").prop('disabled', true);
-                $("#modalVizualizar input[name='fim1']").val(data[5].replace(" ", "T").substr(0, 16));
+                $("#modalVizualizar input[name='fim1']").val(data[5].replace( /(\d{2})(.)(\d{2})(.)(\d{4})(.)(\d{2})(.)(\d{2,2})/ , "$5-$3-$1T$7:$9"));
             } else {
                 $("#modalVizualizar input[name='fim1']").val("");
                 $("#modalVizualizar input[name='fim1']").prop('disabled', true);
@@ -305,10 +305,10 @@
             $("#modalVizualizar input[name='descricao2']").val(data[10]);
             var val = $("#modalVizualizar select[name='tipo2']").find("option:contains("+data[11]+")").val();
             $("#modalVizualizar select[name='tipo2']").val(val);
-            $("#modalVizualizar input[name='inicio2']").val(data[12].replace(" ", "T").substr(0, 16));
+            $("#modalVizualizar input[name='inicio2']").val(data[12].replace( /(\d{2})(.)(\d{2})(.)(\d{4})(.)(\d{2})(.)(\d{2,2})/ , "$5-$3-$1T$7:$9"));
             if (data[13] !== "") {
                 $("#modalVizualizar input[name='fim2']").prop('disabled', true);
-                $("#modalVizualizar input[name='fim2']").val(data[13].replace(" ", "T").substr(0, 16));
+                $("#modalVizualizar input[name='fim2']").val(data[13].replace( /(\d{2})(.)(\d{2})(.)(\d{4})(.)(\d{2})(.)(\d{2,2})/ , "$5-$3-$1T$7:$9"));
             } else {
                 $("#modalVizualizar input[name='fim2']").val("");
                 $("#modalVizualizar input[name='fim2']").prop('disabled', true);
@@ -342,6 +342,16 @@
                 "sSortDescending": ": Ordenar colunas de forma descendente"
             }
         };
+    </script>
+    
+    <script>
+        $("#dataTables-example tbody td").each(function() {
+           if ($(this).attr('class') === "data") {
+               $(this).html($(this).html().replace( /(\d{4})(.)(\d{2})(.)(\d{2})(.)(\d{2})(.)(\d{2,2})/ , "$5/$3/$1 $7:$9"));
+               var a = $(this).html();
+               $(this).html($(this).html().substr(0, a.length - 5))
+           }
+        });
     </script>
 </body>
 

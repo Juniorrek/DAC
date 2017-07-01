@@ -45,6 +45,14 @@ public class FuncionarioResource {
         return funcionario;
     }
     
+    @GET
+    @Path("/{cpf}/{senha}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Funcionario carregar(@PathParam("cpf") String cpf, @PathParam("senha") String senha) {
+        Funcionario funcionario = Facade.carregarFuncionario(cpf, senha);
+        return funcionario;
+    }
+    
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public void editar(Funcionario funcionario) {

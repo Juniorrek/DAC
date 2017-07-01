@@ -60,4 +60,24 @@ public class AtividadeResource {
         GenericEntity<List<Folha>> lista = new GenericEntity<List<Folha>>(folhas) {};
         return Response.ok().entity(lista).build();
     }
+    
+    @GET
+    @Path("/horas_trabalhadas_dep_mes/{mes}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response horas_trabalhadas_dep_mes(@PathParam("mes") int mes) {
+        List<Folha> list = Facade.horas_trabalhadas_dep_mes(mes);
+        
+        GenericEntity<List<Folha>> lista = new GenericEntity<List<Folha>>(list) {};
+        return Response.ok().entity(lista).build();
+    }
+    
+    @GET
+    @Path("/funcncumpriu/{mes}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response funcncumpriu(@PathParam("mes") int mes) {
+        List<Folha> list = Facade.funcncumpriu(mes);
+        
+        GenericEntity<List<Folha>> lista = new GenericEntity<List<Folha>>(list) {};
+        return Response.ok().entity(lista).build();
+    }
 }

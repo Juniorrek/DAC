@@ -98,16 +98,16 @@
                                         <form action ="/RHINDO/Cargos?action=criar" method="POST">
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    <div class="col-lg-4">
-                                                        <div class="form-group">
-                                                            <label>Nome:</label>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group ${erroNome ? 'has-error' : ''}">
+                                                            <label class="control-label">${erroNome ? 'Nome é obrigatório:' : 'Nome:'}</label>
                                                             <input class="form-control" name="nome">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="form-group">
-                                                            <label>Salário:</label>
-                                                            <input class="form-control" name="salario">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group ${erroSalario ? 'has-error' : ''}">
+                                                            <label class="control-label">${erroSalario ? 'Salário é obrigatório:' : 'Salário:'}</label>
+                                                            <input class="form-control salario" name="salario">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -117,15 +117,15 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
-                                                        <div class="form-group">
-                                                            <label>Carga de trabalho min./mês</label>
-                                                            <input class="form-control" name="carga_trabalho_minima_mes">
+                                                        <div class="form-group ${erroCarga_trabalho_minima_mes ? 'has-error' : ''}">
+                                                            <label class="control-label">${erroCarga_trabalho_minima_mes ? 'Carga de trabalho min./mês é obrigatória:' : 'Carga de trabalho min./mês:'}</label>
+                                                            <input class="form-control horas" name="carga_trabalho_minima_mes">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-2">
-                                                        <div class="form-group">
-                                                            <label>% desconto:</label>
-                                                            <input class="form-control" name="desconto_impostos_gerais">
+                                                        <div class="form-group ${erroDesconto_impostos_gerais ? 'has-error' : ''}">
+                                                            <label class="control-label">${erroDesconto_impostos_gerais ? '% desconto é obrigatório:' : '% desconto:'}</label>
+                                                            <input class="form-control desconto" name="desconto_impostos_gerais">
                                                         </div>
                                                     </div>
                                                     <!-- /.col-lg-6 (nested) -->
@@ -159,10 +159,10 @@
                                         <tr>
                                             <td style="display: none;">${cargo.id}</td>
                                             <td>${cargo.nome}</td>
-                                            <td>${cargo.salario}</td>
+                                            <td class="tdsal">${cargo.salario}</td>
                                             <td>${cargo.requisitos}</td>
-                                            <td>${cargo.carga_trabalho_minima_mes}</td>
-                                            <td>${cargo.desconto_impostos_gerais}</td>
+                                            <td class="tdhor">${cargo.carga_trabalho_minima_mes}</td>
+                                            <td class="tddes">${cargo.desconto_impostos_gerais}</td>
                                             <td>
                                                 <button type="button" class="btn btn-info" id="editar" style="margin-left: 10px;" data-toggle="modal" data-target="#modalEditar">Editar</button>
                                                 <button type="button" class="btn btn-danger"  onclick="deletar(${cargo.id})" style="margin-left: 10px;" data-toggle="modal" data-target="#modalDeletar">Deletar</button>
@@ -182,17 +182,17 @@
                                         <form action ="/RHINDO/Cargos?action=editar" method="POST">
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-6">
                                                         <input type="hidden" class="form-control" name="id" >
-                                                        <div class="form-group">
-                                                            <label>Nome:</label>
+                                                        <div class="form-group ${erroNome2 ? 'has-error' : ''}">
+                                                            <label class="control-label">${erroNome2 ? 'Nome é obrigatório:' : 'Nome:'}</label>
                                                             <input class="form-control" name="nome">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="form-group">
-                                                            <label>Salário:</label>
-                                                            <input class="form-control" name="salario">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group ${erroSalario2 ? 'has-error' : ''}">
+                                                            <label class="control-label">${erroSalario2 ? 'Salário é obrigatório:' : 'Salário:'}</label>
+                                                            <input class="form-control salario" name="salario">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -202,15 +202,15 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
-                                                        <div class="form-group">
-                                                            <label>Carga de trabalho min./mês</label>
-                                                            <input class="form-control" name="carga_trabalho_minima_mes">
+                                                        <div class="form-group ${erroCarga_trabalho_minima_mes2 ? 'has-error' : ''}">
+                                                            <label class="control-label">${erroCarga_trabalho_minima_mes2 ? 'Carga de trabalho min./mês é obrigatória:' : 'Carga de trabalho min./mês'}</label>
+                                                            <input class="form-control horas" name="carga_trabalho_minima_mes">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-2">
-                                                        <div class="form-group">
-                                                            <label>% desconto:</label>
-                                                            <input class="form-control" name="desconto_impostos_gerais">
+                                                        <div class="form-group ${erroDesconto_impostos_gerais2 ? 'has-error' : ''}">
+                                                            <label class="control-label">${erroDesconto_impostos_gerais2 ? '% desconto é obrigatório:' : '% desconto:'}</label>
+                                                            <input class="form-control desconto" name="desconto_impostos_gerais">
                                                         </div>
                                                     </div>
                                                     <!-- /.col-lg-6 (nested) -->
@@ -318,6 +318,31 @@
             }
         };
     </script>
+    
+    <script src="/RHINDO/jquery.maskMoney.min.js"></script>
+    <script src="/RHINDO/jquery.maskedinput.min.js"></script>
+    <script>
+        $(".salario").maskMoney({"prefix" : "R$ ", "decimal" : ",", "thousands" : "."});
+        $(".desconto").mask("9?99 %");
+        $(".horas").mask("9?9999999999999 hr(s)", { placeholder: "" });
+    </script>
+    <script>
+        $("#dataTables-example tbody td").each(function() {
+           if ($(this).attr('class') === "tdsal") {
+               $(this).html($(this).html().replace(".", ","));
+               
+               //if ($(this).html().substr())
+               var a = $(this).html();
+               b = $(this).html().substr(a.length - 3, a.length);
+               if (b[1] === ",") {
+                   $(this).html($(this).html().concat("0"));
+               }
+           }
+        });
+    </script>
+    <c:if test="${erroNome || erroSalario || erroCarga_trabalho_minima_mes || erroDesconto_impostos_gerais}">
+        <script>$("#modalCriar").modal('show');</script>
+    </c:if>
 </body>
 
 </html>

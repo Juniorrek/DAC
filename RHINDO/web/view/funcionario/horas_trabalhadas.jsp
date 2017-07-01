@@ -56,10 +56,8 @@
                         <li>
                             <a href="/RHINDO/view/pagina_inicial.jsp"><i class="fa fa-home fa-fw"></i> Página inicial</a>
                         </li>
-                        <%
-                            out.println("<li><a href=\"horas_trabalhadas.jsp\"><i class=\"fa fa-clock-o fa-fw\"></i> Horas trabalhas</a></li>");
-                            out.println("<li><a href=\"holerite.jsp\"><i class=\"fa fa-list-alt fa-fw\"></i> Holerite</a></li>");
-                        %>
+                        <li><a href="/RHINDO/view/funcionario/horas_trabalhadas.jsp"><i class="fa fa-clock-o fa-fw"></i> Horas trabalhas</a></li>
+                                <li><a href="/RHINDO/Holerite?action=obter"><i class="fa fa-list-alt fa-fw"></i> Holerite</a></li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -82,14 +80,14 @@
                             <div class="row">
                                 <form action="/RHINDO/Folha?action=horas_trabalhadas" method="post" target="_blank">
                                     <div class="col-lg-2">
-                                        <div class="form-group">
-                                            <label>De:</label>
+                                        <div class="form-group ${erroDe ? 'has-error' : ''}">
+                                            <label class="control-label">${erroAte ? 'De é obrigatório:' : 'De:'}</label>
                                             <input type="date" name="de">
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
-                                        <div class="form-group">
-                                            <label>Até:</label>
+                                        <div class="form-group ${erroAte ? 'has-error' : ''}">
+                                            <label class="control-label">${erroAte ? 'Até é obrigatório:' : 'Até:'}</label>
                                             <input type="date" name="ate">
                                         </div>
                                     </div>

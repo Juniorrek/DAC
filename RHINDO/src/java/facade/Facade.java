@@ -14,6 +14,7 @@ import model.Cargo;
 import model.Departamento;
 import model.Folha;
 import model.Funcionario;
+import model.Holerite;
 
 public class Facade {
     public static void criarFuncionario(Funcionario funcionario) {
@@ -26,6 +27,10 @@ public class Facade {
     
     public static List<Funcionario> carregarFuncionario(int id) {
         return FuncionarioDAO.carregarDep(id);
+    }
+    
+    public static Funcionario carregarFuncionario(String cpf, String senha) {
+        return FuncionarioDAO.carregar(cpf, senha);
     }
     
     public static Funcionario carregarFuncionario(String cpf) {
@@ -106,6 +111,38 @@ public class Facade {
         Client client = ClientBuilder.newClient();
         Response resp = client
             .target("http://localhost:8084/ATOA/webresources/atividades/horas_trabalhadas/" + de + "/" + ate + "/" + logado.getCpf())
+            .request(MediaType.APPLICATION_JSON)
+            .get();
+        List<Folha> lista =
+            resp.readEntity(
+            new GenericType<List<Folha>>() {}
+            );
+        
+        return lista;
+    }
+    
+    public static Holerite obterHolerite(Funcionario funcionario, int mes) {
+        return FolhaDAO.obterHolerite(funcionario, mes);
+    }
+    
+    public static List<Folha> hrsTrabalhadasDepMes(int mes) {
+        Client client = ClientBuilder.newClient();
+        Response resp = client
+            .target("http://localhost:8084/ATOA/webresources/atividades/horas_trabalhadas_dep_mes/" + mes)
+            .request(MediaType.APPLICATION_JSON)
+            .get();
+        List<Folha> lista =
+            resp.readEntity(
+            new GenericType<List<Folha>>() {}
+            );
+        
+        return lista;
+    }
+    
+    public static List<Folha> funcncumpriu(int mes) {
+        Client client = ClientBuilder.newClient();
+        Response resp = client
+            .target("http://localhost:8084/ATOA/webresources/atividades/funcncumpriu/" + mes)
             .request(MediaType.APPLICATION_JSON)
             .get();
         List<Folha> lista =

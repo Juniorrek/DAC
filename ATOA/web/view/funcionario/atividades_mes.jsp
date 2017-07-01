@@ -104,8 +104,8 @@
                                             <td>${atividade.nome}</td>
                                             <td>${atividade.descricao}</td>
                                             <td>${atividade.tipo.nome}</td>
-                                            <td>${atividade.inicio}</td>
-                                            <td>${atividade.fim}</td>
+                                            <td class="data">${atividade.inicio}</td>
+                                            <td class="data">${atividade.fim}</td>
                                             <td>${atividade.status}</td>
                                         </tr>
                                     </c:forEach>
@@ -164,6 +164,16 @@
                 "sSortDescending": ": Ordenar colunas de forma descendente"
             }
         };
+    </script>
+    
+    <script>
+        $("#dataTables-example tbody td").each(function() {
+           if ($(this).attr('class') === "data") {
+               $(this).html($(this).html().replace( /(\d{4})(.)(\d{2})(.)(\d{2})(.)(\d{2})(.)(\d{2,2})/ , "$5/$3/$1 $7:$9"));
+               var a = $(this).html();
+               $(this).html($(this).html().substr(0, a.length - 5))
+           }
+        });
     </script>
 </body>
 

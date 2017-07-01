@@ -33,6 +33,15 @@ public class Facade {
         return lista;
     }
     
+    public static Funcionario carregarFuncionario(String cpf, String senha) {
+        Client client = ClientBuilder.newClient();
+        Funcionario funcionario = client
+                    .target("http://localhost:8084/RHINDO/webresources/funcionarios/" + cpf + "/" + senha)
+                    .request(MediaType.APPLICATION_JSON+"; charset=utf-8")
+                    .get(Funcionario.class);
+        return funcionario;
+    }
+    
     public static Funcionario carregarFuncionario(String cpf) {
         Client client = ClientBuilder.newClient();
         Funcionario funcionario = client
@@ -142,8 +151,8 @@ public class Facade {
         AtividadeDAO.solicitarCorrigir(atividade);
     }
     
-    public static List<Map<String, Atividade>> carregarCorrecoes() {
-        return AtividadeDAO.carregarCorrecoes();
+    public static List<Map<String, Atividade>> carregarCorrecoes(Funcionario logado) {
+        return AtividadeDAO.carregarCorrecoes(logado);
     }
     
     public static void aprovarCorrecao(int id) {
@@ -176,6 +185,14 @@ public class Facade {
     
     public static List<Folha> horas_trabalhadas(String de, String ate, String cpf) {
         return AtividadeDAO.horas_trabalhadas(de, ate, cpf);
+    }
+    
+    public static List<Folha> horas_trabalhadas_dep_mes(int mes) {
+        return AtividadeDAO.horas_trabalhadas_dep_mes(mes);
+    }
+    
+    public static List<Folha> funcncumpriu(int mes) {
+        return AtividadeDAO.funcncumpriu(mes);
     }
     
     /*public static void corrigirAtividade(Atividade atividade) {

@@ -82,29 +82,72 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label>Tipo de relatório:</label>
-                                        <select class="form-control">
-                                            <option>Funcionários</option>
-                                            <option>Horas trabalhadas</option>
-                                            <option>Funcionários que não cumpriram carga mínima</option>
-                                        </select>
+                                        <label class="radio">
+                                            <input type="radio" name="opt" id="optionsRadiosInline1" value="1" checked="">Funcionários da empresa
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" name="opt" id="optionsRadiosInline2" value="2">Hrs trabalhadas/departamento
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" name="opt" id="optionsRadiosInline2" value="3">Funcionarios que não cumpriram carga horária
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label style="display:none;">Tipo de relatório:</label><br>
-                                        <button class="btn btn-info">Gerar</button>
+                                    <div id="opt1" class="desc form-group">
+                                        <form action="/RHINDO/Relatorios?action=funcionarios" method="post" target="_blank">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-info">Gerar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div id="opt2" class="desc form-group" hidden>
+                                        <form action="/RHINDO/Relatorios?action=hrsdep" method="post" target="_blank">
+                                            <label>Mês:</label>
+                                            <select name="mes" class="form-control form-group">
+                                                <option value="1">Janeiro</option>
+                                                <option value="2">Fevereiro</option>
+                                                <option value="3">Março</option>
+                                                <option value="4">Abril</option>
+                                                <option value="5">Maio</option>
+                                                <option value="6">Junho</option>
+                                                <option value="7">Julho</option>
+                                                <option value="8">Agosto</option>
+                                                <option value="9">Setembro</option>
+                                                <option value="10">Outubro</option>
+                                                <option value="11">Novembro</option>
+                                                <option value="12">Dezembro</option>
+                                            </select>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-info">Gerar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div id="opt3" class="desc form-group" hidden>
+                                        <form action="/RHINDO/Relatorios?action=funcncumpriu" method="post" target="_blank">
+                                            <label>Mês:</label>
+                                            <select name="mes" class="form-control form-group">
+                                                <option value="1">Janeiro</option>
+                                                <option value="2">Fevereiro</option>
+                                                <option value="3">Março</option>
+                                                <option value="4">Abril</option>
+                                                <option value="5">Maio</option>
+                                                <option value="6">Junho</option>
+                                                <option value="7">Julho</option>
+                                                <option value="8">Agosto</option>
+                                                <option value="9">Setembro</option>
+                                                <option value="10">Outubro</option>
+                                                <option value="11">Novembro</option>
+                                                <option value="12">Dezembro</option>
+                                            </select>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-info">Gerar</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                             <!-- /.row (nested) -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Relatório
-                                </div>
-                                <div class="panel-body">
-                                    
-                                </div>
-                            </div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -120,7 +163,14 @@
     <!-- /#wrapper -->
 
     <%@ include file="../scripts_js.html" %>
+    <script>
+        $("input[name='opt']").click(function() {
+            var test = $(this).val();
 
+            $("div.desc").hide();
+            $("#opt" + test).show();
+        });
+    </script>
 </body>
 
 </html>

@@ -99,47 +99,58 @@ public class Relatorios extends HttpServlet {
                 }
             }
         } else if ("dia".equals(action)) {
-            String dia = request.getParameter("dia");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Calendar cal = Calendar.getInstance();
-            try {
-                cal.setTime(sdf.parse(dia));
-            } catch (ParseException ex) {
-                Logger.getLogger(Relatorios.class.getName()).log(Level.SEVERE, null, ex);
+            boolean erro = false;
+            if ("".equals(request.getParameter("dia"))) {
+                erro = true;
+                request.setAttribute("erroDia", "Seleciona uma data !!!");
             }
-            HttpSession session = request.getSession();
-            Funcionario logado = (Funcionario) session.getAttribute("logado");
-
-            Connection con = new ConnectionFactory().getConnection();
-            try {
-                String jasper = request.getContextPath() + "/atividades_dia.jasper";
-                String host = "http://" + request.getServerName() + ":" + request.getServerPort();
-
-                URL jasperURL = new URL(host + jasper);
-
-                HashMap params = new HashMap();
-                params.put("Dia", cal.get(Calendar.DAY_OF_MONTH));
-                params.put("Mes", cal.get(Calendar.MONTH) + 1);
-                params.put("Ano", cal.get(Calendar.YEAR));
-                params.put("Departamento", logado.getDepartamento().getId());
-
-                byte[] bytes = JasperRunManager.runReportToPdf(jasperURL.openStream(), params, con);
-
-                if (bytes != null) {
-                    response.setContentType("application/pdf");
-
-                    OutputStream ops = response.getOutputStream();
-
-                    ops.write(bytes);
+            //
+            if (erro) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Relatorios?action=form");
+                requestDispatcher.forward(request, response);
+            } else {
+                String dia = request.getParameter("dia");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                try {
+                    cal.setTime(sdf.parse(dia));
+                } catch (ParseException ex) {
+                    Logger.getLogger(Relatorios.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (JRException e) {
-                System.out.println("Erro no jasper : " + e.getMessage());
-            } finally {
-                if (con != null) {
-                    try {
-                        con.close();
-                    } catch (Exception e) {
+                HttpSession session = request.getSession();
+                Funcionario logado = (Funcionario) session.getAttribute("logado");
 
+                Connection con = new ConnectionFactory().getConnection();
+                try {
+                    String jasper = request.getContextPath() + "/atividades_dia.jasper";
+                    String host = "http://" + request.getServerName() + ":" + request.getServerPort();
+
+                    URL jasperURL = new URL(host + jasper);
+
+                    HashMap params = new HashMap();
+                    params.put("Dia", cal.get(Calendar.DAY_OF_MONTH));
+                    params.put("Mes", cal.get(Calendar.MONTH) + 1);
+                    params.put("Ano", cal.get(Calendar.YEAR));
+                    params.put("Departamento", logado.getDepartamento().getId());
+
+                    byte[] bytes = JasperRunManager.runReportToPdf(jasperURL.openStream(), params, con);
+
+                    if (bytes != null) {
+                        response.setContentType("application/pdf");
+
+                        OutputStream ops = response.getOutputStream();
+
+                        ops.write(bytes);
+                    }
+                } catch (JRException e) {
+                    System.out.println("Erro no jasper : " + e.getMessage());
+                } finally {
+                    if (con != null) {
+                        try {
+                            con.close();
+                        } catch (Exception e) {
+
+                        }
                     }
                 }
             }
