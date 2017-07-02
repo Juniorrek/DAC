@@ -585,7 +585,7 @@ public class AtividadeDAO {
         try {
             stmt = connection.prepareStatement("SELECT funcionario as funcionario, SUM(((TIMESTAMPDIFF(MINUTE, inicio, fim)) - (TIMESTAMPDIFF(DAY, inicio, fim) * 16 * 60)) / 60) as horas_trabalhadas, MONTH(fim) as mes " +
                                     "FROM Atividade " +
-                                    "WHERE funcionario = ? AND fim BETWEEN ? AND ? " +
+                                    "WHERE funcionario = ? AND status != 'EM ANDAMENTO' AND fim BETWEEN ? AND ? " +
                                     "GROUP BY MONTH(fim)");
             stmt.setString(1, cpf);
             stmt.setString(2, de);
