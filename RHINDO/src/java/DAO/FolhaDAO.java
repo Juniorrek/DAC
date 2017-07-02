@@ -49,7 +49,7 @@ public class FolhaDAO {
                 stmt.executeUpdate();
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -86,7 +86,7 @@ public class FolhaDAO {
             }
             return holerite;
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -95,5 +95,6 @@ public class FolhaDAO {
                 try { connection.close(); }
                 catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
         }
+        return null;
     }
 }

@@ -23,7 +23,7 @@ public class CargoDAO {
             stmt.setInt(5, cargo.getDesconto_impostos_gerais());
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -57,7 +57,7 @@ public class CargoDAO {
                 
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -95,7 +95,7 @@ public class CargoDAO {
                 return null;
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -104,6 +104,7 @@ public class CargoDAO {
                 try { connection.close(); }
                 catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
         }
+        return null;
     }
 
     public static void editar(Cargo cargo) {
@@ -122,7 +123,7 @@ public class CargoDAO {
             stmt.setInt(6, cargo.getId());
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -143,7 +144,7 @@ public class CargoDAO {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }

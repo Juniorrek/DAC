@@ -15,7 +15,7 @@ public class ConnectionFactory {
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/dac", "root", "");
         } catch (SQLException exception) { 
                 System.out.println("Erro ao conectar ao banco: " + exception);
-                throw new RuntimeException(exception); 
+                //throw new RuntimeException(exception); 
         } catch (ClassNotFoundException ex) {
              Logger.getLogger(ConnectionFactory.class.getName()).log(Level.SEVERE, null, ex);
          }

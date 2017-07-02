@@ -32,7 +32,7 @@ public class TipoDAO {
             int affectedRows = stmt.executeUpdate();
             
             if (affectedRows == 0) {
-                throw new SQLException("Creating user failed, no rows affected.");
+                //throw new SQLException("Creating user failed, no rows affected.");
             }
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -42,11 +42,11 @@ public class TipoDAO {
                     stmt.setInt(2, departamento.getId());
                     stmt.executeUpdate();
                 } else {
-                    throw new SQLException("Creating user failed, no ID obtained.");
+                    //throw new SQLException("Creating user failed, no ID obtained.");
                 }
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -79,7 +79,7 @@ public class TipoDAO {
                 
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -114,7 +114,7 @@ public class TipoDAO {
                 return null;
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -138,7 +138,7 @@ public class TipoDAO {
             stmt.setInt(3, tipo.getId());
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -164,7 +164,7 @@ public class TipoDAO {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }

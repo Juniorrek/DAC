@@ -51,7 +51,7 @@ public class AtividadeDAO {
             System.out.println("vou inserir");
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -89,7 +89,7 @@ public class AtividadeDAO {
                 
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -139,7 +139,7 @@ public class AtividadeDAO {
                 stmt.executeUpdate();
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -177,7 +177,7 @@ public class AtividadeDAO {
             
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -240,7 +240,7 @@ public class AtividadeDAO {
                 }
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -263,7 +263,7 @@ public class AtividadeDAO {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -330,7 +330,7 @@ public class AtividadeDAO {
             stmt.setInt(8, atividade.getId());
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -375,7 +375,7 @@ public class AtividadeDAO {
                 
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -416,7 +416,7 @@ public class AtividadeDAO {
                 }
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -479,7 +479,7 @@ public class AtividadeDAO {
                 }
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -511,7 +511,7 @@ public class AtividadeDAO {
             stmt.setString(1, cpf);
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -564,7 +564,7 @@ public class AtividadeDAO {
                 }
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -602,7 +602,7 @@ public class AtividadeDAO {
                 folhas.add(folha);
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -639,7 +639,7 @@ public class AtividadeDAO {
                 folhas.add(folha);
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -678,7 +678,7 @@ public class AtividadeDAO {
                 }
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }

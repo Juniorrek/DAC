@@ -168,7 +168,7 @@
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
                                                                 <label>Número:</label>
-                                                                <input class="form-control" name="numero" type="number">
+                                                                <input class="form-control" name="numero" type="number" value="0">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-5">

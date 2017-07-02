@@ -20,7 +20,7 @@ public class DepartamentoDAO {
             stmt.setString(2, departamento.getLocalizacao());
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -51,7 +51,7 @@ public class DepartamentoDAO {
                 
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -87,7 +87,7 @@ public class DepartamentoDAO {
                 return null;
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -96,6 +96,7 @@ public class DepartamentoDAO {
                 try { connection.close(); }
                 catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
         }
+        return null;
     }
 
     public static void editar(Departamento departamento) {
@@ -111,7 +112,7 @@ public class DepartamentoDAO {
             stmt.setInt(3, departamento.getId());
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -132,7 +133,7 @@ public class DepartamentoDAO {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -154,7 +155,7 @@ public class DepartamentoDAO {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }

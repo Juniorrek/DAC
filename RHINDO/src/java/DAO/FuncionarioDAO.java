@@ -50,7 +50,7 @@ public class FuncionarioDAO {
             stmt.setString(15, senha);
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -96,7 +96,7 @@ public class FuncionarioDAO {
                 
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -146,7 +146,7 @@ public class FuncionarioDAO {
                 
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -205,7 +205,7 @@ public class FuncionarioDAO {
                 return null;
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -214,6 +214,7 @@ public class FuncionarioDAO {
                 try { connection.close(); }
                 catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
         }
+        return null;
     }
     
     public static Funcionario carregar(String cpf) {
@@ -254,7 +255,7 @@ public class FuncionarioDAO {
                 return null;
             }
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -263,6 +264,7 @@ public class FuncionarioDAO {
                 try { connection.close(); }
                 catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
         }
+        return null;
     }
 
     public static void editar(Funcionario funcionario) {
@@ -323,7 +325,7 @@ public class FuncionarioDAO {
             
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
@@ -344,7 +346,7 @@ public class FuncionarioDAO {
             stmt.setString(1, cpf);
             stmt.executeUpdate();
         } catch (SQLException exception) {
-            throw new RuntimeException("Erro. Origem="+exception.getMessage());
+            //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
                 try { stmt.close(); }
