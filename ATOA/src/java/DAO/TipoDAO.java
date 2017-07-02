@@ -123,6 +123,7 @@ public class TipoDAO {
                 try { connection.close(); }
                 catch (SQLException exception) { System.out.println("Erro ao fechar conexão. Ex="+exception.getMessage()); }
         }
+        return null;
     }
 
     public static void editar(Tipo tipo) {
