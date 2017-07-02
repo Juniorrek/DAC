@@ -57,7 +57,7 @@ public class Holerite extends HttpServlet {
             cal.setTimeInMillis(timestamp);
             
             model.Holerite holerite = Facade.obterHolerite(logado, cal.get(Calendar.MONTH) + 1);
-            
+            System.out.println(holerite.getSalario_bruto());
             request.setAttribute("holerite", holerite);
             
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/funcionario/holerite.jsp");             

@@ -88,7 +88,24 @@
                     <h2 class="page-header">Sistema de ATi​ vidades O​rdenadamente A​lcançáveis</h2>
                     <p class="lead">O Sistema de Atividades obtém a lista de funcionários do departamento através de solicitação ao Sistema de RH.</p>
                     <c:if test="${not empty notificacao}">
-                         <p class="lead">O departamento tem atividades a serem fechadas !!!</p>
+                        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="myModalLabel">NOTIFICAÇÃO</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        O departamento tem atividades para serem fechadas !!!
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
                     </c:if>
                 </div>
                 <!-- /.col-lg-12 -->
@@ -101,7 +118,11 @@
     <!-- /#wrapper -->
 
     <%@ include file="scripts_js.html" %>
-
+    <c:if test="${not empty notificacao && logado.perfil == 'Gerente de Departamento'}">
+        <script>
+            $("#modal").modal("show");
+        </script>
+    </c:if>
 </body>
 
 </html>

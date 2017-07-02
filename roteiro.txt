@@ -1,0 +1,37 @@
+0 - Apagar tudo.
+DELETE FROM Atividade;
+ALTER TABLE Atividade AUTO_INCREMENT = 1;
+DELETE FROM RelTipoDepartamento;
+DELETE FROM Tipo;
+ALTER TABLE Tipo AUTO_INCREMENT = 1;
+DELETE FROM CorrigirAtividade;
+DELETE FROM Folha;
+DELETE FROM Funcionario;
+DELETE FROM Departamento;
+ALTER TABLE Departamento AUTO_INCREMENT = 1;
+DELETE FROM Cargo;
+ALTER TABLE Cargo AUTO_INCREMENT = 1;
+
+1 - Inserir departamento, cargo e funcionário na mão.
+INSERT INTO Departamento (nome, localizacao, notificacao)
+VALUES ('departamento1', 'centro', false);
+INSERT INTO Cargo (nome, salario, requisitos, carga_trabalho_minima_mes, desconto_impostos_gerais)
+VALUES ('cargo1', 1000, 'nenhum', 80, 10);
+INSERT INTO Funcionario (cpf, nome, rg, celular, email, rua, numero, bairro, cep, cidade, estado, departamento, cargo, perfil, senha)
+VALUES ('11111111111', 'ADMIN', '117068597', '41998475150', 'email@email.com', 'rua', 1, 'bairro', 64018526, 'cidade', 'PR', 1, 1, 'Gerente de RH', 'caf1a3dfb505ffed0d024130f58c5cfa');
+
+2 - Logar com esse gerente e adicionar mais 1 departamento e 4 funcionarios (2 func, 2 gerente dep)
+cpfs: 59626322063, 23270542062, 25867868079, 02378971052
+
+3 - Logar com os gerentes de dep e cadastrar 1 tipo
+
+4 - Logar no ATOA com o func1 criar atividade finalizar e corrigir pra umas 8hrs, dps entrar no gerente desse dep e aceitar
+	Fazer o msm pros do outro departamento, só que n vai fechar as atividades
+
+5 - No gerente do dep fechar as atividades e mostrar os relatorios
+
+6 - Logar no RHINDO com o admin e fechar a folha e mostrar os relatorios
+
+7 - Logar no RHINDO com esse func e mostrar as funcionalidades
+
+8 - Voltar no ATOA para ver o departamento q tem notificação

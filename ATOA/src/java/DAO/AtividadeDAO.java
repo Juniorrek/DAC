@@ -120,12 +120,16 @@ public class AtividadeDAO {
                     stmt = connection.prepareStatement("UPDATE Atividade "
                                              + "SET fim = ?, status = 'FECHADA' "
                                              + "WHERE id = ?");
+                    
                 }
             }
             
             stmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             stmt.setInt(2, id);
             stmt.executeUpdate();
+            //desnotifica all
+                    stmt = connection.prepareStatement("UPDATE Departamento SET notificacao = false");
+                    stmt.executeUpdate();
             
             stmt = connection.prepareStatement("SELECT * "
                                              + "FROM CorrigirAtividade "
@@ -434,6 +438,8 @@ public class AtividadeDAO {
         PreparedStatement stmt = null;
 
         try {
+            
+            
             stmt = connection.prepareStatement("SELECT * FROM Atividade "
                                                 + "WHERE status = 'FINALIZADA' ");
             ResultSet rs = stmt.executeQuery();
@@ -459,6 +465,9 @@ public class AtividadeDAO {
                 "WHERE status = 'FINALIZADA' AND funcionario.departamento = ? ");
             stmt.setInt(1, logado.getDepartamento().getId());
             stmt.executeUpdate();*/
+            //desnotifica all
+                    stmt = connection.prepareStatement("UPDATE Departamento SET notificacao = false");
+                    stmt.executeUpdate();
             
             stmt = connection.prepareStatement("SELECT * FROM Atividade "
                                                 + "WHERE status = 'EM ANDAMENTO' ");
@@ -554,14 +563,15 @@ public class AtividadeDAO {
                     folhas.add(folha);
                 } while(resultSet.next());
 
-                //NOTIFICAÇÃO
-                stmt = connection.prepareStatement("SELECT * FROM Atividade WHERE status != 'FECHADA' AND MONTH(fim) = ? GROUP BY funcionario");
-                stmt.setInt(1, mes);
-                resultSet = stmt.executeQuery();
-                while (resultSet.next()) {
-                    Funcionario funcionario = Facade.carregarFuncionario(resultSet.getString("funcionario"));//PRA PEGAR DEPARTAMENTO
-                    Facade.notificarDepartamento(funcionario.getDepartamento());
-                }
+                
+            }
+            //NOTIFICAÇÃO
+            stmt = connection.prepareStatement("SELECT * FROM Atividade WHERE status != 'FECHADA' AND status != 'CONSOLIDADA' AND MONTH(inicio) = ? GROUP BY funcionario");
+            stmt.setInt(1, mes);
+            resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                Funcionario funcionario = Facade.carregarFuncionario(resultSet.getString("funcionario"));//PRA PEGAR DEPARTAMENTO
+                Facade.notificarDepartamento(funcionario.getDepartamento());
             }
         } catch (SQLException exception) {
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());

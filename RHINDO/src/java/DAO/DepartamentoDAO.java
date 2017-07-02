@@ -14,8 +14,8 @@ public class DepartamentoDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = connection.prepareStatement("INSERT INTO Departamento (nome, localizacao) "
-                                             + "VALUES (?, ?)");
+            stmt = connection.prepareStatement("INSERT INTO Departamento (nome, localizacao, notificacao) "
+                                             + "VALUES (?, ?, false)");
             stmt.setString(1, departamento.getNome());
             stmt.setString(2, departamento.getLocalizacao());
             stmt.executeUpdate();
