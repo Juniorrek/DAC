@@ -20,7 +20,7 @@ import model.Tipo;
  * @author Fornalha
  */
 public class TipoDAO {
-    public static void criar(Tipo tipo, Departamento departamento) {
+    public static String criar(Tipo tipo, Departamento departamento) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -45,7 +45,9 @@ public class TipoDAO {
                     //throw new SQLException("Creating user failed, no ID obtained.");
                 }
             }
+            return "Tipo criado com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao criar tipo !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -126,7 +128,7 @@ public class TipoDAO {
         return null;
     }
 
-    public static void editar(Tipo tipo) {
+    public static String editar(Tipo tipo) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -138,7 +140,9 @@ public class TipoDAO {
             stmt.setString(2, tipo.getDescricao());
             stmt.setInt(3, tipo.getId());
             stmt.executeUpdate();
+            return "Tipo editado com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao editar tipo !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -150,21 +154,28 @@ public class TipoDAO {
         }
     }
 
-    public static void deletar(int id) {
+    public static String deletar(int id) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
         try {
-            stmt = connection.prepareStatement("DELETE FROM RelTipoDepartamento "
-                                             + "WHERE tipo = ? ");
+            stmt = connection.prepareStatement("SELECT * FROM Atividade WHERE tipo = ?");
             stmt.setInt(1, id);
-            stmt.executeUpdate();
-            
+            ResultSet rs = stmt.executeQuery();
+            if (!rs.next()) {
+                stmt = connection.prepareStatement("DELETE FROM RelTipoDepartamento "
+                                             + "WHERE tipo = ? ");
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+            }
             stmt = connection.prepareStatement("DELETE FROM Tipo "
                                              + "WHERE id = ? ");
             stmt.setInt(1, id);
             stmt.executeUpdate();
+            
+            return "Tipo deletado com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao deletar tipo, possível tipo relacionado com uma atividade !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)

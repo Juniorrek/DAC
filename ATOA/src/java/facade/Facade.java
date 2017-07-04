@@ -19,6 +19,14 @@ import model.Funcionario;
 import model.Tipo;
 
 public class Facade {
+    public static void consolidar(int mes) {
+        Client client = ClientBuilder.newClient();
+        client
+            .target("http://localhost:8084/RHINDO/webresources/funcionarios/consolidar/" + mes)
+            .request(MediaType.APPLICATION_JSON)
+            .get();
+    }
+    
     public static List<Funcionario> carregarFuncionarioDep(Departamento departamento) {
         Client client = ClientBuilder.newClient();
         Response resp = client
@@ -115,8 +123,8 @@ public class Facade {
     }
     
     //QUALIDADE
-    public static void criarTipo(Tipo tipo, Departamento departamento) {
-        TipoDAO.criar(tipo, departamento);
+    public static String criarTipo(Tipo tipo, Departamento departamento) {
+        return TipoDAO.criar(tipo, departamento);
     }
     
     public static List<Tipo> carregarTipo(Departamento departamento) {
@@ -127,40 +135,40 @@ public class Facade {
         return TipoDAO.carregar(id);
     }
     
-    public static void editarTipo(Tipo tipo) {
-        TipoDAO.editar(tipo);
+    public static String editarTipo(Tipo tipo) {
+        return TipoDAO.editar(tipo);
     }
     
-    public static void deletarTipo(int id) {
-        TipoDAO.deletar(id);
+    public static String deletarTipo(int id) {
+        return TipoDAO.deletar(id);
     }
     
-    public static void criarAtividade(Atividade atividade) {
-        AtividadeDAO.criar(atividade);
+    public static String criarAtividade(Atividade atividade) {
+        return AtividadeDAO.criar(atividade);
     }
     
     public static List<Atividade> carregarAtividade(Funcionario funcionario) {
         return AtividadeDAO.carregar(funcionario);
     }
     
-    public static void finalizarAtividade(int id) {
-        AtividadeDAO.finalizar(id);
+    public static String finalizarAtividade(int id) {
+        return AtividadeDAO.finalizar(id);
     }
     
-    public static void solicitarCorrigirAtividade(Atividade atividade) {
-        AtividadeDAO.solicitarCorrigir(atividade);
+    public static String solicitarCorrigirAtividade(Atividade atividade) {
+        return AtividadeDAO.solicitarCorrigir(atividade);
     }
     
     public static List<Map<String, Atividade>> carregarCorrecoes(Funcionario logado) {
         return AtividadeDAO.carregarCorrecoes(logado);
     }
     
-    public static void aprovarCorrecao(int id) {
-        AtividadeDAO.aprovarCorrecao(id);
+    public static String aprovarCorrecao(int id) {
+        return AtividadeDAO.aprovarCorrecao(id);
     }
     
-    public static void reprovarCorrecao(int id) {
-        AtividadeDAO.reprovarCorrecao(id);
+    public static String reprovarCorrecao(int id) {
+        return AtividadeDAO.reprovarCorrecao(id);
     }
     
     public static List<Atividade> carregarAtividadeMes(Funcionario funcionario) {
@@ -171,12 +179,12 @@ public class Facade {
         return AtividadeDAO.carregarDep(funcionario);
     }
     
-    public static void fecharAtividade(Funcionario logado) {
-        AtividadeDAO.fechar(logado);
+    public static String fecharAtividade(Funcionario logado) {
+        return AtividadeDAO.fechar(logado);
     }
     
-    public static void fecharAtividade(String cpf) {
-        AtividadeDAO.fechar(cpf);
+    public static String fecharAtividade(String cpf) {
+        return AtividadeDAO.fechar(cpf);
     }
     
     public static List<Folha> fecharFolha(int mes) {

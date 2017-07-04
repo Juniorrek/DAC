@@ -9,7 +9,7 @@ import java.util.List;
 import model.Cargo;
 
 public class CargoDAO {
-    public static void criar(Cargo cargo) {
+    public static String criar(Cargo cargo) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -22,7 +22,9 @@ public class CargoDAO {
             stmt.setInt(4, cargo.getCarga_trabalho_minima_mes());
             stmt.setInt(5, cargo.getDesconto_impostos_gerais());
             stmt.executeUpdate();
+            return "Cargo criado com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao criar cargo !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -107,7 +109,7 @@ public class CargoDAO {
         return null;
     }
 
-    public static void editar(Cargo cargo) {
+    public static String editar(Cargo cargo) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -122,7 +124,9 @@ public class CargoDAO {
             stmt.setInt(5, cargo.getDesconto_impostos_gerais());
             stmt.setInt(6, cargo.getId());
             stmt.executeUpdate();
+            return "Cargo editado com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao editar cargo !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -134,7 +138,7 @@ public class CargoDAO {
         }
     }
 
-    public static void deletar(int id) {
+    public static String deletar(int id) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -143,7 +147,9 @@ public class CargoDAO {
                                              + "WHERE id = ? ");
             stmt.setInt(1, id);
             stmt.executeUpdate();
+            return "Cargo deletado com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao deletar cargo, possível cargo relacionado com um funcionário !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)

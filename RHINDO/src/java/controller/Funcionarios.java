@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import facade.Facade;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import javax.servlet.http.HttpSession;
 import model.Cargo;
 import model.Departamento;
 import model.Funcionario;
@@ -48,6 +51,15 @@ public class Funcionarios extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sessionValida = request.getSession();
+        Funcionario valida = (Funcionario) sessionValida.getAttribute("logado");
+        if (valida == null) {
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");             
+            requestDispatcher.forward(request, response);
+        } else if (!"Gerente de RH".equals(valida.getPerfil())) {
+           RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+           requestDispatcher.forward(request, response); 
+        }
         String action = request.getParameter("action");
         
         if ("criar".equals(action)) {
@@ -94,9 +106,14 @@ public class Funcionarios extends HttpServlet {
                 funcionario.setPerfil(request.getParameter("perfil"));
                 funcionario.setSenha(request.getParameter("senha"));
 
-                Facade.criarFuncionario(funcionario);
+                String retorno = Facade.criarFuncionario(funcionario);
+                if (retorno != null) {
+                    request.setAttribute("msg", retorno.toString());
+                }
 
-                response.sendRedirect("/RHINDO/Funcionarios?action=carregar");
+                //response.sendRedirect("/RHINDO/Funcionarios?action=carregar");
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Funcionarios?action=carregar");             
+                requestDispatcher.forward(request, response);
             }
         } else if ("carregar".equals(action)) {
             List<Funcionario> funcionarios = Facade.carregarFuncionario();
@@ -141,14 +158,22 @@ public class Funcionarios extends HttpServlet {
                 funcionario.setPerfil(request.getParameter("perfil"));
                 funcionario.setSenha(request.getParameter("senha"));
 
-                Facade.editarFuncionario(funcionario);
+                String retorno = Facade.editarFuncionario(funcionario);
+                if (retorno != null) {
+                    request.setAttribute("msg", retorno.toString());
+                }
 
-                response.sendRedirect("/RHINDO/Funcionarios?action=carregar");
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Funcionarios?action=carregar");             
+                requestDispatcher.forward(request, response);
             }
         } else if ("deletar".equals(action)) {
-            Facade.deletarFuncionario(request.getParameter("cpf"));
-
-            response.sendRedirect("/RHINDO/Funcionarios?action=carregar");
+            String retorno = Facade.deletarFuncionario(request.getParameter("cpf"));
+            if (retorno != null) {
+                request.setAttribute("msg", retorno.toString());
+            }
+            
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Funcionarios?action=carregar");             
+            requestDispatcher.forward(request, response);
         }
     }
 

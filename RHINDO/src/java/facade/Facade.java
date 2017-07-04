@@ -17,8 +17,8 @@ import model.Funcionario;
 import model.Holerite;
 
 public class Facade {
-    public static void criarFuncionario(Funcionario funcionario) {
-        FuncionarioDAO.criar(funcionario);
+    public static String criarFuncionario(Funcionario funcionario) {
+        return FuncionarioDAO.criar(funcionario);
     }
     
     public static List<Funcionario> carregarFuncionario() {
@@ -37,16 +37,16 @@ public class Facade {
         return FuncionarioDAO.carregar(cpf);
     }
     
-    public static void editarFuncionario(Funcionario funcionario) {
-        FuncionarioDAO.editar(funcionario);
+    public static String editarFuncionario(Funcionario funcionario) {
+        return FuncionarioDAO.editar(funcionario);
     }
     
-    public static void deletarFuncionario(String cpf) {
-        FuncionarioDAO.deletar(cpf);
+    public static String deletarFuncionario(String cpf) {
+        return FuncionarioDAO.deletar(cpf);
     }
     
-    public static void criarDepartamento(Departamento departamento) {
-        DepartamentoDAO.criar(departamento);
+    public static String criarDepartamento(Departamento departamento) {
+        return DepartamentoDAO.criar(departamento);
     }
     
     public static List<Departamento> carregarDepartamento() {
@@ -57,20 +57,20 @@ public class Facade {
         return DepartamentoDAO.carregar(id);
     }
     
-    public static void editarDepartamento(Departamento departamento) {
-        DepartamentoDAO.editar(departamento);
+    public static String editarDepartamento(Departamento departamento) {
+        return DepartamentoDAO.editar(departamento);
     }
     
-    public static void deletarDepartamento(int id) {
-        DepartamentoDAO.deletar(id);
+    public static String deletarDepartamento(int id) {
+        return DepartamentoDAO.deletar(id);
     }
     
     public static void notificarDepartamento(int id) {
         DepartamentoDAO.notificar(id);
     }
     
-    public static void criarCargo(Cargo cargo) {
-        CargoDAO.criar(cargo);
+    public static String criarCargo(Cargo cargo) {
+        return CargoDAO.criar(cargo);
     }
     
     public static List<Cargo> carregarCargo() {
@@ -81,12 +81,12 @@ public class Facade {
         return CargoDAO.carregar(id);
     }
     
-    public static void editarCargo(Cargo cargo) {
-        CargoDAO.editar(cargo);
+    public static String editarCargo(Cargo cargo) {
+        return CargoDAO.editar(cargo);
     }
     
-    public static void deletarCargo(int id) {
-        CargoDAO.deletar(id);
+    public static String deletarCargo(int id) {
+        return CargoDAO.deletar(id);
     }
     
     public static String fecharFolha(int mes) {

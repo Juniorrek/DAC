@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import facade.Facade;
+import javax.servlet.http.HttpSession;
 import model.Departamento;
+import model.Funcionario;
 
 @WebServlet(name = "Departamentos", urlPatterns = {"/Departamentos"})
 public class Departamentos extends HttpServlet {
@@ -25,6 +27,15 @@ public class Departamentos extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sessionValida = request.getSession();
+        Funcionario valida = (Funcionario) sessionValida.getAttribute("logado");
+        if (valida == null) {
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");             
+            requestDispatcher.forward(request, response);
+        } else if (!"Gerente de RH".equals(valida.getPerfil())) {
+           RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+           requestDispatcher.forward(request, response); 
+        }
         String action = request.getParameter("action");
         
         if ("criar".equals(action)) {
@@ -42,9 +53,14 @@ public class Departamentos extends HttpServlet {
                 departamento.setNome(request.getParameter("nome"));
                 departamento.setLocalizacao(request.getParameter("localizacao"));
 
-                Facade.criarDepartamento(departamento);
+                String retorno = Facade.criarDepartamento(departamento);
 
-                response.sendRedirect("/RHINDO/Departamentos?action=carregar");
+                //response.sendRedirect("/RHINDO/Departamentos?action=carregar");
+                if (retorno != null) {
+                    request.setAttribute("msg", retorno.toString());
+                }
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Departamentos?action=carregar");             
+                requestDispatcher.forward(request, response);
             }
         } else if ("carregar".equals(action)) {
             List<Departamento> departamentos = Facade.carregarDepartamento();
@@ -69,14 +85,22 @@ public class Departamentos extends HttpServlet {
                 departamento.setNome(request.getParameter("nome"));
                 departamento.setLocalizacao(request.getParameter("localizacao"));
 
-                Facade.editarDepartamento(departamento);
+                String retorno = Facade.editarDepartamento(departamento);
 
-                response.sendRedirect("/RHINDO/Departamentos?action=carregar");
+                if (retorno != null) {
+                    request.setAttribute("msg", retorno.toString());
+                }
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Departamentos?action=carregar");             
+                requestDispatcher.forward(request, response);
             }
         } else if ("deletar".equals(action)) {
-            Facade.deletarDepartamento(Integer.parseInt(request.getParameter("id")));
+            String retorno = Facade.deletarDepartamento(Integer.parseInt(request.getParameter("id")));
 
-            response.sendRedirect("/RHINDO/Departamentos?action=carregar");
+            if (retorno != null) {
+                request.setAttribute("msg", retorno.toString());
+            }
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Departamentos?action=carregar");             
+            requestDispatcher.forward(request, response);
         }
     }
 

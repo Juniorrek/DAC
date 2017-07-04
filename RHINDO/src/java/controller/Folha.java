@@ -48,6 +48,15 @@ public class Folha extends HttpServlet {
         String action = request.getParameter("action");
         
         if ("fechar".equals(action)) {
+            HttpSession sessionValida = request.getSession();
+            Funcionario valida = (Funcionario) sessionValida.getAttribute("logado");
+            if (valida == null) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");             
+                requestDispatcher.forward(request, response);
+            } else if (!"Gerente de RH".equals(valida.getPerfil())) {
+               RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+               requestDispatcher.forward(request, response); 
+            }
             String mes = request.getParameter("mes");
             
             request.setAttribute("modal", Facade.fecharFolha(Integer.parseInt(mes)));
@@ -55,6 +64,15 @@ public class Folha extends HttpServlet {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/fechamento_folha.jsp");             
             requestDispatcher.forward(request, response);
         } else if ("horas_trabalhadas".equals(action)) {
+            HttpSession sessionValida = request.getSession();
+            Funcionario valida = (Funcionario) sessionValida.getAttribute("logado");
+            if (valida == null) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");             
+                requestDispatcher.forward(request, response);
+            } else if (!"Funcionário".equals(valida.getPerfil())) {
+               RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+               requestDispatcher.forward(request, response); 
+            }
             boolean erro = false;
             if ("".equals(request.getParameter("de"))) {
                 erro = true;

@@ -58,4 +58,10 @@ public class FuncionarioResource {
     public void editar(Funcionario funcionario) {
         Facade.editarFuncionario(funcionario);
     }
+    
+    @GET
+    @Path("/consolidar/{mes}")
+    public void consolidar(@PathParam("mes") int mes) {
+        Facade.fecharFolha(mes);
+    }
 }

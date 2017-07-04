@@ -20,7 +20,12 @@
 </head>
 
 <body>
-
+    <c:if test="${empty logado}">
+        <c:redirect url ="/view/login.jsp"/>
+    </c:if>
+    <c:if test="${logado.perfil != 'Funcionário'}">
+        <c:redirect url ="/view/pagina_inicial.jsp"/>
+    </c:if>
     <div id="wrapper">
 
         <!-- Navigation -->

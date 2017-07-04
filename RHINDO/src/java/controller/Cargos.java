@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import facade.Facade;
+import javax.servlet.http.HttpSession;
 import model.Cargo;
+import model.Funcionario;
 
 @WebServlet(name = "Cargos", urlPatterns = {"/Cargos"})
 public class Cargos extends HttpServlet {
@@ -25,6 +27,15 @@ public class Cargos extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sessionValida = request.getSession();
+        Funcionario valida = (Funcionario) sessionValida.getAttribute("logado");
+        if (valida == null) {
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");             
+            requestDispatcher.forward(request, response);
+        } else if (!"Gerente de RH".equals(valida.getPerfil())) {
+           RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+           requestDispatcher.forward(request, response); 
+        }
         String action = request.getParameter("action");
         
         if ("criar".equals(action)) {
@@ -57,9 +68,13 @@ public class Cargos extends HttpServlet {
                 cargo.setCarga_trabalho_minima_mes(Integer.parseInt(request.getParameter("carga_trabalho_minima_mes")));
                 cargo.setDesconto_impostos_gerais(Integer.parseInt(request.getParameter("desconto_impostos_gerais")));
 
-                Facade.criarCargo(cargo);
+                String retorno = Facade.criarCargo(cargo);
 
-                response.sendRedirect("/RHINDO/Cargos?action=carregar");
+                if (retorno != null) {
+                    request.setAttribute("msg", retorno.toString());
+                }
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Cargos?action=carregar");             
+                requestDispatcher.forward(request, response);
             }
         } else if ("carregar".equals(action)) {
             List<Cargo> cargos = Facade.carregarCargo();
@@ -97,14 +112,22 @@ public class Cargos extends HttpServlet {
                 cargo.setCarga_trabalho_minima_mes(Integer.parseInt(request.getParameter("carga_trabalho_minima_mes")));
                 cargo.setDesconto_impostos_gerais(Integer.parseInt(request.getParameter("desconto_impostos_gerais")));
 
-                Facade.editarCargo(cargo);
+                String retorno = Facade.editarCargo(cargo);
 
-                response.sendRedirect("/RHINDO/Cargos?action=carregar");
+                if (retorno != null) {
+                    request.setAttribute("msg", retorno.toString());
+                }
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Cargos?action=carregar");             
+                requestDispatcher.forward(request, response);
             }
         } else if ("deletar".equals(action)) {
-            Facade.deletarCargo(Integer.parseInt(request.getParameter("id")));
+            String retorno = Facade.deletarCargo(Integer.parseInt(request.getParameter("id")));
 
-            response.sendRedirect("/RHINDO/Cargos?action=carregar");
+            if (retorno != null) {
+                request.setAttribute("msg", retorno.toString());
+            }
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Cargos?action=carregar");             
+            requestDispatcher.forward(request, response);
         }
     }
 

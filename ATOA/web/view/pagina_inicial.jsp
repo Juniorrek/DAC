@@ -16,7 +16,9 @@
 </head>
 
 <body>
-
+    <c:if test="${empty logado}">
+        <c:redirect url ="/view/login.jsp"/>
+    </c:if>
     <div id="wrapper">
 
         <!-- Navigation -->

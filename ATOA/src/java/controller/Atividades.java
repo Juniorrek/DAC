@@ -44,9 +44,19 @@ public class Atividades extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sessionValida = request.getSession();
+        Funcionario valida = (Funcionario) sessionValida.getAttribute("logado");
+        if (valida == null) {
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");             
+            requestDispatcher.forward(request, response);
+        }
         String action = request.getParameter("action");
         
         if ("criar".equals(action)) {
+            if (!"Funcionário".equals(valida.getPerfil())) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+                requestDispatcher.forward(request, response); 
+            }
             boolean erro = false;
             if ("".equals(request.getParameter("nome"))) {
                 erro = true;
@@ -68,11 +78,20 @@ public class Atividades extends HttpServlet {
                 Funcionario logado = (Funcionario) session.getAttribute("logado");
                 atividade.setFuncionario(logado);
 
-                Facade.criarAtividade(atividade);
+                String retorno = Facade.criarAtividade(atividade);
 
-                response.sendRedirect("/ATOA/Atividades?action=carregar");
+                //response.sendRedirect("/ATOA/Atividades?action=carregar");
+                if (retorno != null) {
+                    request.setAttribute("msg", retorno.toString());
+                }
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Atividades?action=carregar");             
+                requestDispatcher.forward(request, response);
             }
         } else if ("carregar".equals(action)) {
+            if (!"Funcionário".equals(valida.getPerfil())) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+                requestDispatcher.forward(request, response); 
+            }
             HttpSession session = request.getSession();
             Funcionario logado = (Funcionario) session.getAttribute("logado");
             List<Atividade> atividades = Facade.carregarAtividade(logado);
@@ -84,6 +103,10 @@ public class Atividades extends HttpServlet {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/funcionario/atividades.jsp");             
             requestDispatcher.forward(request, response);
         } else if ("solicitarCorrigir".equals(action)) {
+            if (!"Funcionário".equals(valida.getPerfil())) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+                requestDispatcher.forward(request, response); 
+            }
             boolean erro = false;
             if ("".equals(request.getParameter("nome"))) {
                 erro = true;
@@ -126,11 +149,20 @@ public class Atividades extends HttpServlet {
                 atividade.setFuncionario(logado);
                 atividade.setStatus(request.getParameter("status"));
 
-                Facade.solicitarCorrigirAtividade(atividade);
+                String retorno = Facade.solicitarCorrigirAtividade(atividade);
 
-                response.sendRedirect("/ATOA/Atividades?action=carregar");
+                //response.sendRedirect("/ATOA/Atividades?action=carregar");
+                if (retorno != null) {
+                    request.setAttribute("msg", retorno.toString());
+                }
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Atividades?action=carregar");             
+                requestDispatcher.forward(request, response);
             }
         } else if ("carregarCorrecoes".equals(action)) {
+            if (!"Gerente de Departamento".equals(valida.getPerfil())) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+                requestDispatcher.forward(request, response); 
+            }
             HttpSession session = request.getSession();
             Funcionario logado = (Funcionario) session.getAttribute("logado");
             List<Map<String, Atividade>> correcoes = Facade.carregarCorrecoes(logado);
@@ -144,18 +176,48 @@ public class Atividades extends HttpServlet {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/corrigir.jsp");             
             requestDispatcher.forward(request, response);
         } else if ("reprovar".equals(action)) {
-            Facade.reprovarCorrecao(Integer.parseInt(request.getParameter("id")));
+            if (!"Gerente de Departamento".equals(valida.getPerfil())) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+                requestDispatcher.forward(request, response); 
+            }
+            String retorno = Facade.reprovarCorrecao(Integer.parseInt(request.getParameter("id")));
             
-            response.sendRedirect("/ATOA/Atividades?action=carregarCorrecoes");
+            //response.sendRedirect("/ATOA/Atividades?action=carregarCorrecoes");
+            if (retorno != null) {
+                request.setAttribute("msg", retorno.toString());
+            }
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Atividades?action=carregarCorrecoes");             
+            requestDispatcher.forward(request, response);
         } else if ("aprovar".equals(action)) {
-            Facade.aprovarCorrecao(Integer.parseInt(request.getParameter("id")));
+            if (!"Gerente de Departamento".equals(valida.getPerfil())) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+                requestDispatcher.forward(request, response); 
+            }
+            String retorno = Facade.aprovarCorrecao(Integer.parseInt(request.getParameter("id")));
             
-            response.sendRedirect("/ATOA/Atividades?action=carregarCorrecoes");
+            if (retorno != null) {
+                request.setAttribute("msg", retorno.toString());
+            }
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Atividades?action=carregarCorrecoes");             
+            requestDispatcher.forward(request, response);
         } else if ("finalizar".equals(action)) {
-            Facade.finalizarAtividade(Integer.parseInt(request.getParameter("id")));
+            if (!"Funcionário".equals(valida.getPerfil())) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+                requestDispatcher.forward(request, response); 
+            }
+            String retorno = Facade.finalizarAtividade(Integer.parseInt(request.getParameter("id")));
 
-            response.sendRedirect("/ATOA/Atividades?action=carregar");
+            //response.sendRedirect("/ATOA/Atividades?action=carregar");
+            if (retorno != null) {
+                request.setAttribute("msg", retorno.toString());
+            }
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Atividades?action=carregar");             
+            requestDispatcher.forward(request, response);
         } else if ("carregarMes".equals(action)) {
+            if (!"Funcionário".equals(valida.getPerfil())) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+                requestDispatcher.forward(request, response); 
+            }
             HttpSession session = request.getSession();
             Funcionario logado = (Funcionario) session.getAttribute("logado");
             List<Atividade> atividades = Facade.carregarAtividadeMes(logado);
@@ -165,6 +227,10 @@ public class Atividades extends HttpServlet {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/funcionario/atividades_mes.jsp");             
             requestDispatcher.forward(request, response);
         } else if ("Formfechar".equals(action)) {
+            if (!"Gerente de Departamento".equals(valida.getPerfil())) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+                requestDispatcher.forward(request, response); 
+            }
             HttpSession session = request.getSession();
             Funcionario logado = (Funcionario) session.getAttribute("logado");
             List<Atividade> atividades = Facade.carregarAtividadeDep(logado);
@@ -176,17 +242,27 @@ public class Atividades extends HttpServlet {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/gerente/fechamento_atividades.jsp");             
             requestDispatcher.forward(request, response);
         } else if ("fechar".equals(action)) {
+            if (!"Gerente de Departamento".equals(valida.getPerfil())) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+                requestDispatcher.forward(request, response); 
+            }
             HttpSession session = request.getSession();
             Funcionario logado = (Funcionario) session.getAttribute("logado");
             String especifico = request.getParameter("especifico");
             
+            String retorno = null;
             if (especifico == null) {
-                Facade.fecharAtividade(logado);
+                retorno = Facade.fecharAtividade(logado);
             } else {
-                Facade.fecharAtividade(especifico);
+                retorno = Facade.fecharAtividade(especifico);
             }
             
-            response.sendRedirect("/ATOA/Atividades?action=Formfechar");
+            if (retorno != null) {
+                request.setAttribute("msg", retorno.toString());
+            }
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Atividades?action=Formfechar");             
+            requestDispatcher.forward(request, response);
+            //response.sendRedirect("/ATOA/Atividades?action=Formfechar");
         }
     }
 

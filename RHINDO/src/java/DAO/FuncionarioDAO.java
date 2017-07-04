@@ -18,7 +18,7 @@ import model.Departamento;
 import model.Funcionario;
 
 public class FuncionarioDAO {
-    public static void criar(Funcionario funcionario) {
+    public static String criar(Funcionario funcionario) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
         String senha = "";
@@ -49,7 +49,9 @@ public class FuncionarioDAO {
             stmt.setString(14, funcionario.getPerfil());
             stmt.setString(15, senha);
             stmt.executeUpdate();
+            return "Funcionário criado com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao criar funcionário, possível funcionário já cadastrado !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -267,7 +269,7 @@ public class FuncionarioDAO {
         return null;
     }
 
-    public static void editar(Funcionario funcionario) {
+    public static String editar(Funcionario funcionario) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -324,7 +326,9 @@ public class FuncionarioDAO {
             
             
             stmt.executeUpdate();
+            return "Funcionário editado com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao editar funcionário !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -336,7 +340,7 @@ public class FuncionarioDAO {
         }
     }
 
-    public static void deletar(String cpf) {
+    public static String deletar(String cpf) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -345,7 +349,9 @@ public class FuncionarioDAO {
                                              + "WHERE cpf = ? ");
             stmt.setString(1, cpf);
             stmt.executeUpdate();
+            return "Funcionário deletado com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao deletar funcionário, possível funcionário relacionado com uma folha de pagamento !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)

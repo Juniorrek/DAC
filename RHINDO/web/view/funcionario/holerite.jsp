@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <head>
 
@@ -19,7 +20,12 @@
 </head>
 
 <body>
-
+    <c:if test="${empty logado}">
+        <c:redirect url ="/view/login.jsp"/>
+    </c:if>
+    <c:if test="${logado.perfil != 'Funcionário'}">
+        <c:redirect url ="/view/pagina_inicial.jsp"/>
+    </c:if>
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -83,7 +89,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <a href="/RHINDO/Holerite?action=pdf" type="button" class="btn btn-info" target="_blank" style="margin-bottom: 1%;">PDF</a>
-                            <table width="100%" class="table table-striped table-bordered table-hover">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
                                         <th>CPF</th>
@@ -99,9 +105,9 @@
                                         <td>${holerite.cpf}</td>
                                         <td>${holerite.nome}</td>
                                         <td>${holerite.mes}</td>
-                                        <td>${holerite.horas_trabalhadas}</td>
-                                        <td>${holerite.salario_bruto}</td>
-                                        <td>${holerite.salario_liquido}</td>
+                                        <td>${holerite.horas_trabalhadas} hrs</td>
+                                        <td class="tdsal">R$ ${holerite.salario_bruto}</td>
+                                        <td class="tdsal">R$ ${holerite.salario_liquido}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -158,6 +164,20 @@
                 "sSortDescending": ": Ordenar colunas de forma descendente"
             }
         };
+    </script>
+    <script>
+        $("#dataTables-example tbody td").each(function() {
+           if ($(this).attr('class') === "tdsal") {
+               $(this).html($(this).html().replace(".", ","));
+               
+               //if ($(this).html().substr())
+               var a = $(this).html();
+               b = $(this).html().substr(a.length - 3, a.length);
+               if (b[1] === ",") {
+                   $(this).html($(this).html().concat("0"));
+               }
+           }
+        });
     </script>
 </body>
 

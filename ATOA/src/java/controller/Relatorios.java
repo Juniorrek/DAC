@@ -52,6 +52,15 @@ public class Relatorios extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sessionValida = request.getSession();
+        Funcionario valida = (Funcionario) sessionValida.getAttribute("logado");
+        if (valida == null) {
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");             
+            requestDispatcher.forward(request, response);
+        } else if (!"Gerente de Departamento".equals(valida.getPerfil())) {
+           RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+           requestDispatcher.forward(request, response); 
+        }
         String action = request.getParameter("action");
         
         if ("form".equals(action)) {

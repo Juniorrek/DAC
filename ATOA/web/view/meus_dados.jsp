@@ -15,7 +15,9 @@
 </head>
 
 <body>
-
+    <c:if test="${empty logado}">
+        <c:redirect url ="/view/login.jsp"/>
+    </c:if>
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -167,7 +169,7 @@
                                         <div class="col-lg-3">
                                             <div class="form-group">
                                                 <label>Número:</label>
-                                                <input class="form-control"  value="${logado.getNumero()}" name="numero">
+                                                <input class="form-control"  value="${logado.getNumero()}" name="numero" type="number" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-5">
@@ -266,6 +268,24 @@
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
+        <div class="modal fade" id="modalMsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">MENSAGEM</h4>
+                    </div>
+                    <div class="modal-body">
+                        ${msg}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
 
     </div>
     <!-- /#wrapper -->
@@ -289,6 +309,9 @@
             }
         });
     </script>
+    <c:if test="${not empty msg}">
+        <script>$("#modalMsg").modal('show');</script>
+    </c:if>
 </body>
 
 </html>

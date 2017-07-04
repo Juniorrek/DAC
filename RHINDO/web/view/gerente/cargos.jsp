@@ -20,6 +20,12 @@
 </head>
 
 <body>
+    <c:if test="${empty logado}">
+        <c:redirect url ="/view/login.jsp"/>
+    </c:if>
+    <c:if test="${logado.perfil != 'Gerente de RH'}">
+        <c:redirect url ="/view/pagina_inicial.jsp"/>
+    </c:if>
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -159,10 +165,10 @@
                                         <tr>
                                             <td style="display: none;">${cargo.id}</td>
                                             <td>${cargo.nome}</td>
-                                            <td class="tdsal">${cargo.salario}</td>
+                                            <td class="tdsal">R$ ${cargo.salario}</td>
                                             <td>${cargo.requisitos}</td>
-                                            <td class="tdhor">${cargo.carga_trabalho_minima_mes}</td>
-                                            <td class="tddes">${cargo.desconto_impostos_gerais}</td>
+                                            <td class="tdhor">${cargo.carga_trabalho_minima_mes} hrs</td>
+                                            <td class="tddes">${cargo.desconto_impostos_gerais} %</td>
                                             <td>
                                                 <button type="button" class="btn btn-info" id="editar" style="margin-left: 10px;" data-toggle="modal" data-target="#modalEditar">Editar</button>
                                                 <button type="button" class="btn btn-danger"  onclick="deletar(${cargo.id})" style="margin-left: 10px;" data-toggle="modal" data-target="#modalDeletar">Deletar</button>
@@ -240,6 +246,24 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                             <a href="" type="button" class="btn btn-danger" id="deletar">Deletar</a>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            <div class="modal fade" id="modalMsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">MENSAGEM</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            ${msg}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
                                         </div>
                                     </div>
                                     <!-- /.modal-content -->
@@ -377,6 +401,9 @@
     </script>
     <c:if test="${erroNome || erroSalario || erroCarga_trabalho_minima_mes || erroDesconto_impostos_gerais}">
         <script>$("#modalCriar").modal('show');</script>
+    </c:if>
+    <c:if test="${not empty msg}">
+        <script>$("#modalMsg").modal('show');</script>
     </c:if>
 </body>
 

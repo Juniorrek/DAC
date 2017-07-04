@@ -14,7 +14,12 @@
 </head>
 
 <body>
-
+    <c:if test="${empty logado}">
+        <c:redirect url ="/view/login.jsp"/>
+    </c:if>
+    <c:if test="${logado.perfil != 'Gerente de RH'}">
+        <c:redirect url ="/view/pagina_inicial.jsp"/>
+    </c:if>
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -126,7 +131,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Fechamento da folha</h4>
+                        <h4 class="modal-title" id="myModalLabel">MENSAGEM</h4>
                     </div>
                     <div class="modal-body">
                         ${modal}

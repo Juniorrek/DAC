@@ -9,7 +9,7 @@ import java.util.List;
 import model.Departamento;
 
 public class DepartamentoDAO {
-    public static void criar(Departamento departamento) {
+    public static String criar(Departamento departamento) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -19,7 +19,9 @@ public class DepartamentoDAO {
             stmt.setString(1, departamento.getNome());
             stmt.setString(2, departamento.getLocalizacao());
             stmt.executeUpdate();
+            return "Departamento criado com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao criar departamento !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -99,7 +101,7 @@ public class DepartamentoDAO {
         return null;
     }
 
-    public static void editar(Departamento departamento) {
+    public static String editar(Departamento departamento) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -111,7 +113,9 @@ public class DepartamentoDAO {
             stmt.setString(2, departamento.getLocalizacao());
             stmt.setInt(3, departamento.getId());
             stmt.executeUpdate();
+            return "Departamento editado com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao editar departamento !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -123,7 +127,7 @@ public class DepartamentoDAO {
         }
     }
 
-    public static void deletar(int id) {
+    public static String deletar(int id) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -132,7 +136,9 @@ public class DepartamentoDAO {
                                              + "WHERE id = ? ");
             stmt.setInt(1, id);
             stmt.executeUpdate();
+            return "Departamento deletado com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao deletar departamento, possível departamento relacionado com um funcionário !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)

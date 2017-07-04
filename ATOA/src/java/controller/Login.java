@@ -66,6 +66,12 @@ public class Login extends HttpServlet {
                 }
             }
         } else if ("editar".equals(action)) {
+            HttpSession sessionValida = request.getSession();
+            Funcionario valida = (Funcionario) sessionValida.getAttribute("logado");
+            if (valida == null) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");             
+                requestDispatcher.forward(request, response);
+            }
             List<Departamento> departamentos = Facade.carregarDepartamento();
             List<Cargo> cargos = Facade.carregarCargo();
             
@@ -75,6 +81,12 @@ public class Login extends HttpServlet {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/meus_dados.jsp");
             requestDispatcher.forward(request, response);
         } else if ("edit".equals(action)) {
+            HttpSession sessionValida = request.getSession();
+            Funcionario valida = (Funcionario) sessionValida.getAttribute("logado");
+            if (valida == null) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");             
+                requestDispatcher.forward(request, response);
+            }
             boolean erro = false;
             if (!request.getParameter("senha").equals(request.getParameter("confirmacao"))) {
                 erro = true;
@@ -118,7 +130,9 @@ public class Login extends HttpServlet {
 
                 session.setAttribute("logado", funcionario);
 
-                response.sendRedirect("/ATOA/Login?action=editar");
+                request.setAttribute("msg", "Dados editados com sucesso !!!");
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Login?action=editar");
+                requestDispatcher.forward(request, response);
             }
         } else if ("logout".equals(action)) {
             HttpSession session = request.getSession(false);

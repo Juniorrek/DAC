@@ -27,7 +27,7 @@ import model.Folha;
  * @author Fornalha
  */
 public class AtividadeDAO {
-    public static void criar(Atividade atividade) {
+    public static String criar(Atividade atividade) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -48,9 +48,10 @@ public class AtividadeDAO {
             stmt.setInt(3, atividade.getTipo().getId());
             stmt.setTimestamp(4, atividade.getInicio());
             stmt.setString(5, atividade.getFuncionario().getCpf());
-            System.out.println("vou inserir");
             stmt.executeUpdate();
+            return "Atividade iniciada com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao iniciar atividade !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -102,7 +103,7 @@ public class AtividadeDAO {
         return atividades;
     }
     
-    public static void finalizar(int id) {
+    public static String finalizar(int id) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -111,6 +112,7 @@ public class AtividadeDAO {
             stmt.setInt(1, id);
             ResultSet resultSet = stmt.executeQuery();
             Atividade atividade = new Atividade();
+            boolean consolidar = false;
             if (resultSet.next()) {
                 if ("EM ANDAMENTO".equals(resultSet.getString("status"))) {
                     stmt = connection.prepareStatement("UPDATE Atividade "
@@ -120,13 +122,17 @@ public class AtividadeDAO {
                     stmt = connection.prepareStatement("UPDATE Atividade "
                                              + "SET fim = ?, status = 'FECHADA' "
                                              + "WHERE id = ?");
-                    
+                    consolidar = true;
                 }
             }
             
             stmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             stmt.setInt(2, id);
             stmt.executeUpdate();
+            
+            if (consolidar) {
+                Facade.consolidar(Calendar.getInstance().get(Calendar.MONTH) + 1);
+            }
             //desnotifica all
                     stmt = connection.prepareStatement("UPDATE Departamento SET notificacao = false");
                     stmt.executeUpdate();
@@ -142,7 +148,9 @@ public class AtividadeDAO {
                 stmt.setInt(1, id);
                 stmt.executeUpdate();
             }
+            return "Atividade finalizada com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao finalizar atividade !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -154,7 +162,7 @@ public class AtividadeDAO {
         }
     }
     
-    public static void solicitarCorrigir(Atividade atividade) {
+    public static String solicitarCorrigir(Atividade atividade) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -180,7 +188,9 @@ public class AtividadeDAO {
             stmt.setString(15, atividade.getStatus());
             
             stmt.executeUpdate();
+            return "Solicitação de correção de atividade feita com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao solicitar correção de atividade !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -257,7 +267,7 @@ public class AtividadeDAO {
         return correcoes;
     }
     
-    public static void reprovarCorrecao(int id) {
+    public static String reprovarCorrecao(int id) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -266,7 +276,9 @@ public class AtividadeDAO {
                                              + "WHERE id = ? ");
             stmt.setInt(1, id);
             stmt.executeUpdate();
+            return "Correção reprovada com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao reprovar correção !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -278,7 +290,7 @@ public class AtividadeDAO {
         }
     }
     
-    public static void aprovarCorrecao(int id) {
+    public static String aprovarCorrecao(int id) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -333,7 +345,9 @@ public class AtividadeDAO {
             stmt.setString(7, atividade.getStatus());
             stmt.setInt(8, atividade.getId());
             stmt.executeUpdate();
+            return "Correção aprovada com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao aprovar correção !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -433,7 +447,7 @@ public class AtividadeDAO {
         return atividades;
     }
     
-    public static void fechar(Funcionario logado) {
+    public static String fechar(Funcionario logado) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -487,7 +501,9 @@ public class AtividadeDAO {
                     stmt.executeUpdate();
                 }
             }
+            return "Atividades fechadas com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao fechar atividades !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)
@@ -499,7 +515,7 @@ public class AtividadeDAO {
         }
     }
     
-    public static void fechar(String cpf) {
+    public static String fechar(String cpf) {
         Connection connection = new ConnectionFactory().getConnection();
         PreparedStatement stmt = null;
 
@@ -519,7 +535,9 @@ public class AtividadeDAO {
             stmt = connection.prepareStatement("DELETE FROM CorrigirAtividade WHERE funcionario = ?");
             stmt.setString(1, cpf);
             stmt.executeUpdate();
+            return "Atividades fechadas com sucesso !!!";
         } catch (SQLException exception) {
+            return "ERRO ao fechar atividades !!!";
             //throw new RuntimeException("Erro. Origem="+exception.getMessage());
         } finally {
             if (stmt != null)

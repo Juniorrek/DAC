@@ -46,6 +46,15 @@ public class Holerite extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sessionValida = request.getSession();
+        Funcionario valida = (Funcionario) sessionValida.getAttribute("logado");
+        if (valida == null) {
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");             
+            requestDispatcher.forward(request, response);
+        } else if (!"Funcionário".equals(valida.getPerfil())) {
+           RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+           requestDispatcher.forward(request, response); 
+        }
         String action = request.getParameter("action");
         
         if ("obter".equals(action)) {
@@ -57,7 +66,6 @@ public class Holerite extends HttpServlet {
             cal.setTimeInMillis(timestamp);
             
             model.Holerite holerite = Facade.obterHolerite(logado, cal.get(Calendar.MONTH) + 1);
-            System.out.println(holerite.getSalario_bruto());
             request.setAttribute("holerite", holerite);
             
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/funcionario/holerite.jsp");             

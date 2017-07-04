@@ -27,6 +27,15 @@ public class Tipos extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sessionValida = request.getSession();
+        Funcionario valida = (Funcionario) sessionValida.getAttribute("logado");
+        if (valida == null) {
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/login.jsp");             
+            requestDispatcher.forward(request, response);
+        } else if (!"Gerente de Departamento".equals(valida.getPerfil())) {
+           RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/pagina_inicial.jsp");             
+           requestDispatcher.forward(request, response); 
+        }
         String action = request.getParameter("action");
         
         if ("criar".equals(action)) {
@@ -47,9 +56,13 @@ public class Tipos extends HttpServlet {
                 HttpSession session = request.getSession();
                 Funcionario logado = (Funcionario) session.getAttribute("logado");
 
-                Facade.criarTipo(tipo, logado.getDepartamento());
+                String retorno = Facade.criarTipo(tipo, logado.getDepartamento());
 
-                response.sendRedirect("/ATOA/Tipos?action=carregar");
+                if (retorno != null) {
+                    request.setAttribute("msg", retorno.toString());
+                }
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Tipos?action=carregar");             
+                requestDispatcher.forward(request, response);
             }
         } else if ("carregar".equals(action)) {
             HttpSession session = request.getSession();
@@ -76,14 +89,22 @@ public class Tipos extends HttpServlet {
                 tipo.setNome(request.getParameter("nome"));
                 tipo.setDescricao(request.getParameter("descricao"));
 
-                Facade.editarTipo(tipo);
+                String retorno = Facade.editarTipo(tipo);
 
-                response.sendRedirect("/ATOA/Tipos?action=carregar");
+                if (retorno != null) {
+                    request.setAttribute("msg", retorno.toString());
+                }
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Tipos?action=carregar");             
+                requestDispatcher.forward(request, response);
             }
         } else if ("deletar".equals(action)) {
-            Facade.deletarTipo(Integer.parseInt(request.getParameter("id")));
+            String retorno = Facade.deletarTipo(Integer.parseInt(request.getParameter("id")));
 
-            response.sendRedirect("/ATOA/Tipos?action=carregar");
+            if (retorno != null) {
+                request.setAttribute("msg", retorno.toString());
+            }
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Tipos?action=carregar");             
+            requestDispatcher.forward(request, response);
         }
     }
 

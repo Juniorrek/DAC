@@ -34,8 +34,7 @@ public class FolhaDAO {
                 if (resultSet.next()) {
                     stmt = connection.prepareStatement("UPDATE Folha "
                                                         + "SET horas_trabalhadas = ? "
-                                                        + "WHERE funcionario = ? AND mes = ?"
-                                                        + "VALUES (?, ?, ?)");
+                                                        + "WHERE funcionario = ? AND mes = ?");
                     stmt.setFloat(1, (folha.getHoras_trabalhadas() + resultSet.getFloat("horas_trabalhadas")));
                     stmt.setString(2, folha.getFuncionario().getCpf());
                     stmt.setInt(3, folha.getMes());
@@ -78,10 +77,10 @@ public class FolhaDAO {
                 holerite.setNome(funcionario.getNome());
                 float salario_bruto = 0;
                 salario_bruto = (float) (funcionario.getCargo().getSalario() * resultSet.getFloat("horas_trabalhadas")) / funcionario.getCargo().getCarga_trabalho_minima_mes();
-                holerite.setSalario_bruto(salario_bruto);
+                holerite.setSalario_bruto(Float.parseFloat(String.format("%.2f", salario_bruto).replace(",",".")));
                 float salario_liquido = 0;
                 salario_liquido = (float) (salario_bruto - (salario_bruto * (funcionario.getCargo().getDesconto_impostos_gerais() / 100.0)));
-                holerite.setSalario_liquido(salario_liquido);
+                holerite.setSalario_liquido(Float.parseFloat(String.format("%.2f", salario_liquido).replace(",",".")));
                 holerite.setHoras_trabalhadas(resultSet.getFloat("horas_trabalhadas"));
             }
             return holerite;

@@ -12,7 +12,7 @@ public class ConnectionFactory {
     public Connection getConnection() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/dac", "root", "");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/teste", "root", "root");
         } catch (SQLException exception) { 
                 System.out.println("Erro ao conectar ao banco: " + exception);
                 //throw new RuntimeException(exception); 

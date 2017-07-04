@@ -20,7 +20,12 @@
 </head>
 
 <body>
-
+    <c:if test="${empty logado}">
+        <c:redirect url ="/view/login.jsp"/>
+    </c:if>
+    <c:if test="${logado.perfil != 'Gerente de RH'}">
+        <c:redirect url ="/view/pagina_inicial.jsp"/>
+    </c:if>
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -138,7 +143,7 @@
                                                         <div class="col-lg-6">
                                                             <div class="form-group ${empty erroSenha ? '' : 'has-error'}">
                                                                 <label class="control-label">${empty erroSenha ? 'Senha:' : erroSenha}</label>
-                                                                <input class="form-control"  type="password" name="senha">
+                                                                <input class="form-control"  type="password" name="senha" id="senhac">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
@@ -368,7 +373,7 @@
                                                         <div class="col-lg-6">
                                                             <div class="form-group ${not erroSenha2 ? '' : 'has-error'}">
                                                                 <label class="control-label">Confirmação de senha:</label>
-                                                                <input class="form-control"  type="password" name="confirmacao">
+                                                                <input class="form-control"  type="password" name="confirmacao" id="confirmacaoe">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -392,7 +397,7 @@
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
                                                                 <label>Número:</label>
-                                                                <input class="form-control" name="numero" type="number">
+                                                                <input class="form-control" name="numero" type="number" required>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-5">
@@ -510,6 +515,24 @@
                                 </div>
                                 <!-- /.modal-dialog -->
                             </div>
+                            <div class="modal fade" id="modalMsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">MENSAGEM</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            ${msg}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -602,11 +625,15 @@
         $("#formCriar").validate({
             rules: {
                 cpf: "required",
-                senha: "required"
+                senha: "required",
+                confirmacao: {
+                    equalTo: "#senhac"
+                }
             },
             messages: {
                 cpf: "Digite seu CPF !!!",
-                senha: "Digite sua senha !!!"
+                senha: "Digite sua senha !!!",
+                confirmacao: "Senha e confirmação diferentes !!!"
             },
             submitHandler: function(form) {
                 form.submit();
@@ -614,10 +641,14 @@
         });
         $("#formEditar").validate({
             rules: {
-                cpf: "required"
+                cpf: "required",
+                senha: {
+                    equalTo: "#confirmacaoe"
+                }
             },
             messages: {
-                cpf: "Digite seu CPF !!!"
+                cpf: "Digite seu CPF !!!",
+                senha: "Senha e confirmação diferentes !!!"
             },
             submitHandler: function(form) {
                 form.submit();
@@ -639,6 +670,9 @@
     </script>
     <c:if test="${erroCpf || erroSenha}">
         <script>$("#modalCriar").modal('show');</script>
+    </c:if>
+    <c:if test="${not empty msg}">
+        <script>$("#modalMsg").modal('show');</script>
     </c:if>
 </body>
 
