@@ -92,7 +92,7 @@ public class Holerite extends HttpServlet {
                 URL jasperURL = new URL(host + jasper);
 
                 HashMap params = new HashMap();
-                params.put("cpf", holerite.getCpf());
+                params.put("cpf", holerite.getCpf().substring(0,3)+"."+holerite.getCpf().substring(3,6)+"."+holerite.getCpf().substring(6,9)+"-"+holerite.getCpf().substring(9,11));
                 params.put("mes", holerite.getMes());
                 params.put("nome", holerite.getNome());
                 params.put("horas_trabalhadas", holerite.getHoras_trabalhadas());

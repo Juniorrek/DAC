@@ -103,8 +103,8 @@
                                     <legend>Dados pessoais</legend>
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Nome:</label>
+                                            <div class="form-group ${not erroNome ? '' : 'has-error'}">
+                                                <label class="control-label">${not erroNome ? 'Nome:' : 'Nome é obrigatório:'}</label>
                                                 <input class="form-control"  value="${logado.getNome()}" name="nome">
                                             </div>
                                         </div>
@@ -117,8 +117,8 @@
                                         </div>
                                         <!-- /.col-lg-6 (nested) -->
                                         <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>RG:</label>
+                                            <div class="form-group ${not erroRg ? '' : 'has-error'}">
+                                                <label class="control-label">${not erroRg ? 'RG:' : 'RG é obrigatório:'}</label>
                                                 <input class="form-control"  value="${logado.getRg()}" id="rg" name="rg">
                                                 <p class="help-block">Somente números.</p>
                                             </div>
@@ -131,8 +131,8 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-7">
-                                            <div class="form-group">
-                                                <label>Email:</label>
+                                            <div class="form-group ${not erroEmail ? '' : 'has-error'}">
+                                                <label class="control-label">${not erroEmail ? 'Email:' : 'Email é obrigatório:'}</label>
                                                 <input class="form-control"  value="${logado.getEmail()}" name="email">
                                             </div>
                                         </div>
@@ -302,10 +302,22 @@
             rules: {
                 senha: {
                     equalTo: "#confirmacao"
+                },
+                nome: "required",
+                rg : "required",
+                email:  {
+                    required: true,
+                    email: true
                 }
             },
             messages: {
-                senha: "Senha e confirmação diferentes !!!"
+                senha: "Senha e confirmação diferentes !!!",
+                nome: "Nome é obrigatório !!!",
+                rg : "RG é obrigatório !!!",
+                email : {
+                    required: "Email é obrigatório !!!",
+                    email: "Email inválido !!!"
+                }
             }
         });
     </script>

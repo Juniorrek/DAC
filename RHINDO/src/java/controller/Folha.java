@@ -104,6 +104,10 @@ public class Folha extends HttpServlet {
                     HashMap params = new HashMap();
                     JRBeanCollectionDataSource lista = new JRBeanCollectionDataSource(listaa);
                     params.put("lista", lista);
+                    de = de.substring(8,10)+"/"+de.substring(5, 7)+"/"+de.substring(0,4);
+                    ate = ate.substring(8,10)+"/"+ate.substring(5, 7)+"/"+ate.substring(0,4);
+                    params.put("de", de);
+                    params.put("ate", ate);
 
                     byte[] bytes = JasperRunManager.runReportToPdf(jasperURL.openStream(), params, new JREmptyDataSource());
 

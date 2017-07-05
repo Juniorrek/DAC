@@ -102,6 +102,7 @@ public class Relatorios extends HttpServlet {
                 HashMap params = new HashMap();
                 JRBeanCollectionDataSource lista = new JRBeanCollectionDataSource(listaa);
                 params.put("lista", lista);
+                params.put("mes", mes);
 
                 byte[] bytes = JasperRunManager.runReportToPdf(jasperURL.openStream(), params, new JREmptyDataSource());
 
@@ -127,6 +128,9 @@ public class Relatorios extends HttpServlet {
             String mes = request.getParameter("mes");
             
             List<model.Folha> listaa = Facade.funcncumpriu(Integer.parseInt(mes));
+            for (Folha f : listaa) {
+                f.getFuncionario().setCpf(f.getFuncionario().getCpf().substring(0,3)+"."+f.getFuncionario().getCpf().substring(3,6)+"."+f.getFuncionario().getCpf().substring(6,9)+"-"+f.getFuncionario().getCpf().substring(9,11));
+            }
             
             Connection con = new ConnectionFactory().getConnection();
             try {
@@ -138,6 +142,7 @@ public class Relatorios extends HttpServlet {
                 HashMap params = new HashMap();
                 JRBeanCollectionDataSource lista = new JRBeanCollectionDataSource(listaa);
                 params.put("lista", lista);
+                params.put("mes", mes);
 
                 byte[] bytes = JasperRunManager.runReportToPdf(jasperURL.openStream(), params, new JREmptyDataSource());
 

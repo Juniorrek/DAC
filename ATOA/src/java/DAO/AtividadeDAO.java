@@ -336,11 +336,12 @@ public class AtividadeDAO {
             stmt.setString(2, atividade.getDescricao());
             stmt.setInt(3, atividade.getTipo().getId());
             stmt.setTimestamp(4, atividade.getInicio());
-            if ("FINALIZADA".equals(atividade.getStatus())) {
+            /*if ("FINALIZADA".equals(atividade.getStatus())) {
                 stmt.setTimestamp(5, atividade.getFim());
             } else {
                 stmt.setTimestamp(5, null);
-            }
+            }*/
+            stmt.setTimestamp(5, atividade.getFim());
             stmt.setString(6, atividade.getFuncionario().getCpf());
             stmt.setString(7, atividade.getStatus());
             stmt.setInt(8, atividade.getId());

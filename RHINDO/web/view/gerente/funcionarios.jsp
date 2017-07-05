@@ -107,8 +107,8 @@
                                                     <legend>Dados pessoais</legend>
                                                     <div class="row">
                                                         <div class="col-lg-12">
-                                                            <div class="form-group">
-                                                                <label>Nome:</label>
+                                                            <div class="form-group ${not erroNome ? '' : 'has-error'}">
+                                                                <label class="control-label">${not erroNome ? 'Nome:' : 'Nome é obrigatório:'}</label>
                                                                 <input class="form-control" name="nome">
                                                             </div>
                                                         </div>
@@ -121,8 +121,8 @@
                                                         </div>
                                                         <!-- /.col-lg-6 (nested) -->
                                                         <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label>RG:</label>
+                                                            <div class="form-group ${not erroRg ? '' : 'has-error'}">
+                                                                <label class="control-label">${not erroRg ? 'RG:' : 'RG é obrigatório:'}</label>
                                                                 <input class="form-control rg" name="rg">
                                                                 <p class="help-block">Somente números.</p>
                                                             </div>
@@ -135,8 +135,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-7">
-                                                            <div class="form-group">
-                                                                <label>Email:</label>
+                                                            <div class="form-group ${not erroEmail ? '' : 'has-error'}">
+                                                                <label class="control-label">${not erroEmail ? 'Email:' : 'Email é obrigatório:'}</label>
                                                                 <input class="form-control" name="email">
                                                             </div>
                                                         </div>
@@ -331,8 +331,8 @@
                                                     <legend>Dados pessoais</legend>
                                                     <div class="row">
                                                         <div class="col-lg-12">
-                                                            <div class="form-group">
-                                                                <label>Nome:</label>
+                                                            <div class="form-group ${not erroNome2 ? '' : 'has-error'}">
+                                                                <label class="control-label">${not erroNome2 ? 'Nome:' : 'Nome é obrigatório:'}</label>
                                                                 <input class="form-control" name="nome">
                                                             </div>
                                                         </div>
@@ -345,8 +345,8 @@
                                                         </div>
                                                         <!-- /.col-lg-6 (nested) -->
                                                         <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label>RG:</label>
+                                                            <div class="form-group ${not erroRg2 ? '' : 'has-error'}">
+                                                                <label class="control-label">${not erroRg2 ? 'RG:' : 'RG é obrigatório:'}</label>
                                                                 <input class="form-control rg" name="rg">
                                                                 <p class="help-block">Somente números.</p>
                                                             </div>
@@ -359,8 +359,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-7">
-                                                            <div class="form-group">
-                                                                <label>Email:</label>
+                                                            <div class="form-group ${not erroEmail2 ? '' : 'has-error'}">
+                                                                <label class="control-label">${not erroEmail2 ? 'Email:' : 'Email é obrigatório:'}</label>
                                                                 <input class="form-control" name="email">
                                                             </div>
                                                         </div>
@@ -628,12 +628,24 @@
                 senha: "required",
                 confirmacao: {
                     equalTo: "#senhac"
+                },
+                nome: "required",
+                rg : "required",
+                email:  {
+                    required: true,
+                    email: true
                 }
             },
             messages: {
                 cpf: "Digite seu CPF !!!",
                 senha: "Digite sua senha !!!",
-                confirmacao: "Senha e confirmação diferentes !!!"
+                confirmacao: "Senha e confirmação diferentes !!!",
+                nome: "Nome é obrigatório !!!",
+                rg : "RG é obrigatório !!!",
+                email : {
+                    required: "Email é obrigatório !!!",
+                    email: "Email inválido !!!"
+                }
             },
             submitHandler: function(form) {
                 form.submit();
@@ -644,11 +656,23 @@
                 cpf: "required",
                 senha: {
                     equalTo: "#confirmacaoe"
+                },
+                nome: "required",
+                rg : "required",
+                email:  {
+                    required: true,
+                    email: true
                 }
             },
             messages: {
                 cpf: "Digite seu CPF !!!",
-                senha: "Senha e confirmação diferentes !!!"
+                senha: "Senha e confirmação diferentes !!!",
+                nome: "Nome é obrigatório !!!",
+                rg : "RG é obrigatório !!!",
+                email : {
+                    required: "Email é obrigatório !!!",
+                    email: "Email inválido !!!"
+                }
             },
             submitHandler: function(form) {
                 form.submit();
@@ -668,7 +692,7 @@
            }
         });
     </script>
-    <c:if test="${erroCpf || erroSenha}">
+    <c:if test="${erroCpf || erroSenha || erroNome || erroRg || erroEmail}">
         <script>$("#modalCriar").modal('show');</script>
     </c:if>
     <c:if test="${not empty msg}">

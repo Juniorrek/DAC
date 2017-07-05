@@ -79,6 +79,17 @@ public class Funcionarios extends HttpServlet {
             if (!request.getParameter("senha").equals(request.getParameter("confirmacao"))) {
                 erro = true;
                 request.setAttribute("erroSenha", "Senha e confirmação diferente !!!");
+            }if ("".equals(request.getParameter("nome"))) {
+                erro = true;
+                request.setAttribute("erroNome", true);
+            }
+            if ("".equals(request.getParameter("rg"))) {
+                erro = true;
+                request.setAttribute("erroRg", true);
+            }
+            if ("".equals(request.getParameter("email"))) {
+                erro = true;
+                request.setAttribute("erroEmail", true);
             }
             //
             if (erro) {
@@ -131,6 +142,18 @@ public class Funcionarios extends HttpServlet {
             if (!request.getParameter("senha").equals(request.getParameter("confirmacao"))) {
                 erro = true;
                 request.setAttribute("erroSenha2", true);
+            }
+            if ("".equals(request.getParameter("nome"))) {
+                erro = true;
+                request.setAttribute("erroNome2", true);
+            }
+            if ("".equals(request.getParameter("rg"))) {
+                erro = true;
+                request.setAttribute("erroRg2", true);
+            }
+            if ("".equals(request.getParameter("email"))) {
+                erro = true;
+                request.setAttribute("erroEmail2", true);
             }
             //
             if (erro) {

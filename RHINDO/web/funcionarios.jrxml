@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.2.final using JasperReports Library version 6.2.2  -->
-<!-- 2017-07-03T10:33:10 -->
+<!-- 2017-07-04T10:07:32 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="funcionarios" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="teste"/>
@@ -60,22 +60,30 @@
 		</queryString>
 	</subDataset>
 	<queryString>
-		<![CDATA[SELECT funcionario.cpf, funcionario.nome, funcionario.rg, funcionario.email, funcionario.celular, funcionario.cep,  funcionario.perfil, departamento.nome as depnome, cargo.nome as carnome, cargo.salario  FROM Funcionario
+		<![CDATA[SELECT funcionario.*, departamento.nome as depnome, cargo.salario as carsal, cargo.nome as carnome  FROM Funcionario
 JOIN Departamento ON funcionario.departamento = departamento.id
 JOIN Cargo ON funcionario.cargo = cargo.id]]>
 	</queryString>
 	<field name="cpf" class="java.lang.String"/>
 	<field name="nome" class="java.lang.String"/>
 	<field name="rg" class="java.lang.String"/>
-	<field name="email" class="java.lang.String"/>
 	<field name="celular" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="rua" class="java.lang.String"/>
+	<field name="numero" class="java.lang.Integer"/>
+	<field name="bairro" class="java.lang.String"/>
 	<field name="cep" class="java.lang.String"/>
+	<field name="cidade" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="departamento" class="java.lang.Integer"/>
+	<field name="cargo" class="java.lang.Integer"/>
 	<field name="perfil" class="java.lang.String"/>
+	<field name="senha" class="java.lang.String"/>
 	<field name="depnome" class="java.lang.String"/>
+	<field name="carsal" class="java.lang.Float"/>
 	<field name="carnome" class="java.lang.String"/>
-	<field name="salario" class="java.lang.Float"/>
 	<title>
-		<band height="119" splitType="Stretch">
+		<band height="102" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="80" width="556" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -104,174 +112,201 @@ JOIN Cargo ON funcionario.cargo = cargo.id]]>
 				</textElement>
 				<text><![CDATA[RHINDO]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="10" y="50" width="546" height="30" uuid="2f7386da-86f2-438c-bb18-e90ae20cc559"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Relatório dos funcionários da empresa]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>
-		<band height="20">
-			<staticText>
-				<reportElement style="Column header" positionType="Float" x="0" y="0" width="55" height="20" forecolor="#000000" uuid="acf31c8b-7647-4615-98c3-3faf7043e1dd"/>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[cpf]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Column header" positionType="Float" x="55" y="0" width="55" height="20" forecolor="#000000" uuid="9054958a-c215-4d49-8e87-c5181247d058"/>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[nome]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Column header" positionType="Float" x="110" y="0" width="55" height="20" forecolor="#000000" uuid="eed9d5b7-f538-46a7-8be5-a9f9acc5dc8e"/>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[rg]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Column header" positionType="Float" x="165" y="0" width="55" height="20" forecolor="#000000" uuid="92fb7493-041c-4009-9ae3-ef23338fb99e"/>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[email]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Column header" positionType="Float" x="220" y="0" width="55" height="20" forecolor="#000000" uuid="4af15841-1e6a-45e5-9ad5-4d963c7a8c65"/>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[celular]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Column header" positionType="Float" x="275" y="0" width="55" height="20" forecolor="#000000" uuid="e81aa214-d85b-4069-a1d5-51e0a0c1728b"/>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[cep]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Column header" positionType="Float" x="330" y="0" width="55" height="20" forecolor="#000000" uuid="888884f3-9fc3-4f05-b21e-0220be7c02a3"/>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[perfil]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Column header" positionType="Float" x="385" y="0" width="55" height="20" forecolor="#000000" uuid="70965127-7c9f-453b-a977-2094aa5e8003"/>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[depnome]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Column header" positionType="Float" x="440" y="0" width="55" height="20" forecolor="#000000" uuid="aa9b3b32-00ca-4292-9646-4de90780cf22"/>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[carnome]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Column header" positionType="Float" x="495" y="0" width="55" height="20" forecolor="#000000" uuid="76d363d1-0f3b-41be-81c3-18963fea2b7f"/>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[salario]]></text>
-			</staticText>
-		</band>
+		<band height="20"/>
 	</columnHeader>
 	<detail>
-		<band height="20">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="0" y="0" width="55" height="20" uuid="facfa155-bc33-4adc-bb73-2b90e55c9a33"/>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{cpf}]]></textFieldExpression>
+		<band height="240">
+			<textField>
+				<reportElement x="30" y="30" width="100" height="30" uuid="9832afd9-575a-41ad-bb19-83d3ab002e4d"/>
+				<textFieldExpression><![CDATA[$F{cpf}.substring(0,3)+"."+ $F{cpf}.substring(3,6)+"."+$F{cpf}.substring(6,9)+"-"+$F{cpf}.substring(9,11)]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="55" y="0" width="55" height="20" uuid="cce163ed-a025-466b-b524-9a20540efb90"/>
+			<staticText>
+				<reportElement x="30" y="0" width="100" height="30" uuid="7395dabc-b50f-4577-a9be-8a937617db69"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font size="14"/>
 				</textElement>
+				<text><![CDATA[CPF]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="30" width="100" height="30" uuid="7f4cb401-32fd-491a-b2f5-7071e1336652"/>
 				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="110" y="0" width="55" height="20" uuid="67c3cc80-8110-4bfd-ae67-7d73f95d0d03"/>
+			<staticText>
+				<reportElement x="130" y="0" width="100" height="30" uuid="390d99ff-10a4-4dec-82d7-e9fc5e2da36d"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{rg}]]></textFieldExpression>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="230" y="30" width="100" height="30" uuid="63c0bcf1-103e-46bb-a4d8-6d4a97f96e4a"/>
+				<textFieldExpression><![CDATA["".equals($F{rg}) ? $F{rg} : $F{rg}.substring(0,2)+"."+$F{rg}.substring(2,5)+"."+$F{rg}.substring(5, 8)+"-"+$F{rg}.substring(8, 9)]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="165" y="0" width="55" height="20" uuid="82093b43-1273-4e25-afb8-7cf43c28bad5"/>
+			<staticText>
+				<reportElement x="230" y="0" width="100" height="30" uuid="a79648b8-1b65-4c95-be47-62288e3de86f"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font size="14"/>
 				</textElement>
+				<text><![CDATA[RG]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement x="330" y="30" width="100" height="30" uuid="0d3dbe19-550b-41d6-b817-d4d283db092b"/>
+				<textFieldExpression><![CDATA["".equals($F{celular}) ? $F{celular} : "("+$F{celular}.substring(0,2)+") "+$F{celular}.substring(2,6)+"-"+$F{celular}.substring(6,11)]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="330" y="0" width="100" height="30" uuid="31e8e672-bf85-453a-9303-a1346b744858"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Celular]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="430" y="30" width="100" height="30" uuid="8247206a-2c1f-402a-8c6b-268be9028e22"/>
 				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="220" y="0" width="55" height="20" uuid="23c80ba6-80bb-4208-b6b2-9c48f3ab0688"/>
+			<staticText>
+				<reportElement x="430" y="0" width="100" height="30" uuid="d5a3c60f-1208-4070-ab7e-46be9a3d1a75"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{celular}]]></textFieldExpression>
+				<text><![CDATA[Email]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="100" width="100" height="30" uuid="cebc96e4-654c-403e-b6ff-75f3af26a0a5"/>
+				<textFieldExpression><![CDATA[$F{rua}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="275" y="0" width="55" height="20" uuid="324e1542-673a-4dea-85c6-14329b940430"/>
+			<staticText>
+				<reportElement x="30" y="70" width="100" height="30" uuid="df60cee3-aa0f-4237-893f-bd9ce8d65e77"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cep}]]></textFieldExpression>
+				<text><![CDATA[Rua]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="100" width="100" height="30" uuid="3c927f90-8927-47f6-89e1-76cca64bfd20"/>
+				<textFieldExpression><![CDATA[$F{numero}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="330" y="0" width="55" height="20" uuid="c3c42699-ed4a-492b-8452-ac26387afe32"/>
+			<staticText>
+				<reportElement x="130" y="70" width="100" height="30" uuid="3036cd98-080b-41a5-841b-4c2fafbbeaf7"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font size="14"/>
 				</textElement>
+				<text><![CDATA[Número]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="230" y="100" width="100" height="30" uuid="2337bbbc-b51f-401e-9549-bd2be3fbe19f"/>
+				<textFieldExpression><![CDATA[$F{bairro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="230" y="70" width="100" height="30" uuid="64f361aa-b804-4120-9ac4-7ad5fdc646ac"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Bairro]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="330" y="100" width="100" height="30" uuid="9c9ad0db-2303-4ddb-8d65-1bc1e7f5b223"/>
+				<textFieldExpression><![CDATA["".equals($F{cep}) ? $F{cep} : $F{cep}.substring(0,2)+"."+$F{cep}.substring(2,5)+"-"+$F{cep}.substring(5,8)]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="330" y="70" width="100" height="30" uuid="d65f3ca2-5004-4ae7-b08a-f8f628d669ca"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[CEP]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="430" y="100" width="100" height="30" uuid="c8d571c0-c7aa-4cec-8b1f-444d6c06be4e"/>
+				<textFieldExpression><![CDATA[$F{cidade}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="430" y="70" width="100" height="30" uuid="76f68f98-59cd-4bb7-8c48-fffe293ed905"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Cidade]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="180" width="100" height="30" uuid="80e8876c-3890-415f-b394-1d520d7b27fe"/>
+				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="150" width="100" height="30" uuid="91743c9a-e8e7-4f73-ac82-4816fc4f78f2"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="180" width="100" height="30" uuid="982a9be7-376f-4eea-b7a3-5a660fcdbd72"/>
 				<textFieldExpression><![CDATA[$F{perfil}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="385" y="0" width="55" height="20" uuid="cca1c796-5a55-44ff-8e8a-0916bbf8be72"/>
+			<staticText>
+				<reportElement x="130" y="150" width="100" height="30" uuid="49e77dc0-c2e7-4f4e-a377-2dab8a32c4da"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font size="14"/>
 				</textElement>
+				<text><![CDATA[Perfil]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="230" y="180" width="100" height="30" uuid="af5d458c-111e-4bc5-984c-8119131b77b3"/>
 				<textFieldExpression><![CDATA[$F{depnome}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="440" y="0" width="55" height="20" uuid="072b51fd-89d0-420a-ac9b-1de84ec797b3"/>
+			<staticText>
+				<reportElement x="230" y="150" width="100" height="30" uuid="fa10b1d1-b164-42dd-9810-970f5c670e6e"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font size="14"/>
 				</textElement>
+				<text><![CDATA[Departamento]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="330" y="180" width="100" height="30" uuid="007a30df-8f4a-468e-92d1-c14b6e4fb60f"/>
 				<textFieldExpression><![CDATA[$F{carnome}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="495" y="0" width="55" height="20" uuid="6247035c-801b-45f4-acdd-913414a3beba"/>
+			<staticText>
+				<reportElement x="330" y="150" width="100" height="30" uuid="a2605191-4a03-4a13-9132-e38a1b5b529f"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{salario}]]></textFieldExpression>
+				<text><![CDATA[Cargo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="430" y="180" width="100" height="30" uuid="0377b1bb-e028-4af2-bb68-61ce1a60d50d"/>
+				<textFieldExpression><![CDATA["R$" + $F{carsal}.toString().replace(".",",")]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="430" y="150" width="100" height="30" uuid="5951b4ac-cf65-4c16-b1f7-4bd16f66e573"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Salário]]></text>
+			</staticText>
+			<line>
+				<reportElement x="30" y="230" width="500" height="2" uuid="91e37c2f-f710-47ca-a007-f4c68ce1d5a0">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
 		</band>
 	</detail>
 	<lastPageFooter>
-		<band height="177">
+		<band height="33">
 			<staticText>
-				<reportElement positionType="Float" x="-1" y="30" width="261" height="101" uuid="1a0d7088-5af7-4865-8be1-41ec5f51fb36"/>
-				<box>
-					<topPen lineWidth="1.1" lineStyle="Dashed"/>
-					<leftPen lineWidth="1.1" lineStyle="Dashed"/>
-					<bottomPen lineWidth="1.1" lineStyle="Dashed"/>
-					<rightPen lineWidth="1.1" lineStyle="Dashed"/>
-				</box>
-				<text><![CDATA[Your notes here]]></text>
-			</staticText>
-			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="147" width="556" height="30" backcolor="#E6E8E9" uuid="36aa233d-4305-48e6-974a-1bbf89bb3c8f"/>
+				<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="556" height="30" backcolor="#E6E8E9" uuid="36aa233d-4305-48e6-974a-1bbf89bb3c8f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Serif" size="9" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[THANKYOU FOR YOUR BUSINESS]]></text>
+				<text><![CDATA[RHINDO]]></text>
 			</staticText>
 		</band>
 	</lastPageFooter>

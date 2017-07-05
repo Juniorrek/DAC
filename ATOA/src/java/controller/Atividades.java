@@ -148,7 +148,14 @@ public class Atividades extends HttpServlet {
                 Funcionario logado = (Funcionario) session.getAttribute("logado");
                 atividade.setFuncionario(logado);
                 atividade.setStatus(request.getParameter("status"));
-
+                if (!"FINALIZADA".equals(atividade.getStatus())) {
+                    atividade.setFim(null);
+                } else {
+                    if (atividade.getFim() == null) {
+                        atividade.setFim(new Timestamp(System.currentTimeMillis()));
+                    }
+                }
+                
                 String retorno = Facade.solicitarCorrigirAtividade(atividade);
 
                 //response.sendRedirect("/ATOA/Atividades?action=carregar");

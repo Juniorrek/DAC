@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.2.final using JasperReports Library version 6.2.2  -->
-<!-- 2017-07-03T10:56:06 -->
+<!-- 2017-07-04T10:28:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="holerite" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -100,7 +100,7 @@
 					<textFieldExpression><![CDATA[$P{mes}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="280" y="70" width="80" height="30" uuid="d98e60ad-582a-4027-a8af-6093104a60d1">
+					<reportElement x="280" y="70" width="70" height="30" uuid="d98e60ad-582a-4027-a8af-6093104a60d1">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
 					<textElement>
@@ -109,13 +109,13 @@
 					<textFieldExpression><![CDATA[$P{horas_trabalhadas} + " hrs"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="460" y="70" width="80" height="30" uuid="ddb413c6-ebf3-4cf1-adac-4ff9069f16f5">
+					<reportElement x="440" y="70" width="109" height="30" uuid="ddb413c6-ebf3-4cf1-adac-4ff9069f16f5">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
 					<textFieldExpression><![CDATA["R$" + $P{salario_liquido}.toString().replace(".",",")]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="370" y="70" width="80" height="30" uuid="be27a1b9-d1aa-4fac-922c-922408b73fad">
+					<reportElement x="350" y="70" width="80" height="30" uuid="be27a1b9-d1aa-4fac-922c-922408b73fad">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
 					<textFieldExpression><![CDATA["R$" + $P{salario_bruto}.toString().replace(".",",")]]></textFieldExpression>
@@ -124,6 +124,9 @@
 					<reportElement x="10" y="20" width="80" height="30" uuid="360862ef-9da7-4a7e-9394-dd31c9756583">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
+					<textElement>
+						<font size="14"/>
+					</textElement>
 					<text><![CDATA[CPF]]></text>
 				</staticText>
 				<staticText>
@@ -131,30 +134,45 @@
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					</reportElement>
+					<textElement>
+						<font size="14"/>
+					</textElement>
 					<text><![CDATA[Nome]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="190" y="20" width="80" height="30" uuid="0a7e0f0c-49c3-4e65-ae20-0f1ee9f6f690">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
+					<textElement>
+						<font size="14"/>
+					</textElement>
 					<text><![CDATA[Mês]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="280" y="20" width="80" height="30" uuid="d576cf16-96e3-48c6-80c8-165c7d836077">
+					<reportElement x="280" y="20" width="70" height="30" uuid="d576cf16-96e3-48c6-80c8-165c7d836077">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
+					<textElement>
+						<font size="14"/>
+					</textElement>
 					<text><![CDATA[Hrs trabalhadas]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="370" y="20" width="80" height="30" uuid="b9884443-db92-4967-a466-217d253c9a71">
+					<reportElement x="350" y="20" width="80" height="30" uuid="b9884443-db92-4967-a466-217d253c9a71">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
+					<textElement>
+						<font size="14"/>
+					</textElement>
 					<text><![CDATA[Salário bruto]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="460" y="20" width="80" height="30" uuid="dd7cad27-c9ac-45fc-99e1-2006c78aa788">
+					<reportElement x="440" y="20" width="116" height="30" uuid="dd7cad27-c9ac-45fc-99e1-2006c78aa788">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
+					<textElement>
+						<font size="14"/>
+					</textElement>
 					<text><![CDATA[Salário líquido]]></text>
 				</staticText>
 			</band>
@@ -194,32 +212,29 @@
 				</textElement>
 				<text><![CDATA[RHINDO]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="10" y="50" width="546" height="30" uuid="a43581b1-c57a-4eb8-9544-994af062c086"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Holerite do mês]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>
-		<band height="20"/>
+		<band height="17"/>
 	</columnHeader>
 	<detail>
 		<band height="20"/>
 	</detail>
 	<lastPageFooter>
-		<band height="177">
+		<band height="31">
 			<staticText>
-				<reportElement positionType="Float" x="-1" y="30" width="261" height="101" uuid="1a0d7088-5af7-4865-8be1-41ec5f51fb36"/>
-				<box>
-					<topPen lineWidth="1.1" lineStyle="Dashed"/>
-					<leftPen lineWidth="1.1" lineStyle="Dashed"/>
-					<bottomPen lineWidth="1.1" lineStyle="Dashed"/>
-					<rightPen lineWidth="1.1" lineStyle="Dashed"/>
-				</box>
-				<text><![CDATA[Your notes here]]></text>
-			</staticText>
-			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="147" width="556" height="30" backcolor="#E6E8E9" uuid="36aa233d-4305-48e6-974a-1bbf89bb3c8f"/>
+				<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="556" height="30" backcolor="#E6E8E9" uuid="36aa233d-4305-48e6-974a-1bbf89bb3c8f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Serif" size="9" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[THANKYOU FOR YOUR BUSINESS]]></text>
+				<text><![CDATA[RHINDO]]></text>
 			</staticText>
 		</band>
 	</lastPageFooter>

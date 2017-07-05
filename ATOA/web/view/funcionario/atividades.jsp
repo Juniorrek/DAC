@@ -224,13 +224,13 @@
                                                                 <input type="datetime-local" class="form-control" name="fim">
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6" hidden>
+                                                        <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>Status:</label>
                                                                 <select class="form-control" name="status">
                                                                     <option value="EM ANDAMENTO">EM ANDAMENTO</option>
                                                                     <option value="FINALIZADA">FINALIZADA</option>
-                                                                    <option value="PENDENTE">PENDENTE</option>
+                                                                    <option value="PENDENTE" disabled>PENDENTE</option>
                                                                 </select>
                                                             </div>
                                                         </div>

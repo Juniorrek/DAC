@@ -26,12 +26,15 @@ cpfs: 59626322063, 23270542062, 25867868079, 02378971052
 3 - Logar com os gerentes de dep e cadastrar 1 tipo
 
 4 - Logar no ATOA com o func1 criar atividade finalizar e corrigir pra umas 8hrs, dps entrar no gerente desse dep e aceitar
-	Fazer o msm pros do outro departamento, só que n vai fechar as atividades
+	Fazer o msm pros do outro departamento, só que n  finaliza
 
-5 - No gerente do dep fechar as atividades e mostrar os relatorios
+5 - Nos gerentes do dep fechar as atividades e mostrar os relatorios, mostrar o pendente
 
 6 - Logar no RHINDO com o admin e fechar a folha e mostrar os relatorios
 
-7 - Logar no RHINDO com esse func e mostrar as funcionalidades
+7 - Logar no RHINDO com esse func1 e mostrar as funcionalidades
 
 8 - Voltar no ATOA para ver o departamento q tem notificação
+
+9 - logar no func2 fiinalizar a pendente e mostrar no rhindo
+

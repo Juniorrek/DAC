@@ -90,6 +90,18 @@ public class Login extends HttpServlet {
                 erro = true;
                 request.setAttribute("erroSenha", true);
             }
+            if ("".equals(request.getParameter("nome"))) {
+                erro = true;
+                request.setAttribute("erroNome", true);
+            }
+            if ("".equals(request.getParameter("rg"))) {
+                erro = true;
+                request.setAttribute("erroRg", true);
+            }
+            if ("".equals(request.getParameter("email"))) {
+                erro = true;
+                request.setAttribute("erroEmail", true);
+            }
             //
             if (erro) {
                 RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/view/meus_dados.jsp");
